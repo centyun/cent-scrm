@@ -1,0 +1,7 @@
+@charset "UTF-8";
+.upload img{width:60px;height:60px;box-shadow: 0px 1px 1px 1px #AAA3A3;}
+span.required{color: red;}
+select.tenant-sm {height: 34px; line-height: 34px;border-radius: 3px;padding: 5px 10px;text-rendering: auto;}
+label.tenant{margin-left:20px;}
+button.tablebtn{margin-left:6px;}
+div.error, label.error{color: red;}

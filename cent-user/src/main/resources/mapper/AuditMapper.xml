@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.centyun.user.mapper.AuditMapper">
+	<resultMap id="AuditResultMap" type="com.centyun.core.domain.Audit">
+		<id column="id" jdbcType="BIGINT" property="id"/>
+		<result column="action" jdbcType="VARCHAR" property="action"/>
+		<result column="module" jdbcType="VARCHAR" property="module"/>
+		<result column="content" jdbcType="VARCHAR" property="content"/>
+		<result column="ip" jdbcType="BIGINT" javaType="long" property="ip"/>
+		<result column="operator" jdbcType="VARCHAR" property="operator"/>
+		<result column="operate_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="operateTime"/>
+	</resultMap>
+
+	<insert id="addAudit">
+	    insert into us_audit (id, action, module, content, ip, operator, operate_time)
+	    values(#{id}, #{action}, #{module}, #{content}, #{ip}, #{operator}, now())
+	</insert>
+
+	<select id="getAudits" resultMap="AuditResultMap">
+		select * from us_audit order by operate_time desc
+	</select>
+</mapper>

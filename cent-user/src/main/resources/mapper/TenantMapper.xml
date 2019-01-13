@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.centyun.user.mapper.TenantMapper">
+    <resultMap id="TenantResultMap" type="com.centyun.user.domain.Tenant">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="main_user" jdbcType="VARCHAR" property="mainUser"/>
+        <result column="contact" jdbcType="VARCHAR" property="contact"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="logo" jdbcType="VARCHAR" property="logo"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="note" jdbcType="VARCHAR" property="note"/>
+        <result column="access_key" jdbcType="VARCHAR" property="accessKey"/>
+        <result column="creator" jdbcType="BIGINT" property="creator"/>
+        <result column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="createTime"/>
+        <result column="editor" jdbcType="BIGINT" property="editor"/>
+        <result column="edit_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="editTime"/>
+        <result column="creator_name" jdbcType="VARCHAR" property="creatorName"/>
+        <result column="editor_name" jdbcType="VARCHAR" property="editorName"/>
+    </resultMap>
+    
+    <select id="getTenants" resultMap="TenantResultMap">
+        select a.*, m1.display_name creator_name, m2.display_name editor_name from us_tenant a
+        left join us_manager m1 on a.creator=m1.id left join us_manager m2 on a.editor=m2.id
+        <where>
+            <if test="searchValue != null">
+                a.name like concat('%', #{searchValue}, '%')
+                or a.code like concat('%', #{searchValue}, '%')
+                or a.contact like concat('%', #{searchValue}, '%')
+                or a.mobile like concat('%', #{searchValue}, '%')
+                or a.phone like concat('%', #{searchValue}, '%')
+                or a.email like concat('%', #{searchValue}, '%')
+            </if>
+        </where>
+        <if test="orders != null">
+            order by
+            <foreach collection="orders" item="order" separator=",">CONVERT(${order.key} USING gbk) ${order.value}</foreach>
+        </if>
+    </select>
+
+    <select id="getTenantById" parameterType="long" resultMap="TenantResultMap">
+        select a.*, m1.display_name creator_name, m2.display_name editor_name from us_tenant a
+        left join us_manager m1 on a.creator=m1.id left join us_manager m2 on a.editor=m2.id
+        where a.id = #{id}
+    </select>
+    
+    <select id="getTenantByName" parameterType="com.centyun.user.domain.Tenant" resultType="int">
+        select count(*) from us_tenant where name = #{name}
+        <if test="id != null">
+            and <![CDATA[ id <> #{id} ]]>
+        </if>
+    </select>
+    
+    <insert id="addTenant">
+        insert into us_tenant (id, name, code, main_user, contact, mobile, phone, email, address, logo, type, status, note, access_key, creator, create_time)
+        values(#{id}, #{name}, #{code}, #{mainUser}, #{contact}, #{mobile}, #{phone}, #{email}, #{address}, #{logo}, #{type}, 0, #{note}, #{accessKey}, #{creator}, now())
+    </insert>
+    
+    <update id="updateTenant">
+        update us_tenant set name=#{name}, code=#{code}, contact=#{contact}, mobile=#{mobile}, phone=#{phone}, email=#{email}
+        , address=#{address}, logo=#{logo}, note=#{note}, editor=#{editor}, edit_time=now()
+        where id=#{id}
+    </update>
+    
+    <update id="updateStatus">
+        update us_tenant set status=#{status}, editor=#{editor}, edit_time=now() where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id}</foreach>
+    </update>
+
+    <select id="getAllTenants" resultType="com.centyun.core.table.KeyValuePair">
+        select id `key`, name value from us_tenant order by CONVERT(name USING gbk)
+    </select>
+</mapper>

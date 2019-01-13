@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.centyun.user.mapper.UserMapper">
+	<resultMap id="UserResultMap" type="com.centyun.core.domain.User">
+		<id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="tenant_id" jdbcType="BIGINT" property="tenantId"/>
+		<result column="login_name" jdbcType="VARCHAR" property="loginName"/>
+		<result column="type" jdbcType="INTEGER" property="type"/>
+		<result column="password" jdbcType="VARCHAR" property="password"/>
+		<result column="display_name" jdbcType="VARCHAR" property="displayName"/>
+		<result column="real_name" jdbcType="VARCHAR" property="realName"/>
+		<result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+		<result column="phone" jdbcType="VARCHAR" property="phone"/>
+		<result column="email" jdbcType="VARCHAR" property="email"/>
+		<result column="head_image" jdbcType="VARCHAR" property="headImage"/>
+		<result column="gender" jdbcType="INTEGER" property="gender"/>
+		<result column="status" jdbcType="INTEGER" property="status"/>
+		<result column="grade" jdbcType="INTEGER" property="grade"/>
+        <result column="language" jdbcType="VARCHAR" property="language"/>
+		<result column="creator" jdbcType="BIGINT" property="creator"/>
+		<result column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="createTime"/>
+		<result column="editor" jdbcType="BIGINT" property="editor"/>
+		<result column="edit_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="editTime"/>
+		<result column="tenant_name" jdbcType="VARCHAR" property="tenantName"/>
+        <result column="creator_name" jdbcType="VARCHAR" property="creatorName"/>
+        <result column="editor_name" jdbcType="VARCHAR" property="editorName"/>
+	</resultMap>
+
+	<select id="getPageUsers" resultMap="UserResultMap">
+		select a.*, t.name tenant_name, m1.display_name creator_name, m2.display_name editor_name from us_user a left join us_tenant t on a.tenant_id=t.id
+        left join us_manager m1 on a.creator=m1.id left join us_manager m2 on a.editor=m1.id
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+		    <if test="searchValue != null">
+		        ( a.login_name like concat('%', #{searchValue}, '%')
+		        or a.display_name like concat('%', #{searchValue}, '%')
+		        or t.name like concat('%', #{searchValue}, '%')
+		        or a.mobile like concat('%', #{searchValue}, '%')
+		        or a.real_name like concat('%', #{searchValue}, '%') )
+		    </if>
+		    <if test="tenantId != null">and a.tenant_id=#{tenantId}</if>
+		</trim>
+		<if test="orders != null">
+		    order by
+		    <foreach collection="orders" item="order" separator=",">CONVERT(${order.key} USING gbk) ${order.value}</foreach>
+		</if>
+	</select>
+
+	<select id="getUserById" resultMap="UserResultMap">
+		select a.*, t.name tenant_name, m1.display_name creator_name, m2.display_name editor_name from us_user a left join us_tenant t on a.tenant_id=t.id
+        left join us_manager m1 on a.creator=m1.id left join us_manager m2 on a.editor=m1.id
+        where a.id=#{id}
+	</select>
+
+	<select id="getUserByName" parameterType="com.centyun.core.domain.User" resultType="int">
+		select count(*) from us_user where login_name = #{loginName}
+		<if test="id != null">
+		    and <![CDATA[ id <> #{id} ]]>
+		</if>
+	</select>
+
+	<insert id="addUser">
+	    insert into us_user (id, login_name, type, password, display_name, tenant_id, mobile, phone, email, head_image, gender, status, creator, create_time)
+	    values(#{id}, #{loginName}, #{type}, #{password}, #{displayName}, #{tenantId}, #{mobile}, #{phone}, #{email}, #{headImage}, #{gender}, 1, #{creator}, now())
+	</insert>
+
+	<insert id="addMainUser">
+	    insert into us_user (id, login_name, type, password, display_name, tenant_id, mobile, phone, email, gender, status, grade, creator, create_time)
+	    values(#{id}, #{loginName}, 1, #{password}, #{loginName}, #{tenantId}, #{mobile}, #{phone}, #{email}, 1, 1, 0, #{creator}, now())
+	</insert>
+
+	<update id="updateUser">
+	    update us_user set display_name=#{displayName}, real_name=#{realName}, mobile=#{mobile}, phone=#{phone}, email=#{email}
+	    , head_image=#{headImage}, gender=#{gender}, editor=#{editor}, edit_time=now()
+	    where id=#{id}
+	</update>
+
+	<update id="updateStatus">
+	    update us_user set status=#{status}, editor=#{editor}, edit_time=now() where id in
+	    <foreach collection="ids" item="id" open="(" separator="," close=")">#{id}</foreach>
+	</update>
+
+	<delete id="repasswd">
+	    update us_user set password=#{passwd} where id in
+	    <foreach collection="ids" item="id" open="(" separator="," close=")">#{id}</foreach>
+	</delete>
+
+	<update id="updateLanguage">
+	    update us_user set language=#{language} where id=#{id}
+	</update>
+
+	<select id="getUserByLoginName" resultMap="UserResultMap">
+		select a.*, t.id tenant_id, t.name tenant_name from us_user a left join us_tenant t on a.tenant_id=t.id where a.login_name=#{loginName}
+	</select>
+
+</mapper>

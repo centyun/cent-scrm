@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.centyun.user.mapper.ConsumeMapper">
+    <resultMap id="ConsumeResultMap" type="com.centyun.user.domain.Consume">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="tenant_id" jdbcType="BIGINT" property="tenantId"/>
+        <result column="tenant_name" jdbcType="VARCHAR" property="tenantName"/>
+        <result column="product_id" jdbcType="BIGINT" property="productId"/>
+        <result column="product_name" jdbcType="VARCHAR" property="productName"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="amount" jdbcType="INTEGER" property="amount"/>
+        <result column="money" jdbcType="NUMERIC" javaType="double" property="money"/>
+        <result column="occur_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="occurTime"/>
+        <result column="ip" jdbcType="BIGINT" javaType="long" property="ip"/>
+        <result column="ip_str" jdbcType="VARCHAR" property="ipStr"/>
+    </resultMap>
+    
+    <select id="getPageConsumes" resultMap="ConsumeResultMap">
+        select a.*, inet_ntoa(a.ip) ip_str, t.name tenant_name, p.name product_name, u.display_name user_name from us_consume a
+        left join us_tenant t on a.tenant_id=t.id left join us_product p on a.product_id=p.id
+        left join us_user u on a.user_id=u.id
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <if test="searchValue != null">
+                ( t.name like concat('%', #{searchValue}, '%')
+                or p.name like concat('%', #{searchValue}, '%')
+                or a.ip_str like concat('%', #{searchValue}, '%')
+                or a.amount = #{searchValue} )
+            </if>
+            <if test="tenantId != null">and a.tenant_id=#{tenantId}</if>
+        </trim>
+        <if test="orders != null">
+            order by
+            <foreach collection="orders" item="order" separator=",">CONVERT(${order.key} USING gbk) ${order.value}</foreach>
+        </if>
+    </select>
+    
+    <select id="getConsumeById" resultMap="ConsumeResultMap">
+        select a.*, inet_ntoa(a.ip) ip_str, t.name tenant_name, p.name product_name, u.display_name user_name from us_consume a
+        left join us_tenant t on a.tenant_id=t.id left join us_product p on a.product_id=p.id
+        left join us_user u on a.user_id=u.id
+        where a.id=#{id}
+    </select>
+    
+    <insert id="addConsume">
+        insert into us_consume (id, tenant_id, product_id, user_id, amount, money, occur_time, ip)
+        values(#{id}, #{tenantId}, #{productId}, #{userId}, #{amount}, #{money}, now(), #{ip})
+    </insert>
+</mapper>

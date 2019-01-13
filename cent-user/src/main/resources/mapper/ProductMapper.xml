@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.centyun.user.mapper.ProductMapper">
+    <resultMap id="ProductResultMap" type="com.centyun.core.domain.Product">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="english_name" jdbcType="VARCHAR" property="englishName"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="icon" jdbcType="VARCHAR" property="icon"/>
+        <result column="version" jdbcType="VARCHAR" property="version"/>
+        <result column="release_url" jdbcType="VARCHAR" property="releaseUrl"/>
+        <result column="release_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="releaseTime"/>
+        <result column="product_manager" jdbcType="VARCHAR" property="productManager"/>
+        <result column="note" jdbcType="VARCHAR" property="note"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="creator" jdbcType="BIGINT" property="creator"/>
+        <result column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="createTime"/>
+        <result column="editor" jdbcType="BIGINT" property="editor"/>
+        <result column="edit_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="editTime"/>
+        <result column="creator_name" jdbcType="VARCHAR" property="creatorName"/>
+        <result column="editor_name" jdbcType="VARCHAR" property="editorName"/>
+    </resultMap>
+    
+    <select id="getPageProducts" resultMap="ProductResultMap">
+        select a.*, m1.display_name creator_name, m2.display_name editor_name from us_product a
+        left join us_manager m1 on a.creator=m1.id left join us_manager m2 on a.editor=m2.id
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <if test="searchValue != null">
+                a.name like concat('%', #{searchValue}, '%')
+                or a.code like concat('%', #{searchValue}, '%')
+                or a.release_url like concat('%', #{searchValue}, '%')
+                or a.product_manager like concat('%', #{searchValue}, '%')
+                or a.version like concat('%', #{searchValue}, '%')
+            </if>
+        </trim>
+        <if test="orders != null">
+            order by
+            <foreach collection="orders" item="order" separator=",">CONVERT(${order.key} USING gbk) ${order.value}</foreach>
+        </if>
+    </select>
+    
+    <select id="getProductById" parameterType="long" resultMap="ProductResultMap">
+        select a.*, m1.display_name creator_name, m2.display_name editor_name from us_product a
+        left join us_manager m1 on a.creator=m1.id left join us_manager m2 on a.editor=m2.id
+        where a.id=#{id}
+    </select>
+    
+    <select id="getProductCountByName" parameterType="com.centyun.core.domain.Product" resultType="int">
+        select count(*) from us_product where name = #{name} and code = #{code} and version = #{version}
+        <if test="id != null">
+            and <![CDATA[ id <> #{id} ]]>
+        </if>
+    </select>
+    
+    <insert id="addProduct">
+        insert into us_product (id, name, code, version, release_url, release_time, product_manager, note, status, creator, create_time)
+        values(#{id}, #{name}, #{code}, #{version}, #{releaseUrl}, #{releaseTime}, #{productManager}, #{note}, 1, #{creator}, now())
+    </insert>
+    
+    <update id="updateProduct">
+        update us_product set name=#{name}, code=#{code}, version=#{version}, release_url=#{releaseUrl}, release_time=#{releaseTime},
+        product_manager=#{productManager}, note=#{note}, editor=#{editor}, edit_time=now()
+        where id=#{id}
+    </update>
+    
+    <update id="updateStatus">
+        update us_product set status=#{status}, editor=#{editor}, edit_time=now() where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id}</foreach>
+    </update>
+
+    <select id="getAvailableProducts" resultType="com.centyun.core.domain.ProductVO">
+        select id, name, english_name englishName, icon, release_url releaseUrl from us_product
+        where status=1 order by CONVERT(name USING gbk), release_time desc
+    </select>
+</mapper>
