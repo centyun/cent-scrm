@@ -55,8 +55,8 @@
     </select>
     
     <insert id="addProduct">
-        insert into us_product (id, name, code, version, release_url, release_time, product_manager, note, status, creator, create_time)
-        values(#{id}, #{name}, #{code}, #{version}, #{releaseUrl}, #{releaseTime}, #{productManager}, #{note}, 1, #{creator}, now())
+        insert into us_product (id, name, english_name, code, version, release_url, release_time, product_manager, note, status, creator, create_time)
+        values(#{id}, #{name}, #{englishName}, #{code}, #{version}, #{releaseUrl}, #{releaseTime}, #{productManager}, #{note}, 1, #{creator}, now())
     </insert>
     
     <update id="updateProduct">
@@ -71,7 +71,7 @@
     </update>
 
     <select id="getAvailableProducts" resultType="com.centyun.core.domain.ProductVO">
-        select id, name, english_name englishName, icon, release_url releaseUrl from us_product
+        select id, name, english_name englishName, code, icon, release_url releaseUrl from us_product
         where status=1 order by CONVERT(name USING gbk), release_time desc
     </select>
 </mapper>

@@ -41,7 +41,7 @@ public class CaptchaAuthenticationFilter extends UsernamePasswordAuthenticationF
             System.out.println("captcha login in CaptchaAuthenticationFilter");
             String captcha = getSessionValue(request, SESSION_CAPTCHA_KEY);
             String inputCode = getRequestValue(request, SPRING_SECURITY_CAPTCHA_KEY);
-            if (!captcha.equalsIgnoreCase(inputCode)) {
+            if (!inputCode.equalsIgnoreCase(captcha)) {
                 throw new CaptchaException("Captcha.Invalid");
             }
             return super.attemptAuthentication(request, response);

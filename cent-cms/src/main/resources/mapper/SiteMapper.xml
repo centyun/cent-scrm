@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.centyun.cms.mapper.SiteMapper">
+	<resultMap id="SiteResultMap" type="com.centyun.cms.domain.Site">
+		<id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="tenant_id" jdbcType="BIGINT" javaType="long" property="tenantId"/>
+		<result column="name" jdbcType="VARCHAR" property="name"/>
+		<result column="domain" jdbcType="VARCHAR" property="domain"/>
+		<result column="other_domain" jdbcType="VARCHAR" property="otherDomain"/>
+        <result column="template" jdbcType="VARCHAR" property="template"/>
+        <result column="mobile_template" jdbcType="VARCHAR" property="mobileTemplate"/>
+        <result column="language" jdbcType="VARCHAR" property="language"/>
+        <result column="default_site" jdbcType="INTEGER" property="defaultSite"/>
+        <result column="creator" jdbcType="BIGINT" javaType="long" property="creator"/>
+        <result column="creator_name" jdbcType="VARCHAR" property="creatorName"/>
+		<result column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="createTime"/>
+        <result column="editor" jdbcType="BIGINT" javaType="long" property="editor"/>
+        <result column="editor_name" jdbcType="VARCHAR" property="editorName"/>
+        <result column="edit_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="editTime"/>
+	</resultMap>
+    
+	<insert id="addSite">
+	    insert into cm_site (id, tenant_id, name, domain, other_domain, template, mobile_template, language, default_site, creator, creator_name, create_time)
+	    values(#{id}, #{tenantId}, #{name}, #{domain}, #{otherDomain}, #{template}, #{mobile_template}, #{language}, #{defaultSite}, #{creator}, #{creatorName}, now())
+	</insert>
+
+    <update id="updateSite">
+        update cm_site set name=#{name}, domain=#{domain}, other_domain=#{otherDomain}, template=#{template}, mobile_template=#{mobile_template}
+        , language=#{language}, default_site=#{default_site}, editor=#{editor}, editor_name=#{editorName}, edit_time=now()
+        where id=#{id} and tenant_id=#{tenantId}
+    </update>
+
+	<select id="getSites" resultMap="SiteResultMap">
+		select * from cm_site a where tenant_id=#{tenantId}
+        <if test="searchValue != null">
+            and ( a.name like concat('%', #{searchValue}, '%')
+            or a.domain like concat('%', #{searchValue}, '%')
+            or a.other_domain like concat('%', #{searchValue}, '%')
+            or a.template like concat('%', #{searchValue}, '%')
+            or a.mobile_template like concat('%', #{searchValue}, '%') )
+        </if>
+        <choose>
+            <when test="orders != null">
+                order by
+                <foreach collection="orders" item="order" separator=",">CONVERT(${order.key} USING gbk) ${order.value}</foreach>
+            </when>
+            <otherwise>
+                order by create_time
+            </otherwise>
+        </choose>
+	</select>
+
+    <select id="getSite" resultMap="SiteResultMap">
+        select * from cm_site where tenant_id=#{tenantId} and id=#{id}
+    </select>
+</mapper>

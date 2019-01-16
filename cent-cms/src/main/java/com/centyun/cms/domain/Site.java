@@ -1,26 +1,27 @@
 package com.centyun.cms.domain;
 
-import org.joda.time.DateTime;
+import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class Site {
     private Long id;
-    private Long tenantId;
+    private Long tenantId; // 租户id
     private String name;
     private String domain; // 主域名
-    private String subDomain; // 子域名
-    private String pictureCode;
-    private String textCode;
-    private String nostyleCode;
+    private String otherDomain; // 其他域名
+    private String template;
+    private String mobileTemplate;
+    private String language;
+    private int defaultSite; // 0 不是默认站点, 1 是默认站点
     private Long creator;
     private String creatorName;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")
-    private DateTime createTime;
+    private Date createTime;
     private Long editor;
     private String editorName;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")
-    private DateTime editTime;
+    private Date editTime;
 
     public Long getId() {
         return id;
@@ -54,36 +55,44 @@ public class Site {
         this.domain = domain;
     }
 
-    public String getSubDomain() {
-        return subDomain;
+    public String getOtherDomain() {
+        return otherDomain;
     }
 
-    public void setSubDomain(String subDomain) {
-        this.subDomain = subDomain;
+    public void setOtherDomain(String otherDomain) {
+        this.otherDomain = otherDomain;
     }
 
-    public String getPictureCode() {
-        return pictureCode;
+    public String getTemplate() {
+        return template;
     }
 
-    public void setPictureCode(String pictureCode) {
-        this.pictureCode = pictureCode;
+    public void setTemplate(String template) {
+        this.template = template;
     }
 
-    public String getTextCode() {
-        return textCode;
+    public String getMobileTemplate() {
+        return mobileTemplate;
     }
 
-    public void setTextCode(String textCode) {
-        this.textCode = textCode;
+    public void setMobileTemplate(String mobileTemplate) {
+        this.mobileTemplate = mobileTemplate;
     }
 
-    public String getNostyleCode() {
-        return nostyleCode;
+    public String getLanguage() {
+        return language;
     }
 
-    public void setNostyleCode(String nostyleCode) {
-        this.nostyleCode = nostyleCode;
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public int getDefaultSite() {
+        return defaultSite;
+    }
+
+    public void setDefaultSite(int defaultSite) {
+        this.defaultSite = defaultSite;
     }
 
     public Long getCreator() {
@@ -102,11 +111,11 @@ public class Site {
         this.creatorName = creatorName;
     }
 
-    public DateTime getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(DateTime createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
@@ -126,11 +135,11 @@ public class Site {
         this.editorName = editorName;
     }
 
-    public DateTime getEditTime() {
+    public Date getEditTime() {
         return editTime;
     }
 
-    public void setEditTime(DateTime editTime) {
+    public void setEditTime(Date editTime) {
         this.editTime = editTime;
     }
 

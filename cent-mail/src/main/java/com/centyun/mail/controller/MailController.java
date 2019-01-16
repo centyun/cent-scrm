@@ -17,8 +17,6 @@ import com.centyun.core.constant.AppConstant;
 import com.centyun.core.util.RandomGenerator;
 import com.centyun.core.util.SnowFlakeIdWorker;
 import com.centyun.mail.domain.Mail;
-import com.centyun.mail.domain.MailProvider;
-import com.centyun.mail.service.MailProviderService;
 import com.centyun.mail.service.MailService;
 
 @Controller
@@ -29,15 +27,12 @@ public class MailController {
     @Autowired
     private MailService mailService;
 
-    @Autowired
-    private MailProviderService mailProviderService;
-
     @RequestMapping(value = { "", "/", "/index.html" })
     public String index() {
         return "index";
     }
 
-    @RequestMapping("/package/index.html")
+    @RequestMapping("/add")
     @ResponseBody
     public Object saveMail(HttpServletRequest request) {
         Object user = request.getSession().getAttribute(AppConstant.LOGIN_USER);
@@ -46,35 +41,23 @@ public class MailController {
         int count = 55;
         List<Integer> shardings = RandomGenerator.getRandomIntList(0, 20, count);
         for (int i = 0; i < count; i++) {
-            Mail mail = getMail();
+            Mail mail = new Mail();
             Long id = mail.getId();
             if (id == null || id == 0l) {
                 long nextId = worker.nextId();
                 System.out.println("nextId===" + nextId);
                 mail.setId(nextId);
+                mail.setRecipient("hello" + i + "@hello.com");
+                mail.setSubject("测试主题");
                 mail.setShardingColumn(shardings.get(i));
                 mailService.addMail(mail);
             } else {
                 mailService.updateMail(mail);
             }
         }
-        List<MailProvider> mailProviders = mailProviderService.getMailProviders();
         Map<String, Object> result = new HashMap<>();
-        result.put("mailProviders", mailProviders);
         result.put("user", user);
         return result;
-    }
-
-    private Mail getMail() {
-        Mail mail = new Mail();
-        mail.setTenantId(1l);
-        mail.setPackageId(1l);
-        mail.setProviderId(1);
-        mail.setRecipient("test@qq.com");
-        mail.setTemplateName("这是模板名称");
-        mail.setSubject("这是主题");
-        mail.setMailType(1);
-        return mail;
     }
 
     @RequestMapping("/getMail")

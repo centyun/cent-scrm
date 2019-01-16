@@ -7,7 +7,6 @@ import io.shardingsphere.api.algorithm.sharding.standard.PreciseShardingAlgorith
 
 /**
  * 分片策略
- * 
  * @author yinww
  *
  */

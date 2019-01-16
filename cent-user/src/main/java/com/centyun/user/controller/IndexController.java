@@ -62,12 +62,13 @@ public class IndexController extends BaseController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login(@RequestParam(value = "error", required = false) String error,
-            @RequestParam(value = "logout", required = false) String logout, HttpServletRequest request) {
+            @RequestParam(value = "logout", required = false) String logout, HttpServletRequest request, HttpServletResponse response) {
         ModelAndView model = new ModelAndView();
         if (error != null) {
             model.addObject("error", getMessage("Login.UserPasswdError", request));
         }
-        if (logout != null) {
+        if (logout != null) { // 登出, 删除cookie
+//            CookieUtils.deleteCurrentDomainCookie(request, response, AppConstant.TOKEN); 不需要cookie
             model.addObject("msg", getMessage("Logout.Success", request));
         }
         model.setViewName("login");

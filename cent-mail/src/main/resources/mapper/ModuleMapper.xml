@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.centyun.mail.mapper.ModuleMapper">
+    <resultMap id="ModuleMap" type="com.centyun.core.domain.Module">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="parent_id" jdbcType="TINYINT" property="parentId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="english_name" jdbcType="VARCHAR" property="englishName"/>
+        <result column="icon" jdbcType="VARCHAR" property="icon"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="order_no" jdbcType="TINYINT" property="orderNo"/>
+        <result column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="createTime"/>
+    </resultMap>
+
+    <select id="getModules" resultMap="ModuleMap" parameterType="string">
+        select * from ml_module
+        where status=1
+        order by order_no
+    </select>
+
+</mapper>

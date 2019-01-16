@@ -26,9 +26,9 @@ import com.centyun.core.util.HttpUtil;
 public class PassportInterceptor implements HandlerInterceptor {
     private static Logger log = LoggerFactory.getLogger(PassportInterceptor.class);
 
-    @Value("${LOGIN_URL}")
-    private String LOGIN_URL; //单点登录地址
-    
+    @Value("${CONSOLE_URL}")
+    private String CONSOLE_URL; // 控制台地址
+
     @Autowired
     private UserFeignClient userFeignClient;
 
@@ -44,7 +44,7 @@ public class PassportInterceptor implements HandlerInterceptor {
             return false;
         } else {
             User user = (User) request.getSession().getAttribute(AppConstant.LOGIN_USER);
-            if(user == null) {
+            if (user == null) {
                 user = userFeignClient.getUserByToken(token);
                 if (user == null) {
                     log.info("redirect to login, because does not find user in session and by token, " + requestUrl);
@@ -61,10 +61,10 @@ public class PassportInterceptor implements HandlerInterceptor {
     private void redirectLogin(HttpServletRequest request, HttpServletResponse response, String requestUrl)
             throws IOException {
         Object obj = request.getParameter("logout");
-        if(obj != null){
-            response.sendRedirect(LOGIN_URL+ "?logout=true&redirect=" + requestUrl);
-        }else{
-            response.sendRedirect(LOGIN_URL+ "?redirect=" + requestUrl);
+        if (obj != null) {
+            response.sendRedirect(CONSOLE_URL + "login?logout=true&redirect=" + requestUrl);
+        } else {
+            response.sendRedirect(CONSOLE_URL + "login?redirect=" + requestUrl);
         }
     }
 }

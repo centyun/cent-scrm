@@ -6,11 +6,16 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.centyun.core.client.UserFeignClient;
+import com.centyun.core.domain.ModuleVO;
 import com.centyun.core.domain.ProductVO;
 
 public class WebBaseController {
+
+    @Value("${CONSOLE_URL}")
+    protected String consoleUrl; // 控制台地址
 
     @Autowired
     protected UserFeignClient userFeignClient;
@@ -22,6 +27,10 @@ public class WebBaseController {
         List<ProductVO> products = userFeignClient.getAvailableProducts();
         // setActive
         for (ProductVO product : products) {
+            List<ModuleVO> modules = getModules(request, product.getCode());
+            if(modules != null && modules.size() > 0) {
+                product.setModules(modules); // 每个产品下的模块, 添加到左侧菜单中相应的产品菜单下
+            }
             String releaseUrl = product.getReleaseUrl();
             if(releaseUrl != null && releaseUrl.length() > 8) { // https:// 的长度是8
                 String host = getHost(releaseUrl);
@@ -31,6 +40,10 @@ public class WebBaseController {
             }
         }
         return products;
+    }
+    
+    protected List<ModuleVO> getModules(HttpServletRequest request, String productCode) {
+        return null;
     }
 
     /**

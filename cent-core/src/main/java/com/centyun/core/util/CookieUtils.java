@@ -127,7 +127,7 @@ public class CookieUtils {
      * 删除Cookie带cookie域名
      */
     public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String cookieName) {
-        doSetCookie(request, response, cookieName, "", -1, false);
+        doSetCookie(request, response, cookieName, "", 0, false);
     }
 
     /**
@@ -144,7 +144,7 @@ public class CookieUtils {
                 cookieValue = URLEncoder.encode(cookieValue, "utf-8");
             }
             Cookie cookie = new Cookie(cookieName, cookieValue);
-            if (cookieMaxage > 0)
+            if (cookieMaxage >= 0)
                 cookie.setMaxAge(cookieMaxage);
             if (null != request) {// 设置域名的cookie
                 String domainName = getDomainName(request);
@@ -211,4 +211,40 @@ public class CookieUtils {
         }
         return domainName;
     }
+
+    /**
+     * 删除当前域名下名称为cookieName的Cookie
+     */
+    public static void deleteCurrentDomainCookie(HttpServletRequest request, HttpServletResponse response, String cookieName) {
+        try {
+            Cookie cookie = new Cookie(cookieName, null);
+            cookie.setMaxAge(0);
+            cookie.setPath("/");
+            if (null != request) {// 设置域名的cookie
+                String domainName = request.getServerName().toLowerCase();
+                System.out.println("==deleteCurrentDomainCookie==" + domainName);
+                cookie.setDomain(domainName);
+            }
+            response.addCookie(cookie);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void setCurrentDomainCookie(HttpServletRequest request, HttpServletResponse response, String cookieName,
+            String cookieValue) {
+        try {
+            Cookie cookie = new Cookie(cookieName, cookieValue);
+            if (null != request) {// 设置域名的cookie
+                String domainName = request.getServerName().toLowerCase();
+                System.out.println("==setCurrentDomainCookie==" + domainName);
+                cookie.setDomain(domainName);
+            }
+            cookie.setPath("/");
+            response.addCookie(cookie);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

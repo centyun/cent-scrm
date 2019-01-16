@@ -47,6 +47,11 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- Notifications Menu -->
+          <li class="tasks-menu">
+            <a th:href="@{${consoleUrl}}" class="dropdown-toggle">
+              <i class="fa fa-tv"></i>
+            </a>
+          </li>
           <li class="tasks-menu" th:each="product : ${products}">
             <a th:href="${product.releaseUrl}" class="dropdown-toggle">
               <i class="fa " th:classappend="${product.icon}"></i>
@@ -78,7 +83,7 @@
                   <a href="#" class="btn btn-primary btn-flat" th:text="#{Profile}">Profile</a>
                 </div>
                 <div class="pull-right">
-                  <a th:href="@{/logout}" class="btn btn-primary btn-flat" th:text="#{Sign.Out}">Sign out</a>
+                  <a th:href="@{${consoleUrl} + 'logout'}" class="btn btn-primary btn-flat" th:text="#{Sign.Out}">Sign out</a>
                 </div>
               </li>
             </ul>

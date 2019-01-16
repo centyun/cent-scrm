@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.centyun.mail.mapper.MailMapper">
+    <resultMap id="MailMap" type="com.centyun.mail.domain.Mail">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="tenant_id" jdbcType="BIGINT" property="tenantId"/>
+        <result column="package_id" jdbcType="BIGINT" property="packageId"/>
+        <result column="provider_id" jdbcType="TINYINT" property="providerId"/>
+        <result column="sharding_column" jdbcType="TINYINT" property="shardingColumn"/>
+        <result column="reply_address" jdbcType="VARCHAR" property="replyAddress"/>
+        <result column="recipient" jdbcType="VARCHAR" property="recipient"/>
+        <result column="template_id" jdbcType="VARCHAR" property="templateId"/>
+        <result column="template_name" jdbcType="VARCHAR" property="templateName"/>
+        <result column="subject" jdbcType="VARCHAR" property="subject"/>
+        <result column="mail_type" jdbcType="TINYINT" property="mailType"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="event" jdbcType="VARCHAR" property="event"/>
+        <result column="scheduled" jdbcType="TINYINT" property="scheduled"/>
+        <result column="scheduled_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="scheduledTime"/>
+        <result column="email_id" jdbcType="VARCHAR" property="emailId"/>
+        <result column="replace_json" jdbcType="VARCHAR" property="replaceJson"/>
+        <result column="unsubscribe" jdbcType="TINYINT" property="unsubscribe"/>
+        <result column="unsubscribe_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="unsubscribeTime"/>
+        <result column="open_count" jdbcType="INTEGER" property="openCount"/>
+        <result column="last_open_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="lastOpenTime"/>
+        <result column="last_open_ip" jdbcType="BIGINT" property="lastOpenIp"/>
+        <result column="submit_fail_reason" jdbcType="VARCHAR" property="submitFailReason"/>
+        <result column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="updateTime"/>
+    </resultMap>
+
+    <insert id="addMail" parameterType="Mail" >
+        insert into ml_mail (id, recipient, subject, sharding_column, create_time)
+        values (#{id}, #{recipient}, #{subject}, #{shardingColumn}, now())
+    </insert>
+
+</mapper>

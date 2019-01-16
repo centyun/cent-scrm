@@ -1,14 +1,18 @@
 package com.centyun.core.domain;
 
+import java.util.List;
+
 public class ProductVO {
 
     private Long id;
     private String name;
     private String englishName;
+    private String code;
     private String icon;
     private String releaseUrl;
 
     private boolean active;
+    private List<ModuleVO> modules; // 产品下的模块
 
     public Long getId() {
         return id;
@@ -56,6 +60,22 @@ public class ProductVO {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public List<ModuleVO> getModules() {
+        return modules;
+    }
+
+    public void setModules(List<ModuleVO> modules) {
+        this.modules = modules;
     }
 
 }

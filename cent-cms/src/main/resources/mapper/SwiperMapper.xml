@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.centyun.cms.mapper.SwiperMapper">
+	<resultMap id="SwiperResultMap" type="com.centyun.cms.domain.Swiper">
+		<id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="tenant_id" jdbcType="BIGINT" javaType="long" property="tenantId"/>
+		<result column="group_name" jdbcType="VARCHAR" property="groupName"/>
+		<result column="title" jdbcType="VARCHAR" property="title"/>
+		<result column="picture" jdbcType="VARCHAR" property="picture"/>
+        <result column="link" jdbcType="VARCHAR" property="link"/>
+        <result column="open_target" jdbcType="INTEGER" property="openTarget"/>
+        <result column="order_no" jdbcType="INTEGER" property="orderNo"/>
+        <result column="creator" jdbcType="BIGINT" javaType="long" property="creator"/>
+        <result column="creator_name" jdbcType="VARCHAR" property="creatorName"/>
+		<result column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="createTime"/>
+        <result column="editor" jdbcType="BIGINT" javaType="long" property="editor"/>
+        <result column="editor_name" jdbcType="VARCHAR" property="editorName"/>
+        <result column="edit_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="editTime"/>
+	</resultMap>
+    
+	<insert id="addSwiper">
+	    insert into cm_swiper (id, tenant_id, group_name, title, picture, link, open_target, order_no, creator, creator_name, create_time)
+	    values(#{id}, #{tenantId}, #{groupName}, #{title}, #{picture}, #{link}, #{openTarget}, #{orderNo}, #{creator}, #{creatorName}, now())
+	</insert>
+
+    <update id="updateSwiper">
+        update cm_swiper set group_name=#{groupName}, title=#{title}, picture=#{picture}, link=#{link}, open_target=#{openTarget}, order_no=#{orderNo}
+        , editor=#{editor}, editor_name=#{editorName}, edit_time=now()
+        where id=#{id} and tenant_id=#{tenantId}
+    </update>
+
+	<select id="getSwipers" resultMap="SwiperResultMap">
+		select * from cm_swiper a where tenant_id=#{tenantId}
+        <if test="searchValue != null">
+            and a.group_name like concat('%', #{searchValue}, '%')
+        </if>
+        <choose>
+            <when test="orders != null">
+                order by
+                <foreach collection="orders" item="order" separator=",">CONVERT(${order.key} USING gbk) ${order.value}</foreach>
+            </when>
+            <otherwise>
+                order by group_name, create_time
+            </otherwise>
+        </choose>
+	</select>
+
+    <select id="getSwiper" resultMap="SwiperResultMap">
+        select * from cm_swiper where tenant_id=#{tenantId} and id=#{id}
+    </select>
+</mapper>

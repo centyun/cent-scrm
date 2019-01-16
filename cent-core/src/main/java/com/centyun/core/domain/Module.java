@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * 模块
- * 
  * @author yinww
  *
  */

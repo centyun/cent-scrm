@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.sql.DataSource;
 
+import org.jasypt.encryption.StringEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +29,9 @@ public class DataSourceConfig {
 
     @Autowired
     private Environment env;
+    
+    @Autowired
+    private StringEncryptor stringEncryptor;
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Bean
@@ -83,6 +87,9 @@ public class DataSourceConfig {
             String url = env.getProperty(prefix + ".url");
             String username = env.getProperty(prefix + ".username");
             String password = env.getProperty(prefix + ".password");
+            if(password.startsWith("ENC(") && password.endsWith(")")) { // 如果是加密的密码，则进行解密
+                password = stringEncryptor.decrypt(password.substring(4, password.length() - 2));
+            }
             DataSource dataSource = DataSourceBuilder.create().type(typeClass).driverClassName(driverClassName).url(url)
                     .username(username).password(password).build();
             if (dataSource instanceof HikariDataSource) {

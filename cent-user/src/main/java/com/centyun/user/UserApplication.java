@@ -16,6 +16,7 @@ import com.centyun.core.WebCoreConfig;
 public class UserApplication {
 
     public static final String APPNAME = "user";
+    public static final String LOGIN_MANAGER = "lg_manager";
 
     public static void main(String[] args) {
         SpringApplication.run(UserApplication.class, args);

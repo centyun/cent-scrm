@@ -68,6 +68,12 @@ public class UserAuthenticationSuccessHandler extends SavedRequestAwareAuthentic
             audit.setIp(IpUtils.ipToLong(ip));
             audit.setOperator(manager.getId());
             auditService.saveAudit(audit);
+            
+            // 不需要cookie
+            /*
+            String token = AesCryptUtils.getInstance().encryptAes(manager.getLoginName());
+            CookieUtils.setCurrentDomainCookie(request, response, AppConstant.TOKEN, token);
+            */
         }
 
         // 这里可以根据实际情况，来确定是跳转到页面或者json格式。

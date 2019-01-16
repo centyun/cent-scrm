@@ -1,6 +1,7 @@
 package com.centyun.console.controller;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 import javax.servlet.ServletOutputStream;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,22 +50,22 @@ public class ConsoleController {
     public ModelAndView index(HttpServletRequest request) {
         ModelAndView model = new ModelAndView();
         model.addObject("products", getAvailableProducts(request));
+        model.addObject("logoutUrl", "/logout");
         model.setViewName("index");
         return model;
     }
-    
+
     private List<ProductVO> getAvailableProducts(HttpServletRequest request) {
         int port = request.getServerPort();
         String serverName = request.getServerName();
         String server = (port == 80 || port == 443) ? serverName : serverName + ":" + port;
-        String subServer = subUrl(server);
         List<ProductVO> products = userFeignClient.getAvailableProducts();
         // setActive
         for (ProductVO product : products) {
             String releaseUrl = product.getReleaseUrl();
             if(releaseUrl != null && releaseUrl.length() > 8) { // https:// 的长度是8
-                String url = subUrl(releaseUrl);
-                product.setActive(url.startsWith(subServer));
+                String host = getHost(releaseUrl);
+                product.setActive(host.equals(server));
             } else {
                 product.setActive(false);
             }
@@ -75,7 +78,15 @@ public class ConsoleController {
      * @param releaseUrl
      * @return
      */
-    private String subUrl(String releaseUrl) {
+    private String getHost(String releaseUrl) {
+        try {
+            URL url = new URL(releaseUrl);
+            return url.getHost();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        // 如果通过构造URL解析失败，则通过截取字符串进行比较
         int begin = 7;
         if(releaseUrl.startsWith("https://")) {
             begin = 8; 
@@ -148,6 +159,17 @@ public class ConsoleController {
         } finally {
             IOUtils.close(os);
         }
+    }
+
+    @RequestMapping("/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+
+        // TODO 记录登出成功的日志
+        return "redirect:/login?logout";
     }
 
 }

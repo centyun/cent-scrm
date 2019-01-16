@@ -16,11 +16,12 @@ insert into us_module (id, name, english_name, icon, code, url, order_no, status
 
 
 insert into us_product (id, name, english_name, code, icon, version, release_url, release_time, product_manager, status, creator, create_time)
-    values(1, '财务管理软件', 'Account', 'account', 'fa-credit-card', '1.0', 'http://account.hello.com', now(), '张小龙', 1, 1, now());
+    values(1, '财务管理软件', 'Account', 'account', 'fa-credit-card', '1.0', 'http://account.hello.com', now(), '张一龙', 1, 1, now());
 insert into us_product (id, name, english_name, code, icon, version, release_url, release_time, product_manager, status, creator, create_time)
-    values(2, '内容管理系统', 'CMS', 'cms', 'fa-wikipedia-w', '1.0', 'http://cms.hello.com', now(), '张小龙', 1, 1, now());
+    values(2, '内容管理系统', 'CMS', 'cms', 'fa-wikipedia-w', '1.0', 'http://cms.hello.com', now(), '张二龙', 1, 1, now());
 insert into us_product (id, name, english_name, code, icon, version, release_url, release_time, product_manager, status, creator, create_time)
-    values(3, '用户行为溯源', 'Tracer', 'tracer', 'fa-chain', '1.0', 'http://tracer.hello.com', now(), '张小龙', 1, 1, now());
+    values(3, '用户行为溯源', 'Tracer', 'tracer', 'fa-chain', '1.0', 'http://tracer.hello.com', now(), '张三龙', 1, 1, now());
 insert into us_product (id, name, english_name, code, icon, version, release_url, release_time, product_manager, status, creator, create_time)
-    values(4, '客户关系管理', 'CRM', 'crm', 'fa-gg', '1.0', 'http://crm.hello.com', now(), '张小龙', 1, 1, now());
-
+    values(4, '客户关系管理', 'CRM', 'crm', 'fa-gg', '1.0', 'http://crm.hello.com', now(), '张四龙', 1, 1, now());
+insert into us_product (id, name, english_name, code, icon, version, release_url, release_time, product_manager, status, creator, create_time)
+    values(5, '邮件', 'Mail', 'dm', 'fa-envelope', '1.0', 'http://dm.hello.com', now(), '张五龙', 1, 1, now());

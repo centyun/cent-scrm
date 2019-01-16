@@ -22,6 +22,8 @@ import com.centyun.web.WebBaseConfig;
 @EnableAutoConfiguration(exclude = {MultipartAutoConfiguration.class, SecurityAutoConfiguration.class, UserDetailsServiceAutoConfiguration.class
         , SecurityFilterAutoConfiguration.class, SecurityRequestMatcherProviderAutoConfiguration.class})
 public class CmsApplication {
+    
+    public static final String CODE = "cms";
 
     public static void main(String[] args) {
         SpringApplication.run(CmsApplication.class, args);

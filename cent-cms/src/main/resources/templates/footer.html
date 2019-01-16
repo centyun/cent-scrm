@@ -15,17 +15,27 @@
             th:text="#{Platform.Name}">CentYun</a></strong> [[#{Copy.Right}]]
     </footer>
     
-    
+
   <!-- Left side column. contains the logo and sidebar -->
   <aside th:fragment="main-sidebar" class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
-      <!-- Sidebar Menu -->
+      <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree" th:each="product : ${products}">
-        <li th:class="${product.active}? 'active'"><a th:href="${product.releaseUrl}"><i class="fa " th:classappend="${product.icon}"></i>
-          <span th:text="${session.cty_user.language == null || session.cty_user.language == 'zh_CN' ? product.name : product.englishName}">Link</span></a></li>
+        <li th:class="${product.active}? 'treeview active'">
+          <a th:href="${product.active}? '#' : ${product.releaseUrl}"><i class="fa" th:classappend="${product.icon}"></i>
+            <span th:text="${session.cty_user.language == null || session.cty_user.language == 'zh_CN' ? product.name : product.englishName}">title</span>
+            <span class="pull-right-container" th:if="${product.active}">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu" th:if="${product.active}">
+            <li th:class="${module.active}? 'active'" th:each="module : ${product.modules}">
+                <a th:href="${module.url}"><i class="fa" th:classappend="${module.icon}"></i><span th:text="${session.cty_user.language == null || session.cty_user.language == 'zh_CN' ? module.name : module.englishName}">title</span></a>
+            </li>
+          </ul>
+        </li>
       </ul>
-      <!-- /.sidebar-menu -->
     </section>
     <!-- /.sidebar -->
   </aside>
@@ -47,6 +57,11 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- Notifications Menu -->
+          <li class="tasks-menu">
+            <a th:href="@{${consoleUrl}}" class="dropdown-toggle">
+              <i class="fa fa-tv"></i>
+            </a>
+          </li>
           <li class="tasks-menu" th:each="product : ${products}">
             <a th:href="${product.releaseUrl}" class="dropdown-toggle">
               <i class="fa " th:classappend="${product.icon}"></i>
@@ -78,7 +93,7 @@
                   <a href="#" class="btn btn-primary btn-flat" th:text="#{Profile}">Profile</a>
                 </div>
                 <div class="pull-right">
-                  <a th:href="@{/logout}" class="btn btn-primary btn-flat" th:text="#{Sign.Out}">Sign out</a>
+                  <a th:href="@{${consoleUrl} + 'logout'}" class="btn btn-primary btn-flat" th:text="#{Sign.Out}">Sign out</a>
                 </div>
               </li>
             </ul>

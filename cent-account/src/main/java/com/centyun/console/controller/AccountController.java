@@ -15,7 +15,9 @@ public class AccountController extends WebBaseController {
     public ModelAndView index(HttpServletRequest request) {
         ModelAndView model = new ModelAndView();
         model.addObject("products", getAvailableProducts(request));
+        model.addObject("consoleUrl", consoleUrl);
         model.setViewName("index");
         return model;
     }
+
 }

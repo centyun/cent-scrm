@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.centyun.cms.mapper.SiteParameterMapper">
+	<resultMap id="SiteParameterResultMap" type="com.centyun.cms.domain.SiteParameter">
+		<id column="site_id" jdbcType="BIGINT" property="siteId"/>
+        <result column="tenant_id" jdbcType="BIGINT" javaType="long" property="tenantId"/>
+		<result column="name" jdbcType="VARCHAR" property="name"/>
+		<result column="parameter" jdbcType="VARCHAR" property="parameter"/>
+		<result column="value" jdbcType="VARCHAR" property="value"/>
+	</resultMap>
+    
+	<insert id="addSiteParameter">
+	    insert into cm_site_parameter (site_id, tenant_id, name, parameter, value)
+	    values(#{siteId}, #{tenantId}, #{name}, #{parameter}, #{value})
+	</insert>
+
+    <update id="updateSiteParameter">
+        update cm_site_parameter set name=#{name}, parameter=#{parameter}, value=#{value}
+        where tenant_id=#{tenantId} and site_id=#{site_id}
+    </update>
+
+	<select id="getSiteParameters" resultMap="SiteParameterResultMap">
+		select * from cm_site_parameter a where tenant_id=#{tenantId}
+        <if test="searchValue != null">
+            and ( a.name like concat('%', #{searchValue}, '%')
+            or a.parameter like concat('%', #{searchValue}, '%')
+            or a.value like concat('%', #{searchValue}, '%') )
+        </if>
+        <choose>
+            <when test="orders != null">
+                order by
+                <foreach collection="orders" item="order" separator=",">CONVERT(${order.key} USING gbk) ${order.value}</foreach>
+            </when>
+            <otherwise>
+                order by parameter
+            </otherwise>
+        </choose>
+	</select>
+
+    <select id="getSiteParameter" resultMap="SiteParameterResultMap">
+        select * from cm_site_parameter where tenant_id=#{tenantId} and site_id=#{site_id}
+    </select>
+</mapper>
