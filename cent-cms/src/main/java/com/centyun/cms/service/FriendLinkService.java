@@ -8,8 +8,8 @@ public interface FriendLinkService {
     
     void saveFriendLink(FriendLink friendLink);
     
-    FriendLink getFriendLink(Long tenantId);
+    FriendLink getFriendLink(String tenantId);
 
-    PageInfo<FriendLink> getPageFriendLinks(DataTableParam dataTableParam, Long tenantId);
+    PageInfo<FriendLink> getPageFriendLinks(DataTableParam dataTableParam, String tenantId);
 
 }

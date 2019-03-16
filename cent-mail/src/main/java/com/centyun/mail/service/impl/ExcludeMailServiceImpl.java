@@ -21,12 +21,12 @@ public class ExcludeMailServiceImpl implements ExcludeMailService {
 	}
 
 	@Override
-	public ExcludeMail getExcludeMailById(Long id, Long tenantId) {
+	public ExcludeMail getExcludeMailById(String id, String tenantId) {
 		return excludeMailMapper.getExcludeMailById(id, tenantId);
 	}
 
 	@Override
-	public List<ExcludeMail> getExcludeMails(Long tenantId) {
+	public List<ExcludeMail> getExcludeMails(String tenantId) {
 		return excludeMailMapper.getExcludeMails(tenantId);
 	}
 

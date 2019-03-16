@@ -7,21 +7,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.centyun.cms.service.SiteConfigService;
+import com.centyun.cms.service.SiteAttributeService;
+import com.centyun.web.controller.WebBaseController;
 
 @Controller
-@RequestMapping(value = "/console-board/config")
-public class SiteConfigController extends BaseController {
+@RequestMapping(value = "/site-admin/parameter")
+public class SiteConfigController extends WebBaseController {
 
     @Autowired
-    private SiteConfigService siteConfigService;
+    private SiteAttributeService siteConfigService;
     
     @RequestMapping({"", "/"})
     public ModelAndView index(HttpServletRequest request) {
         ModelAndView model = new ModelAndView();
-        model.addObject("products", getAvailableProducts(request));
+        model.addObject("products", getProductsAndModules(request));
         model.addObject("consoleUrl", consoleUrl);
-        model.setViewName("admin/config/config-index");
+        model.setViewName("admin/parameter/parameter-index");
         return model;
     }
 

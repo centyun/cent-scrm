@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import com.centyun.core.domain.Administrator;
 import com.centyun.core.domain.User;
 import com.centyun.core.exception.BadRequestException;
 import com.centyun.core.table.DataTableParam;
@@ -15,7 +16,6 @@ import com.centyun.core.table.KeyValuePair;
 import com.centyun.core.util.SnowFlakeIdWorker;
 import com.centyun.core.util.encode.EncryptUtils;
 import com.centyun.user.constant.UserConstant;
-import com.centyun.user.domain.Manager;
 import com.centyun.user.domain.Tenant;
 import com.centyun.user.mapper.TenantMapper;
 import com.centyun.user.mapper.UserMapper;
@@ -34,7 +34,7 @@ public class TenantServiceImpl implements TenantService {
 
     @Override
     public PageInfo<Tenant> getTenants(DataTableParam dataTableParam) {
-        PageHelper.startPage(dataTableParam.getStart(), dataTableParam.getLength());
+        PageHelper.startPage(dataTableParam.getPageNum(), dataTableParam.getLength());
         String searchValue = dataTableParam.getSearchValue();
         List<KeyValuePair> orders = dataTableParam.getOrders();
         List<Tenant> tenants = tenantMapper.getTenants(StringUtils.isEmpty(searchValue) ? null: searchValue, 
@@ -52,29 +52,29 @@ public class TenantServiceImpl implements TenantService {
     @Override
     public void saveTenant(Tenant tenant) {
         // 获取当前用户
-        Manager manager = (Manager)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(manager == null) {
+        Administrator administrator = (Administrator)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(administrator == null) {
             throw new BadRequestException(UserConstant.AUTH_FAIL);
         }
         
         if(checkTenant(tenant)) {
             throw new BadRequestException(UserConstant.TENANT_EXISTED);
         }
-        Long id = tenant.getId();
-        if(id == null || id <= 0) {
+        String id = tenant.getId();
+        if(StringUtils.isEmpty(id)) {
             SnowFlakeIdWorker snowFlake = new SnowFlakeIdWorker(UserConstant.DATACENTER_ID, UserConstant.MACHINE_ID);
             id = snowFlake.nextId();
             tenant.setId(id);
-            tenant.setCreator(manager.getId());
+            tenant.setCreator(administrator.getId());
             tenantMapper.addTenant(tenant);
-            User user = new User(snowFlake.nextId(), id, tenant.getMainUser(), manager.getId());
+            User user = new User(snowFlake.nextId(), id, tenant.getMainUser(), administrator.getId());
             user.setPassword(EncryptUtils.encrypt(tenant.getMainUserPwd()));
             user.setMobile(tenant.getMobile());
             user.setPhone(tenant.getPhone());
             user.setEmail(tenant.getEmail());
             userMapper.addMainUser(user);
         } else {
-            tenant.setEditor(manager.getId());
+            tenant.setEditor(administrator.getId());
             tenantMapper.updateTenant(tenant);
         }
     }
@@ -85,19 +85,19 @@ public class TenantServiceImpl implements TenantService {
     }
 
     @Override
-    public Tenant getTenantById(Long id) {
+    public Tenant getTenantById(String id) {
         return tenantMapper.getTenantById(id);
     }
 
     @Override
-    public void updateStatus(List<Long> ids, Integer action) {
-        Manager manager = (Manager)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(manager == null) {
+    public void updateStatus(List<String> ids, Integer action) {
+        Administrator administrator = (Administrator)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(administrator == null) {
             throw new BadRequestException(UserConstant.AUTH_FAIL);
         }
         // action转换状态: 注销0转换为已注销4, 启用1转换为已注册0
         Integer status = action == 0 ? UserConstant.TENANT_STATUS_DELETED : UserConstant.TENANT_STATUS_REGISTED;
-        tenantMapper.updateStatus(ids, status, manager.getId());
+        tenantMapper.updateStatus(ids, status, administrator.getId());
     }
 
 }

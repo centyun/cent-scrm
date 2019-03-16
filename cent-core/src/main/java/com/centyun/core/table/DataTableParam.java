@@ -143,4 +143,10 @@ public class DataTableParam {
     public String getSearchValue() {
         return getSearch().get(Search.value);
     }
+
+    public Integer getPageNum() {
+        Integer length = getLength();
+        Integer pageNum = getStart() / length + 1;
+        return pageNum;
+    }
 }

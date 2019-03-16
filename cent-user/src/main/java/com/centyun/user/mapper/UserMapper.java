@@ -15,20 +15,20 @@ public interface UserMapper {
 
     void updateUser(User user);
 
-    User getUserById(@Param("id") Long userId);
+    User getUserById(@Param("id") String userId);
 
     void addMainUser(User user);
 
-    List<User> getPageUsers(@Param("tenantId") Long tenantId, @Param("searchValue") String searchValue,
+    List<User> getPageUsers(@Param("tenantId") String tenantId, @Param("searchValue") String searchValue,
             @Param("orders") List<KeyValuePair> orders);
 
-    void updateStatus(@Param("ids") List<Long> ids, @Param("status") int status, @Param("editor") Long editor);
+    void updateStatus(@Param("ids") List<String> ids, @Param("status") int status, @Param("editor") String editor);
 
-    void repasswd(@Param("ids") List<Long> ids, @Param("passwd") String passwd);
+    void repasswd(@Param("ids") List<String> ids, @Param("passwd") String passwd);
 
     int getUserByName(User user);
 
-    void updateLanguage(@Param("id") Long id, @Param("language") String language);
+    void updateLanguage(@Param("id") String id, @Param("language") String language);
 
     User getUserByLoginName(@Param("loginName") String loginName);
 

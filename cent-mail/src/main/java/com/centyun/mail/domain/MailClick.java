@@ -3,44 +3,44 @@ package com.centyun.mail.domain;
 import java.util.Date;
 
 public class MailClick {
-	private Long id;
-	private Long tenantId;
-	private Long packageId;
-	private Long mailId;
+	private String id;
+	private String tenantId;
+	private String packageId;
+	private String mailId;
 	private String recipient;
 	private int clickTimes;
-	private Long ip;
+	private String ip;
 	private Date occur_time;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
-	public Long getTenantId() {
+	public String getTenantId() {
 		return tenantId;
 	}
 
-	public void setTenantId(Long tenantId) {
+	public void setTenantId(String tenantId) {
 		this.tenantId = tenantId;
 	}
 
-	public Long getPackageId() {
+	public String getPackageId() {
 		return packageId;
 	}
 
-	public void setPackageId(Long packageId) {
+	public void setPackageId(String packageId) {
 		this.packageId = packageId;
 	}
 
-	public Long getMailId() {
+	public String getMailId() {
 		return mailId;
 	}
 
-	public void setMailId(Long mailId) {
+	public void setMailId(String mailId) {
 		this.mailId = mailId;
 	}
 
@@ -60,11 +60,11 @@ public class MailClick {
 		this.clickTimes = clickTimes;
 	}
 
-	public Long getIp() {
+	public String getIp() {
 		return ip;
 	}
 
-	public void setIp(Long ip) {
+	public void setIp(String ip) {
 		this.ip = ip;
 	}
 

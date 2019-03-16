@@ -11,8 +11,8 @@ public interface ExcludeMailMapper {
 	
 	void addExcludeMail(ExcludeMail excludeMail);
 	
-	ExcludeMail getExcludeMailById(Long id, Long tenantId);
+	ExcludeMail getExcludeMailById(String id, String tenantId);
 	
-	List<ExcludeMail> getExcludeMails(Long tenantId);
+	List<ExcludeMail> getExcludeMails(String tenantId);
 
 }

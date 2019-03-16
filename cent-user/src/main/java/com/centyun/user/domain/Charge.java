@@ -12,9 +12,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class Charge {
     
-    private Long id;
-    private Long tenantId;
-    private Long productId;
+    private String id;
+    private String tenantId;
+    private String productId;
     private Double money;
     private Integer quota;
     private Double singleMoney; // 单件金额
@@ -23,42 +23,42 @@ public class Charge {
     private String note;
     private Integer status;
     private String sales; // 销售/客户经理
-    private Long chargeManager; // 充值操作员
+    private String chargeAdministrator; // 充值操作员id
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date chargeTime; // 充值时间
-    private Long creator;
+    private String creator;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
-    private Long editor;
+    private String editor;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date editTime;
 
     private String tenantName;
     private String productName;
-    private String chargeManagerName;
+    private String chargeAdministratorName; // 充值操作员姓名
     private String editorName;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Long getTenantId() {
+    public String getTenantId() {
         return tenantId;
     }
 
-    public void setTenantId(Long tenantId) {
+    public void setTenantId(String tenantId) {
         this.tenantId = tenantId;
     }
 
-    public Long getProductId() {
+    public String getProductId() {
         return productId;
     }
 
-    public void setProductId(Long productId) {
+    public void setProductId(String productId) {
         this.productId = productId;
     }
 
@@ -118,12 +118,12 @@ public class Charge {
         this.sales = sales;
     }
 
-    public Long getChargeManager() {
-        return chargeManager;
+    public String getChargeAdministrator() {
+        return chargeAdministrator;
     }
 
-    public void setChargeManager(Long chargeManager) {
-        this.chargeManager = chargeManager;
+    public void setChargeAdministrator(String chargeAdministrator) {
+        this.chargeAdministrator = chargeAdministrator;
     }
 
     public Date getChargeTime() {
@@ -134,11 +134,11 @@ public class Charge {
         this.chargeTime = chargeTime;
     }
 
-    public Long getCreator() {
+    public String getCreator() {
         return creator;
     }
 
-    public void setCreator(Long creator) {
+    public void setCreator(String creator) {
         this.creator = creator;
     }
 
@@ -150,11 +150,11 @@ public class Charge {
         this.createTime = createTime;
     }
 
-    public Long getEditor() {
+    public String getEditor() {
         return editor;
     }
 
-    public void setEditor(Long editor) {
+    public void setEditor(String editor) {
         this.editor = editor;
     }
 
@@ -182,12 +182,12 @@ public class Charge {
         this.productName = productName;
     }
 
-    public String getChargeManagerName() {
-        return chargeManagerName;
+    public String getChargeAdministratorName() {
+        return chargeAdministratorName;
     }
 
-    public void setChargeManagerName(String chargeManagerName) {
-        this.chargeManagerName = chargeManagerName;
+    public void setChargeAdministratorName(String chargeAdministratorName) {
+        this.chargeAdministratorName = chargeAdministratorName;
     }
 
     public String getEditorName() {

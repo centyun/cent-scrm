@@ -3,34 +3,34 @@ package com.centyun.mail.domain;
 import java.util.Date;
 
 public class ExcludeMail {
-	private Long id;
-	private Long tenantId;
-	private Long packageId;
+	private String id;
+	private String tenantId;
+	private String packageId;
 	private String recipient;
 	private String reason;
 	private Date occurTime;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
-	public Long getTenantId() {
+	public String getTenantId() {
 		return tenantId;
 	}
 
-	public void setTenantId(Long tenantId) {
+	public void setTenantId(String tenantId) {
 		this.tenantId = tenantId;
 	}
 
-	public Long getPackageId() {
+	public String getPackageId() {
 		return packageId;
 	}
 
-	public void setPackageId(Long packageId) {
+	public void setPackageId(String packageId) {
 		this.packageId = packageId;
 	}
 

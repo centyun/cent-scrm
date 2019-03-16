@@ -15,8 +15,8 @@ public interface MailDataSourceMapper {
 	
 	void deleteMailDataSource(MailDataSource mailDataSource);
 	
-	MailDataSource getMailDataSourceById(Long id, Long tenantId);
+	MailDataSource getMailDataSourceById(String id, String tenantId);
 	
-	List<MailDataSource> getMailDataSources(Long tenantId);
+	List<MailDataSource> getMailDataSources(String tenantId);
 
 }

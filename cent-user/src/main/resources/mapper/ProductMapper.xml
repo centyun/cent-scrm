@@ -4,7 +4,7 @@
 
 <mapper namespace="com.centyun.user.mapper.ProductMapper">
     <resultMap id="ProductResultMap" type="com.centyun.core.domain.Product">
-        <id column="id" jdbcType="BIGINT" property="id"/>
+        <id column="id" jdbcType="VARCHAR" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="english_name" jdbcType="VARCHAR" property="englishName"/>
         <result column="code" jdbcType="VARCHAR" property="code"/>
@@ -15,9 +15,9 @@
         <result column="product_manager" jdbcType="VARCHAR" property="productManager"/>
         <result column="note" jdbcType="VARCHAR" property="note"/>
         <result column="status" jdbcType="INTEGER" property="status"/>
-        <result column="creator" jdbcType="BIGINT" property="creator"/>
+        <result column="creator" jdbcType="VARCHAR" property="creator"/>
         <result column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="createTime"/>
-        <result column="editor" jdbcType="BIGINT" property="editor"/>
+        <result column="editor" jdbcType="VARCHAR" property="editor"/>
         <result column="edit_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="editTime"/>
         <result column="creator_name" jdbcType="VARCHAR" property="creatorName"/>
         <result column="editor_name" jdbcType="VARCHAR" property="editorName"/>
@@ -25,7 +25,7 @@
     
     <select id="getPageProducts" resultMap="ProductResultMap">
         select a.*, m1.display_name creator_name, m2.display_name editor_name from us_product a
-        left join us_manager m1 on a.creator=m1.id left join us_manager m2 on a.editor=m2.id
+        left join us_administrator m1 on a.creator=m1.id left join us_administrator m2 on a.editor=m2.id
         <trim prefix="WHERE" prefixOverrides="AND |OR ">
             <if test="searchValue != null">
                 a.name like concat('%', #{searchValue}, '%')
@@ -41,9 +41,9 @@
         </if>
     </select>
     
-    <select id="getProductById" parameterType="long" resultMap="ProductResultMap">
+    <select id="getProductById" parameterType="string" resultMap="ProductResultMap">
         select a.*, m1.display_name creator_name, m2.display_name editor_name from us_product a
-        left join us_manager m1 on a.creator=m1.id left join us_manager m2 on a.editor=m2.id
+        left join us_administrator m1 on a.creator=m1.id left join us_administrator m2 on a.editor=m2.id
         where a.id=#{id}
     </select>
     
@@ -72,6 +72,6 @@
 
     <select id="getAvailableProducts" resultType="com.centyun.core.domain.ProductVO">
         select id, name, english_name englishName, code, icon, release_url releaseUrl from us_product
-        where status=1 order by CONVERT(name USING gbk), release_time desc
+        where status=1 order by order_no, release_time desc
     </select>
 </mapper>

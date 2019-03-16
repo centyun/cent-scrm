@@ -11,13 +11,13 @@ import com.centyun.user.domain.Charge;
 @Mapper
 public interface ChargeMapper {
 
-    List<Charge> getPageCharges(@Param("tenantId") Long tenantId, @Param("searchValue") String searchValue,
+    List<Charge> getPageCharges(@Param("tenantId") String tenantId, @Param("searchValue") String searchValue,
             @Param("orders") List<KeyValuePair> orders);
 
-    Charge getChargeById(@Param("id") Long id);
+    Charge getChargeById(@Param("id") String id);
 
     void addCharge(Charge charge);
 
-    void updateStatus(@Param("ids") List<Long> ids, @Param("status") int status, @Param("editor") Long editor);
+    void updateStatus(@Param("ids") List<String> ids, @Param("status") int status, @Param("editor") String editor);
 
 }

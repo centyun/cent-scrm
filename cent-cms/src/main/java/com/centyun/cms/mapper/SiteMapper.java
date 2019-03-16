@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.data.repository.query.Param;
 
 import com.centyun.cms.domain.Site;
+import com.centyun.cms.domain.SiteAttribute;
 import com.centyun.core.table.KeyValuePair;
 
 @Mapper
@@ -15,9 +16,13 @@ public interface SiteMapper {
     
     void updateSite(Site site);
     
-    Site getSite(@Param("tenantId") Long tenantId, @Param("id") Long id);
+    Site getSite(@Param("tenantId") String tenantId, @Param("id") String id);
 
-    List<Site> getPageSites(@Param("tenantId") Long tenantId, @Param("searchValue") String searchValue,
+    List<Site> getPageSites(@Param("tenantId") String tenantId, @Param("searchValue") String searchValue,
             @Param("orders") List<KeyValuePair> orders);
+
+    List<Site> listAllSites(@Param("tenantId") String tenantId);
+
+    SiteAttribute getSiteAttribute(@Param("tenantId") String tenantId, @Param("id") String id);
 
 }

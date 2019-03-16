@@ -21,12 +21,12 @@ public class MailOpenServiceImpl implements MailOpenService {
 	}
 
 	@Override
-	public MailOpen getMailOpenById(Long id, Long tenantId) {
+	public MailOpen getMailOpenById(String id, String tenantId) {
 		return mailOpenMapper.getMailOpenById(id, tenantId);
 	}
 
 	@Override
-	public List<MailOpen> getMailOpens(Long tenantId) {
+	public List<MailOpen> getMailOpens(String tenantId) {
 		return mailOpenMapper.getMailOpens(tenantId);
 	}
 

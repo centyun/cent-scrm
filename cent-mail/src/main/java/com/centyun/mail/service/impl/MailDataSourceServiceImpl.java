@@ -31,12 +31,12 @@ public class MailDataSourceServiceImpl implements MailDataSourceService {
 	}
 
 	@Override
-	public MailDataSource getMailDataSourceById(Long id, Long tenantId) {
+	public MailDataSource getMailDataSourceById(String id, String tenantId) {
 		return mailDataSourceMapper.getMailDataSourceById(id, tenantId);
 	}
 
 	@Override
-	public List<MailDataSource> getMailDataSources(Long tenantId) {
+	public List<MailDataSource> getMailDataSources(String tenantId) {
 		return mailDataSourceMapper.getMailDataSources(tenantId);
 	}
 

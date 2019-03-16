@@ -10,7 +10,9 @@ import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServic
 import org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.web.client.RestTemplate;
 
 import com.centyun.core.WebCoreConfig;
 import com.centyun.web.WebBaseConfig;
@@ -27,6 +29,12 @@ public class CmsApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(CmsApplication.class, args);
+    }
+    
+    @Bean
+    public RestTemplate restTemplate() {
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate;
     }
 
 }

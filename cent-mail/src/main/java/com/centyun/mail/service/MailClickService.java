@@ -8,7 +8,7 @@ public interface MailClickService {
 	
 	void addMailClick(MailClick MailClick);
 	
-	MailClick getMailClickById(Long id, Long tenantId);
+	MailClick getMailClickById(String id, String tenantId);
 	
-	List<MailClick> getMailClicks(Long tenantId);
+	List<MailClick> getMailClicks(String tenantId);
 }

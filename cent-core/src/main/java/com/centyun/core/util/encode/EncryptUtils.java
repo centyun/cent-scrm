@@ -78,37 +78,5 @@ public class EncryptUtils {
         }
         return null;
     }
-    
-    public static void main(String[] args) {
-        String text = "123456";
-//        String obfuscationCode = getObfuscationCode(text);
-//        System.out.println(obfuscationCode);
-        System.out.println(encryptPwd(text));
-        /*
-        text = "1";
-        obfuscationCode = getObfuscationCode(text);
-        System.out.println(obfuscationCode);
-        System.out.println(encryptPwd(text));
-        
-        text = "obfuscat346obfusc#%ationgGCode578ionCode";
-        obfuscationCode = getObfuscationCode(text);
-        System.out.println(obfuscationCode);
-        System.out.println(encryptPwd(text));
-        */
-        
-        String server = "http://mail.hello.com";
-        String releaseUrl = "https://mail.hello.com/index.html";
-        String subServer = subUrl(server);
-        String subReleaseUrl = subUrl(releaseUrl);
-        System.out.println(subReleaseUrl.startsWith(subServer));
-    }
-    
-    private static String subUrl(String releaseUrl) {
-        int begin = 7;
-        if(releaseUrl.startsWith("https://")) {
-            begin += 1; 
-        }
-        return releaseUrl.substring(begin).split("/")[0];
-    }
 
 }

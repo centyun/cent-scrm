@@ -8,12 +8,17 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Cookie工具类
  * @author yinww
  *
  */
 public class CookieUtils {
+    
+    private static Logger log = LoggerFactory.getLogger(CookieUtils.class);
 
     /**
      * 得到Cookie的值, 不编码
@@ -148,7 +153,7 @@ public class CookieUtils {
                 cookie.setMaxAge(cookieMaxage);
             if (null != request) {// 设置域名的cookie
                 String domainName = getDomainName(request);
-                System.out.println(domainName);
+                log.debug(domainName);
                 if (!"localhost".equals(domainName)) {
                     cookie.setDomain(domainName);
                 }
@@ -178,7 +183,7 @@ public class CookieUtils {
                 cookie.setMaxAge(cookieMaxage);
             if (null != request) {// 设置域名的cookie
                 String domainName = getDomainName(request);
-                System.out.println(domainName);
+                log.debug(domainName);
                 if (!"localhost".equals(domainName)) {
                     cookie.setDomain(domainName);
                 }
@@ -222,7 +227,7 @@ public class CookieUtils {
             cookie.setPath("/");
             if (null != request) {// 设置域名的cookie
                 String domainName = request.getServerName().toLowerCase();
-                System.out.println("==deleteCurrentDomainCookie==" + domainName);
+                log.debug("==deleteCurrentDomainCookie==" + domainName);
                 cookie.setDomain(domainName);
             }
             response.addCookie(cookie);
@@ -237,7 +242,7 @@ public class CookieUtils {
             Cookie cookie = new Cookie(cookieName, cookieValue);
             if (null != request) {// 设置域名的cookie
                 String domainName = request.getServerName().toLowerCase();
-                System.out.println("==setCurrentDomainCookie==" + domainName);
+                log.debug("==setCurrentDomainCookie==" + domainName);
                 cookie.setDomain(domainName);
             }
             cookie.setPath("/");

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.centyun.base.mapper.WxAuthMapper">
+    <resultMap id="WxAuthResultMap" type="com.centyun.base.domain.WxAuth">
+        <id column="id" property="id"/>
+        <result column="app_id" jdbcType="VARCHAR" property="appId"/>
+        <result column="app_secret" jdbcType="VARCHAR" property="appSecret"/>
+        <result column="tenant_id" jdbcType="VARCHAR" property="tenantId"/>
+        <result column="tenant_name" jdbcType="VARCHAR" property="tenantName"/>
+        <result column="creator" jdbcType="VARCHAR" property="creator"/>
+        <result column="creator_name" jdbcType="VARCHAR" property="creatorName"/>
+        <result column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="createTime"/>
+        <result column="editor" jdbcType="VARCHAR" property="editor"/>
+        <result column="editor_name" jdbcType="VARCHAR" property="editorName"/>
+        <result column="edit_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="editTime"/>
+    </resultMap>
+    
+    <insert id="addWxAuth" parameterType="com.centyun.base.domain.WxAuth">
+        insert into bs_wx_auth(id, app_id, app_secret, tenant_id, tenant_name, creator, creator_name, create_time)
+        values(#{id}, #{appId}, #{appSecret}, #{tenantId}, #{tenantName}, #{creator}, #{creatorName}, now())
+    </insert>
+
+    <update id="updateWxAuth">
+        update bs_wx_auth set app_id=#{appId}, app_secret=#{appSecret}, editor=#{editor}, editor_name=#{editorName}, edit_time=now()
+        where id=#{id}
+    </update>
+    
+    <select id="getWxAuthById" resultMap="WxAuthResultMap">
+        select a.* from bs_wx_auth a where a.id = #{id}
+    </select>
+
+    <select id="getWxAuthByTenantId" resultMap="WxAuthResultMap">
+        select a.* from bs_wx_auth a where a.tenant_id = #{tenantId}
+    </select>
+    
+</mapper>

@@ -6,9 +6,9 @@ import com.github.pagehelper.PageInfo;
 
 public interface ConsumeService {
 
-    PageInfo<Consume> getPageConsumes(DataTableParam dataTableParam, Long tenantId);
+    PageInfo<Consume> getPageConsumes(DataTableParam dataTableParam, String tenantId);
 
-    Consume getConsumeById(Long id);
+    Consume getConsumeById(String id);
 
     void saveConsume(Consume consume);
 }

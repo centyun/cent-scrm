@@ -27,6 +27,7 @@ import com.centyun.core.captcha.Captcha;
 import com.centyun.core.captcha.GifCaptcha;
 import com.centyun.core.client.UserFeignClient;
 import com.centyun.core.constant.AppConstant;
+import com.centyun.core.domain.ModuleVO;
 import com.centyun.core.domain.ProductVO;
 import com.centyun.core.domain.User;
 import com.centyun.core.security.CaptchaAuthenticationFilter;
@@ -49,49 +50,10 @@ public class ConsoleController {
     @RequestMapping(value = {"", "/", "/index.html"})
     public ModelAndView index(HttpServletRequest request) {
         ModelAndView model = new ModelAndView();
-        model.addObject("products", getAvailableProducts(request));
+        model.addObject("products", getProductsAndModules(request));
         model.addObject("logoutUrl", "/logout");
         model.setViewName("index");
         return model;
-    }
-
-    private List<ProductVO> getAvailableProducts(HttpServletRequest request) {
-        int port = request.getServerPort();
-        String serverName = request.getServerName();
-        String server = (port == 80 || port == 443) ? serverName : serverName + ":" + port;
-        List<ProductVO> products = userFeignClient.getAvailableProducts();
-        // setActive
-        for (ProductVO product : products) {
-            String releaseUrl = product.getReleaseUrl();
-            if(releaseUrl != null && releaseUrl.length() > 8) { // https:// 的长度是8
-                String host = getHost(releaseUrl);
-                product.setActive(host.equals(server));
-            } else {
-                product.setActive(false);
-            }
-        }
-        return products;
-    }
-
-    /**
-     * 只获取url中域名(或ip:port)的内容
-     * @param releaseUrl
-     * @return
-     */
-    private String getHost(String releaseUrl) {
-        try {
-            URL url = new URL(releaseUrl);
-            return url.getHost();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        // 如果通过构造URL解析失败，则通过截取字符串进行比较
-        int begin = 7;
-        if(releaseUrl.startsWith("https://")) {
-            begin = 8; 
-        }
-        return releaseUrl.substring(begin).split("/")[0];
     }
 
     @GetMapping(value = "/login")
@@ -170,6 +132,55 @@ public class ConsoleController {
 
         // TODO 记录登出成功的日志
         return "redirect:/login?logout";
+    }
+
+    private List<ProductVO> getProductsAndModules(HttpServletRequest request) {
+        int port = request.getServerPort();
+        String serverName = request.getServerName();
+        String server = (port == 80 || port == 443) ? serverName : serverName + ":" + port;
+        List<ProductVO> products = userFeignClient.getProductsAndModules();
+        
+        String uri = request.getRequestURI();
+        String[] split = uri.split("/");
+        String moduleCode = split.length < 2 ? AppConstant.EMPTY : split[1];
+        // setActive
+        for (ProductVO product : products) {
+            String releaseUrl = product.getReleaseUrl();
+            if(releaseUrl != null && releaseUrl.length() > 8) { // https:// 的长度是8
+                String host = getHost(releaseUrl);
+                product.setActive(host.equals(server));
+            } else {
+                product.setActive(false);
+            }
+            List<ModuleVO> modules = product.getModules();
+            if(modules != null && modules.size() > 0) {
+                for (ModuleVO module : modules) {
+                    module.setActive(module.getCode().equals(moduleCode));
+                }
+            }
+        }
+        return products;
+    }
+    
+    /**
+     * 只获取url中域名(或ip:port)的内容
+     * @param releaseUrl
+     * @return
+     */
+    private String getHost(String releaseUrl) {
+        try {
+            URL url = new URL(releaseUrl);
+            return url.getHost();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        // 如果通过构造URL解析失败，则通过截取字符串进行比较
+        int begin = 7;
+        if(releaseUrl.startsWith("https://")) {
+            begin = 8; 
+        }
+        return releaseUrl.substring(begin).split("/")[0];
     }
 
 }

@@ -8,17 +8,17 @@ import com.github.pagehelper.PageInfo;
 
 public interface UserService {
 
-    User getUserById(Long userId);
+    User getUserById(String userId);
 
     void saveUser(User user);
 
-    PageInfo<User> getPageUsers(DataTableParam dataTableParam, Long tenantId);
+    PageInfo<User> getPageUsers(DataTableParam dataTableParam, String tenantId);
 
-    void updateStatus(List<Long> ids, Integer action);
+    void updateStatus(List<String> ids, Integer action);
 
-    void repasswd(List<Long> ids, String passwd);
+    void repasswd(List<String> ids, String passwd);
 
-    void updateLanguage(Long id, String language);
+    void updateLanguage(String id, String language);
 
     User getUserByToken(String token);
 

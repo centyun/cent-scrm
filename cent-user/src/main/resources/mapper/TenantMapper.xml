@@ -4,7 +4,7 @@
 
 <mapper namespace="com.centyun.user.mapper.TenantMapper">
     <resultMap id="TenantResultMap" type="com.centyun.user.domain.Tenant">
-        <id column="id" jdbcType="BIGINT" property="id"/>
+        <id column="id" jdbcType="VARCHAR" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="code" jdbcType="VARCHAR" property="code"/>
         <result column="main_user" jdbcType="VARCHAR" property="mainUser"/>
@@ -18,9 +18,9 @@
         <result column="status" jdbcType="INTEGER" property="status"/>
         <result column="note" jdbcType="VARCHAR" property="note"/>
         <result column="access_key" jdbcType="VARCHAR" property="accessKey"/>
-        <result column="creator" jdbcType="BIGINT" property="creator"/>
+        <result column="creator" jdbcType="VARCHAR" property="creator"/>
         <result column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="createTime"/>
-        <result column="editor" jdbcType="BIGINT" property="editor"/>
+        <result column="editor" jdbcType="VARCHAR" property="editor"/>
         <result column="edit_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="editTime"/>
         <result column="creator_name" jdbcType="VARCHAR" property="creatorName"/>
         <result column="editor_name" jdbcType="VARCHAR" property="editorName"/>
@@ -28,7 +28,7 @@
     
     <select id="getTenants" resultMap="TenantResultMap">
         select a.*, m1.display_name creator_name, m2.display_name editor_name from us_tenant a
-        left join us_manager m1 on a.creator=m1.id left join us_manager m2 on a.editor=m2.id
+        left join us_administrator m1 on a.creator=m1.id left join us_administrator m2 on a.editor=m2.id
         <where>
             <if test="searchValue != null">
                 a.name like concat('%', #{searchValue}, '%')
@@ -45,9 +45,9 @@
         </if>
     </select>
 
-    <select id="getTenantById" parameterType="long" resultMap="TenantResultMap">
+    <select id="getTenantById" parameterType="string" resultMap="TenantResultMap">
         select a.*, m1.display_name creator_name, m2.display_name editor_name from us_tenant a
-        left join us_manager m1 on a.creator=m1.id left join us_manager m2 on a.editor=m2.id
+        left join us_administrator m1 on a.creator=m1.id left join us_administrator m2 on a.editor=m2.id
         where a.id = #{id}
     </select>
     

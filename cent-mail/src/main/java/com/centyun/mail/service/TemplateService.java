@@ -12,8 +12,8 @@ public interface TemplateService {
 	
 	void discardTemplate(Template template);
 	
-	Template getTemplateById(Long id, Long tenantId);
+	Template getTemplateById(String id, String tenantId);
 	
-	List<Template> getTemplates(Long tenantId);
+	List<Template> getTemplates(String tenantId);
 
 }

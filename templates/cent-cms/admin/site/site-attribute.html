@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title th:text="#{Platform.Title}">CentYun</title>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" th:href="@{/lib/bootstrap/css/bootstrap.min.css}">
+  <link rel="stylesheet" th:href="@{/lib/font-awesome/css/font-awesome.min.css}">
+  <link rel="stylesheet" th:href="@{/lib/Ionicons/css/ionicons.min.css}">
+  <link rel="stylesheet" th:href="@{/lib/adminlte/css/adminlte.min.css}">
+  <link rel="stylesheet" th:href="@{/lib/adminlte/css/skins/skin-blue.min.css}">
+  <link rel="stylesheet" th:href="@{/css/radio.css}">
+  <link rel="stylesheet" th:href="@{/css/base.css}">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Google Font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+  <header th:replace="footer :: main-header"></header>
+  
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside th:replace="footer :: main-sidebar"></aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Main content -->
+    <section class="content container-fluid">
+    
+          <!-- Horizontal Form -->
+          <div class="box">
+            <div class="line" style="padding: 0 10px">
+              <div class="radios">
+                  <div class="radio">
+                      <a th:href="@{'/site-admin/site/view.html?id='+${attribute.siteId}}" th:text="#{site.view}">站点</a>
+                  </div>
+                  <div class="radio active">
+                      <a th:href="@{'/site-admin/site/attribute?id='+${attribute.siteId}}" th:text="#{site.attribute}">站点属性</a>
+                  </div>
+                  <div class="radio">
+                      <a th:href="@{'/site-admin/site/parameter?id='+${attribute.siteId}}" th:text="#{site.parameter}">站点参数</a>
+                  </div>
+              </div>
+            </div>
+            
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form class="form-horizontal">
+              <input type="hidden" id="id" th:value="${attribute.siteId}">
+              <div class="box-body">
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label for="name" class="col-sm-2 control-label"><span th:text="#{site.logo}">Logo</span></label>
+                  <div class="col-sm-10">
+                    <label class="control-label" th:text="${attribute.logo}"></label>
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="language" class="col-sm-2 control-label" th:text="#{site.logoWidth}">Logo Width</label>
+                  <div class="col-sm-10">
+                    <label class="control-label" th:text="${attribute.logoWidth}"></label>
+                  </div>
+                </div>
+              </div>
+          <!-- /.row -->
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label for="domain" class="col-sm-2 control-label"><span th:text="#{site.logoHeight}">Logo Height</span></label>
+                  <div class="col-sm-10">
+                    <label class="control-label" th:text="${attribute.logoHeight}"></label>
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="otherDomain" class="col-sm-2 control-label"><span th:text="#{site.banner}">Banner</span></label>
+                  <div class="col-sm-10">
+                    <label class="control-label" th:text="${attribute.banner}"></label>
+                  </div>
+                </div>
+              </div>
+          <!-- /.row -->
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label for="template" class="col-sm-2 control-label"><span th:text="#{site.background}">Background</span></label>
+                  <div class="col-sm-10">
+                    <label class="control-label" th:text="${attribute.background}"></label>
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="mobileTemplate" class="col-sm-2 control-label"><span th:text="#{site.phone}">Phone</span></label>
+                  <div class="col-sm-10">
+                    <label class="control-label" th:text="${attribute.phone}"></label>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label for="status" class="col-sm-2 control-label" th:text="#{site.qq}">QQ</label>
+                  <div class="col-sm-10">
+                      <label class="control-label" th:text="${attribute.qq}"></label>
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="mobileTemplate" class="col-sm-2 control-label"><span th:text="#{site.email}">Email</span></label>
+                  <div class="col-sm-10">
+                    <label class="control-label" th:text="${attribute.email}"></label>
+                  </div>
+                </div>
+              </div>
+          <!-- /.row -->
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label for="status" class="col-sm-2 control-label" th:text="#{site.web_qrcode}">Web QRcode</label>
+                  <div class="col-sm-10">
+                      <label class="control-label" th:text="${attribute.webQrcode}"></label>
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="mobileTemplate" class="col-sm-2 control-label"><span th:text="#{site.wx_qrcode}">Wechat QRcode</span></label>
+                  <div class="col-sm-10">
+                    <label class="control-label" th:text="${attribute.wxQrcode}"></label>
+                  </div>
+                </div>
+              </div>
+          <!-- /.row -->
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label for="status" class="col-sm-2 control-label" th:text="#{site.copyright}">Copyright</label>
+                  <div class="col-sm-10">
+                      <label class="control-label" th:text="${attribute.copyright}"></label>
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="mobileTemplate" class="col-sm-2 control-label"><span th:text="#{site.icp}">ICP</span></label>
+                  <div class="col-sm-10">
+                    <label class="control-label" th:text="${attribute.icp}"></label>
+                  </div>
+                </div>
+              </div>
+          <!-- /.row -->
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label for="status" class="col-sm-2 control-label" th:text="#{site.seo_title}">SEO Title</label>
+                  <div class="col-sm-10">
+                      <label class="control-label" th:text="${attribute.seoTitle}"></label>
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="mobileTemplate" class="col-sm-2 control-label"><span th:text="#{site.seo_keyword}">SEO Keyword</span></label>
+                  <div class="col-sm-10">
+                    <label class="control-label" th:text="${attribute.seoKeyword}"></label>
+                  </div>
+                </div>
+              </div>
+          <!-- /.row -->
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label for="status" class="col-sm-2 control-label" th:text="#{site.seo_description}">SEO Description</label>
+                  <div class="col-sm-10">
+                      <label class="control-label" th:text="${attribute.seoDescription}"></label>
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="mobileTemplate" class="col-sm-2 control-label"><span th:text="#{site.trace_code}">Trace Code</span></label>
+                  <div class="col-sm-10">
+                    <label class="control-label" th:text="${attribute.traceCode}"></label>
+                  </div>
+                </div>
+              </div>
+          <!-- /.row -->
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <button type="button" class="btn btn-primary" th:text="#{common.return}" onclick="gotopage('/site-admin/site');">返回</button>
+                    <button type="button" class="btn btn-default tablebtn" th:text="#{common.edit}" onclick="editSiteAttribute();">编辑</button>
+                  </div>
+                </div>
+              </div>
+          <!-- /.row -->
+              </div>
+              <!-- /.box-body -->
+            </form>
+          </div>
+          <!-- /.box -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Main Footer -->
+  <div th:replace="footer :: copy"></div>
+</div>
+<!-- ./wrapper -->
+
+<script th:src="@{/lib/jquery.min.js}"></script>
+<script th:src="@{/lib/js.cookie.min.js}"></script>
+<script th:src="@{/js/lang.js}"></script>
+<script th:src="@{/lib/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/lib/adminlte/js/adminlte.min.js}"></script>
+<script th:src="@{/js/site/site.js}"></script>
+</body>
+</html>

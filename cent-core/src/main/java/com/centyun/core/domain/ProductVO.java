@@ -1,10 +1,11 @@
 package com.centyun.core.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductVO {
 
-    private Long id;
+    private String id;
     private String name;
     private String englishName;
     private String code;
@@ -14,11 +15,11 @@ public class ProductVO {
     private boolean active;
     private List<ModuleVO> modules; // 产品下的模块
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -76,6 +77,13 @@ public class ProductVO {
 
     public void setModules(List<ModuleVO> modules) {
         this.modules = modules;
+    }
+
+    public void addModule(ModuleVO module) {
+        if(modules == null) {
+            modules = new ArrayList<>();
+        }
+        modules.add(module);
     }
 
 }

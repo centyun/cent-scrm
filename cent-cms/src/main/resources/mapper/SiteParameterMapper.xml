@@ -4,8 +4,8 @@
 
 <mapper namespace="com.centyun.cms.mapper.SiteParameterMapper">
 	<resultMap id="SiteParameterResultMap" type="com.centyun.cms.domain.SiteParameter">
-		<id column="site_id" jdbcType="BIGINT" property="siteId"/>
-        <result column="tenant_id" jdbcType="BIGINT" javaType="long" property="tenantId"/>
+		<id column="site_id" jdbcType="VARCHAR" property="siteId"/>
+        <result column="tenant_id" jdbcType="VARCHAR" javaType="string" property="tenantId"/>
 		<result column="name" jdbcType="VARCHAR" property="name"/>
 		<result column="parameter" jdbcType="VARCHAR" property="parameter"/>
 		<result column="value" jdbcType="VARCHAR" property="value"/>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.centyun.base.mapper.DwzMapper">
+    <resultMap id="DwzResultMap" type="com.centyun.base.domain.Dwz">
+        <id column="id" property="id"/>
+        <result column="long_url" jdbcType="VARCHAR" property="longUrl"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="short_url" jdbcType="VARCHAR" property="shortUrl"/>
+        <result column="qrcode" jdbcType="VARCHAR" property="qrcode"/>
+        <result column="tenant_id" jdbcType="VARCHAR" property="tenantId"/>
+        <result column="tenant_name" jdbcType="VARCHAR" property="tenantName"/>
+        <result column="creator" jdbcType="VARCHAR" property="creator"/>
+        <result column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="createTime"/>
+        <result column="creator_name" jdbcType="VARCHAR" property="creatorName"/>
+    </resultMap>
+
+    <select id="listPageDwzs" resultMap="DwzResultMap">
+        select a.* from bs_dwz a
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <if test="searchValue != null">
+                ( a.long_url like concat('%', #{searchValue}, '%')
+                or a.code like concat('%', #{searchValue}, '%')
+                or a.tenant_name like concat('%', #{searchValue}, '%')
+                or a.creator_name like concat('%', #{searchValue}, '%') )
+            </if>
+        </trim>
+        <if test="orders != null">
+            order by
+            <foreach collection="orders" item="order" separator=",">CONVERT(${order.key} USING gbk) ${order.value}</foreach>
+        </if>
+    </select>
+    
+    <insert id="addDwz" parameterType="com.centyun.base.domain.Dwz">
+        insert into bs_dwz (id, long_url, code, short_url, qrcode, tenant_id, tenant_name, creator, create_time, creator_name)
+        values(#{id}, #{longUrl}, #{code}, #{shortUrl}, #{qrcode}, #{tenantId}, #{tenantName}, #{creator}, now(), #{creatorName})
+    </insert>
+
+    <select id="getDwzByUrl" resultMap="DwzResultMap">
+        select a.* from bs_dwz a where a.long_url = #{longUrl}
+    </select>
+
+    <select id="checkDwz" resultType="int">
+        select count(*) from bs_dwz where code = #{code}
+    </select>
+
+    <select id="getDwzByCode" resultMap="DwzResultMap">
+        select a.* from bs_dwz a where a.code = #{code}
+    </select>
+    
+    <select id="getDwzById" resultMap="DwzResultMap">
+        select a.* from bs_dwz a where a.id = #{id}
+    </select>
+    
+</mapper>

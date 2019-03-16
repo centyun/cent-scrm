@@ -21,12 +21,12 @@ public class MailPackageServiceImpl implements MailPackageService {
 	}
 
 	@Override
-	public MailPackage getMailPackageById(Long id, Long tenantId) {
+	public MailPackage getMailPackageById(String id, String tenantId) {
 		return mailPackageMapper.getMailPackageById(id, tenantId);
 	}
 
 	@Override
-	public List<MailPackage> getMailPackages(Long tenantId) {
+	public List<MailPackage> getMailPackages(String tenantId) {
 		return mailPackageMapper.getMailPackages(tenantId);
 	}
 

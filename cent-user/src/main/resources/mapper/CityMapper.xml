@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.centyun.user.mapper.CityMapper">
+    <resultMap id="CityResultMap" type="com.centyun.user.domain.City">
+        <id column="id" property="id"/>
+        <result column="province_id" property="provinceId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="english_name" jdbcType="VARCHAR" property="englishName"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
+        <result column="pinyin" jdbcType="VARCHAR" property="pinyin"/>
+        <result column="pinyin_short" jdbcType="VARCHAR" property="pinyinShort"/>
+        <result column="order_no" jdbcType="INTEGER" property="orderNo"/>
+        <result column="creator" jdbcType="VARCHAR" property="creator"/>
+        <result column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="createTime"/>
+        <result column="editor" jdbcType="VARCHAR" property="editor"/>
+        <result column="edit_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="editTime"/>
+        <result column="province_name" property="provinceName"/>
+        <result column="creator_name" jdbcType="VARCHAR" property="creatorName"/>
+        <result column="editor_name" jdbcType="VARCHAR" property="editorName"/>
+    </resultMap>
+
+    <select id="listCitiesByProvinceId" resultMap="CityResultMap">
+        select a.*, t.name province_name, m1.display_name creator_name, m2.display_name editor_name from us_city a left join us_province t on a.province_id=t.id
+        left join us_administrator m1 on a.creator=m1.id left join us_administrator m2 on a.editor=m2.id
+        where province_id = #{provinceId} order by order_no
+    </select>
+    
+    <select id="listPageCitiesByProvinceId" resultMap="CityResultMap">
+        select a.*, t.name province_name, m1.display_name creator_name, m2.display_name editor_name from us_city a left join us_province t on a.province_id=t.id
+        left join us_administrator m1 on a.creator=m1.id left join us_administrator m2 on a.editor=m2.id
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <if test="searchValue != null">
+                ( a.name like concat('%', #{searchValue}, '%')
+                or a.english_name like concat('%', #{searchValue}, '%')
+                or a.pinyin like concat('%', #{searchValue}, '%')
+                or a.pinyin_short like concat('%', #{searchValue}, '%') )
+            </if>
+            <if test="provinceId != null">and a.province_id=#{provinceId}</if>
+        </trim>
+        <if test="orders != null">
+            order by
+            <foreach collection="orders" item="order" separator=",">CONVERT(${order.key} USING gbk) ${order.value}</foreach>
+        </if>
+    </select>
+
+    <select id="getCityById" resultMap="CityResultMap">
+        select a.*, t.name province_name, m1.display_name creator_name, m2.display_name editor_name from us_city a left join us_province t on a.province_id=t.id
+        left join us_administrator m1 on a.creator=m1.id left join us_administrator m2 on a.editor=m2.id
+        where a.id = #{id}
+    </select>
+    
+    <insert id="addCity">
+        insert into us_city (id, province_id, name, english_name, code, pinyin, pinyin_short, order_no, creator, create_time)
+        values(#{id}, #{provinceId}, #{name}, #{englishName}, #{code}, #{pinyin}, #{pinyinShort}, 9999, #{creator}, now())
+    </insert>
+
+    <update id="updateCity">
+        update us_city set province_id=#{provinceId}, name=#{name}, english_name=#{englishName}, code=#{code}, pinyin=#{pinyin}, pinyin_short=#{pinyinShort}
+        , editor=#{editor}, edit_time=now()
+        where id=#{id}
+    </update>
+    
+    <select id="getCityByName" parameterType="com.centyun.user.domain.City" resultType="int">
+        select count(*) from us_city where name = #{name}
+        <if test="id != null">
+            and <![CDATA[ id <> #{id} ]]>
+        </if>
+    </select>
+    
+    <select id="getCityByNameAlias" parameterType="string" resultMap="CityResultMap">
+        select a.* from us_city a where a.name like concat(#{name}, '%')
+    </select>
+</mapper>

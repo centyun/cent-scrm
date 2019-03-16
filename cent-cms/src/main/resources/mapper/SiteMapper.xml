@@ -4,35 +4,62 @@
 
 <mapper namespace="com.centyun.cms.mapper.SiteMapper">
 	<resultMap id="SiteResultMap" type="com.centyun.cms.domain.Site">
-		<id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="tenant_id" jdbcType="BIGINT" javaType="long" property="tenantId"/>
+		<id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="tenant_id" jdbcType="VARCHAR" javaType="string" property="tenantId"/>
 		<result column="name" jdbcType="VARCHAR" property="name"/>
 		<result column="domain" jdbcType="VARCHAR" property="domain"/>
 		<result column="other_domain" jdbcType="VARCHAR" property="otherDomain"/>
         <result column="template" jdbcType="VARCHAR" property="template"/>
         <result column="mobile_template" jdbcType="VARCHAR" property="mobileTemplate"/>
         <result column="language" jdbcType="VARCHAR" property="language"/>
-        <result column="default_site" jdbcType="INTEGER" property="defaultSite"/>
-        <result column="creator" jdbcType="BIGINT" javaType="long" property="creator"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="creator" jdbcType="VARCHAR" javaType="string" property="creator"/>
         <result column="creator_name" jdbcType="VARCHAR" property="creatorName"/>
 		<result column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="createTime"/>
-        <result column="editor" jdbcType="BIGINT" javaType="long" property="editor"/>
+        <result column="editor" jdbcType="VARCHAR" javaType="string" property="editor"/>
         <result column="editor_name" jdbcType="VARCHAR" property="editorName"/>
         <result column="edit_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="editTime"/>
 	</resultMap>
     
+    <resultMap id="SiteAttributeResultMap" type="com.centyun.cms.domain.SiteAttribute">
+        <id column="site_id" jdbcType="VARCHAR" property="siteId"/>
+        <result column="tenant_id" jdbcType="VARCHAR" javaType="string" property="tenantId"/>
+        <result column="logo" jdbcType="VARCHAR" property="logo"/>
+        <result column="logo_width" jdbcType="INTEGER" property="logoWidth"/>
+        <result column="logo_height" jdbcType="INTEGER" property="logoHeight"/>
+        <result column="banner" jdbcType="VARCHAR" property="banner"/>
+        <result column="background" jdbcType="VARCHAR" property="background"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="qq" jdbcType="VARCHAR" property="qq"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="web_qrcode" jdbcType="VARCHAR" property="webQrcode"/>
+        <result column="wx_qrcode" jdbcType="VARCHAR" property="wxQrcode"/>
+        <result column="copyright" jdbcType="VARCHAR" property="copyright"/>
+        <result column="icp" jdbcType="VARCHAR" property="icp"/>
+        <result column="seo_title" jdbcType="VARCHAR" property="seoTitle"/>
+        <result column="seo_keyword" jdbcType="VARCHAR" property="seoKeyword"/>
+        <result column="seo_description" jdbcType="VARCHAR" property="seoDescription"/>
+        <result column="trace_code" jdbcType="VARCHAR" property="traceCode"/>
+        <result column="creator" jdbcType="VARCHAR" javaType="string" property="creator"/>
+        <result column="creator_name" jdbcType="VARCHAR" property="creatorName"/>
+        <result column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="createTime"/>
+        <result column="editor" jdbcType="VARCHAR" javaType="string" property="editor"/>
+        <result column="editor_name" jdbcType="VARCHAR" property="editorName"/>
+        <result column="edit_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="editTime"/>
+    </resultMap>
+    
 	<insert id="addSite">
-	    insert into cm_site (id, tenant_id, name, domain, other_domain, template, mobile_template, language, default_site, creator, creator_name, create_time)
-	    values(#{id}, #{tenantId}, #{name}, #{domain}, #{otherDomain}, #{template}, #{mobile_template}, #{language}, #{defaultSite}, #{creator}, #{creatorName}, now())
+	    insert into cm_site (id, tenant_id, name, domain, other_domain, template, mobile_template, language, status, creator, creator_name, create_time, edit_time)
+	    values(#{id}, #{tenantId}, #{name}, #{domain}, #{otherDomain}, #{template}, #{mobileTemplate}, #{language}, #{status}, #{creator}, #{creatorName}, now(), now())
 	</insert>
 
     <update id="updateSite">
-        update cm_site set name=#{name}, domain=#{domain}, other_domain=#{otherDomain}, template=#{template}, mobile_template=#{mobile_template}
-        , language=#{language}, default_site=#{default_site}, editor=#{editor}, editor_name=#{editorName}, edit_time=now()
+        update cm_site set name=#{name}, domain=#{domain}, other_domain=#{otherDomain}, template=#{template}, mobile_template=#{mobileTemplate}
+        , language=#{language}, status=#{status}, editor=#{editor}, editor_name=#{editorName}, edit_time=now()
         where id=#{id} and tenant_id=#{tenantId}
     </update>
 
-	<select id="getSites" resultMap="SiteResultMap">
+	<select id="getPageSites" resultMap="SiteResultMap">
 		select * from cm_site a where tenant_id=#{tenantId}
         <if test="searchValue != null">
             and ( a.name like concat('%', #{searchValue}, '%')
@@ -47,12 +74,20 @@
                 <foreach collection="orders" item="order" separator=",">CONVERT(${order.key} USING gbk) ${order.value}</foreach>
             </when>
             <otherwise>
-                order by create_time
+                order by create_time desc
             </otherwise>
         </choose>
 	</select>
 
     <select id="getSite" resultMap="SiteResultMap">
         select * from cm_site where tenant_id=#{tenantId} and id=#{id}
+    </select>
+
+    <select id="listAllSites" resultMap="SiteResultMap">
+        select * from cm_site a where tenant_id=#{tenantId} order by create_time desc
+    </select>
+
+    <select id="getSiteAttribute" resultMap="SiteAttributeResultMap">
+        select * from cm_site_attribue where tenant_id=#{tenantId} and site_id=#{id}
     </select>
 </mapper>

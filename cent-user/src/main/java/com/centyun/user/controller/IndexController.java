@@ -31,6 +31,7 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import com.centyun.core.captcha.Captcha;
 import com.centyun.core.captcha.GifCaptcha;
 import com.centyun.core.constant.AppConstant;
+import com.centyun.core.domain.Administrator;
 import com.centyun.core.domain.Audit;
 import com.centyun.core.domain.ResultEntity;
 import com.centyun.core.security.CaptchaAuthenticationFilter;
@@ -39,7 +40,6 @@ import com.centyun.core.util.IOUtils;
 import com.centyun.core.util.IpUtils;
 import com.centyun.core.util.file.FileUploadUtils;
 import com.centyun.user.UserApplication;
-import com.centyun.user.domain.Manager;
 
 @Controller
 public class IndexController extends BaseController {
@@ -55,9 +55,9 @@ public class IndexController extends BaseController {
     @Value("${USER_URL}")
     private String userUrl;
 
-    @RequestMapping(value = { "", "/", "/index.html" })
+    @RequestMapping({"", "/", "/index.html"})
     public String home() {
-        return "forward:/tenant/index.html";
+        return "forward:/tenant";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -84,15 +84,15 @@ public class IndexController extends BaseController {
 
         // TODO 记录登出成功的日志 这里的代码没有起作用??
         Object principal = auth.getPrincipal();
-        if (principal instanceof Manager) {
-            Manager manager = (Manager) principal;
+        if (principal instanceof Administrator) {
+            Administrator administrator = (Administrator) principal;
             String ip = request.getParameter("ip");
             Audit audit = new Audit();
             audit.setAction("logout");
             audit.setModule("system");
             audit.setContent(ip);
             audit.setIp(IpUtils.ipToLong(ip));
-            audit.setOperator(manager.getId());
+            audit.setOperator(administrator.getId());
             auditService.saveAudit(audit);
         }
 
@@ -170,7 +170,7 @@ public class IndexController extends BaseController {
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     @ResponseBody
     public ResponseEntity<String> handleException(MaxUploadSizeExceededException ex) {
-        System.out.println("=====================" + ex.getClass().getName());
+        log.debug("=====================" + ex.getClass().getName());
         return ResponseEntity.ok("ok");
     }
 

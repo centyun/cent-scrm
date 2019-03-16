@@ -11,8 +11,8 @@ public interface InvalidMailMapper {
 	
 	void addInvalidMail(InvalidMail invalidMail);
 	
-	InvalidMail getInvalidMailById(Long id, Long tenantId);
+	InvalidMail getInvalidMailById(String id, String tenantId);
 	
-	List<InvalidMail> getInvalidMails(Long tenantId);
+	List<InvalidMail> getInvalidMails(String tenantId);
 
 }

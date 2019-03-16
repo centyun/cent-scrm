@@ -21,12 +21,12 @@ public class MailClickServiceImpl implements MailClickService {
 	}
 
 	@Override
-	public MailClick getMailClickById(Long id, Long tenantId) {
+	public MailClick getMailClickById(String id, String tenantId) {
 		return mailClickMapper.getMailClickById(id, tenantId);
 	}
 
 	@Override
-	public List<MailClick> getMailClicks(Long tenantId) {
+	public List<MailClick> getMailClicks(String tenantId) {
 		return mailClickMapper.getMailClicks(tenantId);
 	}
 

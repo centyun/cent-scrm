@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import com.centyun.core.domain.Administrator;
 import com.centyun.core.domain.User;
 import com.centyun.core.exception.BadRequestException;
 import com.centyun.core.table.DataTableParam;
@@ -15,7 +16,6 @@ import com.centyun.core.table.KeyValuePair;
 import com.centyun.core.util.SnowFlakeIdWorker;
 import com.centyun.core.util.encode.AesCryptUtils;
 import com.centyun.user.constant.UserConstant;
-import com.centyun.user.domain.Manager;
 import com.centyun.user.mapper.UserMapper;
 import com.centyun.user.service.UserService;
 import com.github.pagehelper.PageHelper;
@@ -28,27 +28,27 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public User getUserById(Long userId) {
+    public User getUserById(String userId) {
         return userMapper.getUserById(userId);
     }
 
     @Override
     public void saveUser(User user) {
-        Manager manager = (Manager) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (manager == null) {
+        Administrator administrator = (Administrator) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (administrator == null) {
             throw new BadRequestException(UserConstant.AUTH_FAIL);
         }
         if (checkUser(user)) {
             throw new BadRequestException(UserConstant.USER_EXISTED);
         }
-        Long id = user.getId();
-        if (id == null || id <= 0) {
+        String id = user.getId();
+        if (StringUtils.isEmpty(id)) {
             SnowFlakeIdWorker snowFlake = new SnowFlakeIdWorker(UserConstant.DATACENTER_ID, UserConstant.MACHINE_ID);
             user.setId(snowFlake.nextId());
-            user.setCreator(manager.getId());
+            user.setCreator(administrator.getId());
             userMapper.addUser(user);
         } else {
-            user.setEditor(manager.getId());
+            user.setEditor(administrator.getId());
             userMapper.updateUser(user);
         }
     }
@@ -59,8 +59,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PageInfo<User> getPageUsers(DataTableParam dataTableParam, Long tenantId) {
-        PageHelper.startPage(dataTableParam.getStart(), dataTableParam.getLength());
+    public PageInfo<User> getPageUsers(DataTableParam dataTableParam, String tenantId) {
+        PageHelper.startPage(dataTableParam.getPageNum(), dataTableParam.getLength());
         String searchValue = dataTableParam.getSearchValue();
         List<KeyValuePair> orders = dataTableParam.getOrders();
         List<User> users = userMapper.getPageUsers(tenantId, StringUtils.isEmpty(searchValue) ? null : searchValue,
@@ -70,27 +70,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateStatus(List<Long> ids, Integer action) {
-        Manager manager = (Manager) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (manager == null) {
+    public void updateStatus(List<String> ids, Integer action) {
+        Administrator administrator = (Administrator) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (administrator == null) {
             throw new BadRequestException(UserConstant.AUTH_FAIL);
         }
         // action转换状态: 注销0转换为已注销4, 启用1转换为已注册0
         Integer status = action == 0 ? UserConstant.USER_STATUS_DELETED : UserConstant.USER_STATUS_REGISTED;
-        userMapper.updateStatus(ids, status, manager.getId());
+        userMapper.updateStatus(ids, status, administrator.getId());
     }
 
     @Override
-    public void repasswd(List<Long> ids, String passwd) {
-        Manager manager = (Manager) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (manager == null) {
+    public void repasswd(List<String> ids, String passwd) {
+        Administrator administrator = (Administrator) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (administrator == null) {
             throw new BadRequestException(UserConstant.AUTH_FAIL);
         }
         userMapper.repasswd(ids, passwd);
     }
 
     @Override
-    public void updateLanguage(Long id, String language) {
+    public void updateLanguage(String id, String language) {
         userMapper.updateLanguage(id, language);
     }
 

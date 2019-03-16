@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,11 +43,11 @@ public class UserController extends BaseController {
     @Autowired
     private TenantService tenantService;
 
-    @RequestMapping(value = "/index.html")
-    public ModelAndView index(@RequestParam(required=false) Long tenantId, HttpServletRequest request) {
+    @RequestMapping({"", "/", "/index.html"})
+    public ModelAndView index(@RequestParam(required=false) String tenantId, HttpServletRequest request) {
         ModelAndView model = new ModelAndView();
         model.addObject("modules", getModules(request));
-        model.addObject("tenantId", tenantId == null || tenantId <= 0 ? 0 : tenantId);
+        model.addObject("tenantId", StringUtils.isEmpty(tenantId) ? AppConstant.EMPTY : tenantId);
         model.addObject("tenants", tenantService.getAllTenants());
         model.setViewName("user/user-index");
         return model;
@@ -54,14 +55,14 @@ public class UserController extends BaseController {
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)
     @ResponseBody
-    public Object getUsers(@ModelAttribute DataTableParam dataTableParam, @RequestParam(required=false) Long tenantId) {
-        PageInfo<User> tenants = userService.getPageUsers(dataTableParam, tenantId == null || tenantId <= 0 ? null : tenantId);
+    public Object getUsers(@ModelAttribute DataTableParam dataTableParam, @RequestParam(required=false) String tenantId) {
+        PageInfo<User> tenants = userService.getPageUsers(dataTableParam, StringUtils.isEmpty(tenantId) ? null : tenantId);
         return new DataTableResult<User>(tenants.getList(), tenants.getTotal(), dataTableParam.getDraw());
     }
 
     @RequestMapping(value = "/{userId}", method = RequestMethod.POST)
     @ResponseBody
-    public Object getUser(@PathVariable(value = "userId") Long userId) {
+    public Object getUser(@PathVariable(value = "userId") String userId) {
         User user = userService.getUserById(userId);
         return user;
     }
@@ -86,7 +87,7 @@ public class UserController extends BaseController {
     }
 
     @RequestMapping(value = "/edit.html")
-    public ModelAndView edit(@RequestParam("id") Long id, HttpServletRequest request) {
+    public ModelAndView edit(@RequestParam("id") String id, HttpServletRequest request) {
         ModelAndView model = new ModelAndView();
         model.addObject("modules", getModules(request));
         User user = userService.getUserById(id);
@@ -96,7 +97,7 @@ public class UserController extends BaseController {
     }
 
     @RequestMapping(value = "/view.html")
-    public ModelAndView view(@RequestParam("id") Long id, HttpServletRequest request) {
+    public ModelAndView view(@RequestParam("id") String id, HttpServletRequest request) {
         ModelAndView model = new ModelAndView();
         model.addObject("modules", getModules(request));
         User user = userService.getUserById(id);
@@ -128,7 +129,7 @@ public class UserController extends BaseController {
 
     @RequestMapping(value = "/update-language")
     @ResponseBody
-    public Object updateLanguage(@RequestParam("id") Long id, @RequestParam("language") String language) {
+    public Object updateLanguage(@RequestParam("id") String id, @RequestParam("language") String language) {
         try {
             userService.updateLanguage(id, language);
         } catch (Exception e) {
@@ -147,7 +148,7 @@ public class UserController extends BaseController {
         if(!CommonUtils.isEmpty(ids) && action != null) {
             try {
                 List<String> list = Arrays.asList(ids.split(AppConstant.COMMA));
-                userService.updateStatus(CommonUtils.strings2Longs(list), action);
+                userService.updateStatus(list, action);
             } catch (BadRequestException e) {
                 log.error(e.getMessage(), e);
                 ResultEntity result = new ResultEntity();
@@ -171,7 +172,7 @@ public class UserController extends BaseController {
         if(!CommonUtils.isEmpty(ids)) {
             try {
                 List<String> list = Arrays.asList(ids.split(AppConstant.COMMA));
-                userService.repasswd(CommonUtils.strings2Longs(list), EncryptUtils.encrypt(pwd));
+                userService.repasswd(list, EncryptUtils.encrypt(pwd));
             } catch (BadRequestException e) {
                 log.error(e.getMessage(), e);
                 ResultEntity result = new ResultEntity();

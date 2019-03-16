@@ -15,9 +15,9 @@ public interface ArticleMapper {
     
     void updateArticle(Article article);
     
-    Article getArticle(@Param("tenantId") Long tenantId);
+    Article getArticle(@Param("tenantId") String tenantId);
 
-    List<Article> getPageArticles(@Param("tenantId") Long tenantId, @Param("searchValue") String searchValue,
+    List<Article> getPageArticles(@Param("tenantId") String tenantId, @Param("searchValue") String searchValue,
             @Param("orders") List<KeyValuePair> orders);
 
 }

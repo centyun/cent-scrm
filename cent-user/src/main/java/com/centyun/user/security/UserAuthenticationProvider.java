@@ -15,15 +15,15 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
+import com.centyun.core.domain.Administrator;
 import com.centyun.core.util.encode.EncryptUtils;
-import com.centyun.user.domain.Manager;
 
 @Component("userAuthenticationProvider")
 public class UserAuthenticationProvider implements AuthenticationProvider {
     private Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private UserDetailsService managerService;
+    private UserDetailsService administratorService;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -31,9 +31,9 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
         String password = (String) authentication.getCredentials();// 这个是表单中输入的密码
         
         // 这里构建来判断用户是否存在和密码是否正确
-        Manager manager = null;
+        Administrator administrator = null;
         try {
-            manager = (Manager) managerService.loadUserByUsername(userName);
+            administrator = (Administrator) administratorService.loadUserByUsername(userName);
         } catch (DataAccessException e) {
             log.error(e.getMessage(), e);
             throw new BadCredentialsException("Login.DBError");
@@ -41,12 +41,12 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
             log.error(e.getMessage(), e);
             throw new BadCredentialsException("Login.Error");
         }
-        if (manager == null || !EncryptUtils.valid(password, manager.getPassword())) {
+        if (administrator == null || !EncryptUtils.valid(password, administrator.getPassword())) {
             throw new BadCredentialsException("Login.UserPasswdError");
         }
-        Collection<? extends GrantedAuthority> authorities = manager.getAuthorities();
+        Collection<? extends GrantedAuthority> authorities = administrator.getAuthorities();
         // 构建返回的用户登录成功的token
-        return new UsernamePasswordAuthenticationToken(manager, password, authorities);
+        return new UsernamePasswordAuthenticationToken(administrator, password, authorities);
     }
 
     @Override

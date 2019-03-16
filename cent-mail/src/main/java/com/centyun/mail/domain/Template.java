@@ -4,10 +4,10 @@ import java.util.Date;
 
 public class Template {
 
-	private Long id;
-	private Long tenantId;
-	private Long providerId;
-	private Long datasourceId;
+	private String id;
+	private String tenantId;
+	private String providerId;
+	private String datasourceId;
 	private String name;
 	private String mailField;
 	private String replaceFields;
@@ -19,42 +19,42 @@ public class Template {
 	private int status; // 0关闭的模板, 1有效的模板
 	private int unsubscribe;
 	private String unsubscribeLanguage;
-	private Long creator;
+	private String creator;
 	private String creatorName;
 	private Date createTime;
-	private Long editor;
+	private String editor;
 	private String editorName;
 	private Date editTime;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
-	public Long getTenantId() {
+	public String getTenantId() {
 		return tenantId;
 	}
 
-	public void setTenantId(Long tenantId) {
+	public void setTenantId(String tenantId) {
 		this.tenantId = tenantId;
 	}
 
-	public Long getProviderId() {
+	public String getProviderId() {
 		return providerId;
 	}
 
-	public void setProviderId(Long providerId) {
+	public void setProviderId(String providerId) {
 		this.providerId = providerId;
 	}
 
-	public Long getDatasourceId() {
+	public String getDatasourceId() {
 		return datasourceId;
 	}
 
-	public void setDatasourceId(Long datasourceId) {
+	public void setDatasourceId(String datasourceId) {
 		this.datasourceId = datasourceId;
 	}
 
@@ -146,11 +146,11 @@ public class Template {
 		this.unsubscribeLanguage = unsubscribeLanguage;
 	}
 
-	public Long getCreator() {
+	public String getCreator() {
 		return creator;
 	}
 
-	public void setCreator(Long creator) {
+	public void setCreator(String creator) {
 		this.creator = creator;
 	}
 
@@ -170,11 +170,11 @@ public class Template {
 		this.createTime = createTime;
 	}
 
-	public Long getEditor() {
+	public String getEditor() {
 		return editor;
 	}
 
-	public void setEditor(Long editor) {
+	public void setEditor(String editor) {
 		this.editor = editor;
 	}
 

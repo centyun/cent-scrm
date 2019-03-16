@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title th:text="#{Platform.Title}">CentYun</title>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" th:href="@{/lib/bootstrap/css/bootstrap.min.css}">
+  <link rel="stylesheet" th:href="@{/lib/font-awesome/css/font-awesome.min.css}">
+  <link rel="stylesheet" th:href="@{/lib/Ionicons/css/ionicons.min.css}">
+  <link rel="stylesheet" th:href="@{/lib/adminlte/css/adminlte.min.css}">
+  <link rel="stylesheet" th:href="@{/lib/adminlte/css/skins/skin-blue.min.css}">
+  <link rel="stylesheet" th:href="@{/css/base.css}">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Google Font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+  <header th:replace="footer :: main-header"></header>
+  
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside th:replace="footer :: main-sidebar"></aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Main content -->
+    <section class="content container-fluid">
+    
+          <!-- Horizontal Form -->
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title" id="name">人脸识别</h3>
+            </div>
+            <!-- /.box-header -->
+            
+            <div class="box-body">
+              <div class="row">
+                <div class="col-md-12">
+                    <video id="video" width="320" height="240" playsinline webkit-playsinline preload autoplay loop muted></video>
+                </div>
+              </div>
+          <!-- /.row -->
+              <div class="row">
+                <div class="col-md-12">
+                    <canvas id="img-canvas" width="320" height="240" style="display:none"></canvas>
+                </div>
+              </div>
+          <!-- /.row -->
+              <div class="row">
+                <div class="form-group col-md-12">
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <button type="button" class="btn btn-default" onclick="gotopage('/face/face-user-add');">上传人脸照片</button>
+                    <div id="errMsg" style="color: red;"></div>
+                  </div>
+                </div>
+              </div>
+          <!-- /.row -->
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  
+  <!-- Main Footer -->
+  <div th:replace="footer :: copy"></div>
+</div>
+<!-- ./wrapper -->
+
+<script th:src="@{/lib/jquery.min.js}"></script>
+<script th:src="@{/lib/face/tracking-min.js}"></script>
+<script th:src="@{/lib/face/face-min.js}"></script>
+<script th:src="@{/lib/js.cookie.min.js}"></script>
+<script th:src="@{/js/lang.js}"></script>
+<script th:src="@{/lib/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/lib/adminlte/js/adminlte.min.js}"></script>
+
+<script>
+    window.onload = function() {
+      console.log('onload...');
+      var video = document.getElementById('video');
+      var tracker = new tracking.ObjectTracker('face');
+      tracker.setInitialScale(4);
+      tracker.setStepSize(2);
+      tracker.setEdgesDensity(0.1);
+      
+      tracking.track('#video', tracker, { camera: true });
+      tracker.on('track', function(event) {
+        if(event.data.length > 0) {
+          recoginze();
+        }
+      });
+    };
+    
+    var lastTime = 0;
+    function recoginze() {
+        var curTime = new Date().getTime();
+        var span = curTime - lastTime;
+        //console.log("span===" + span);
+        if(span < 2000) {
+            return;
+        }
+        lastTime = curTime;
+
+        var c = document.getElementById("img-canvas");
+        // var c = document.createElement("canvas");
+        var ctx = c.getContext("2d");
+        // var video = $("#video")[0];
+        var v = document.getElementById("video");
+        ctx.drawImage(v, 0, 0, 320, 240);
+        //ctx.drawImage(v, 0, 0, v.videoWidth, v.videoHeight);
+        //imgContext.drawImage(video, 0, 0, 280, 210);
+        var img = c.toDataURL("image/png");
+        img = img.replace(/^data:image\/(png|jpg);base64,/, "");
+        //console.log("img==" + img);
+        
+        $.ajax({
+            url: '/face/recoginze',
+            data: {base64Image : img},
+            type: 'post',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                if(data.status == 200) {
+                    $('#name').html(data.data + "，识别成功");
+                    $('#errMsg').text("");
+                } else if(data.status == 400) {
+                    $('#name').html(data.data + ", 识别失败");
+                    $('#errMsg').text("");
+                } else if(data.status == 102) {
+                    $('#name').html(data.data);
+                    $('#errMsg').text("");
+                } else {
+                    $('#name').html("识别失败");
+                    $('#errMsg').text("请先上传人脸照片");
+                }
+            }
+        });
+    };
+
+    function gotopage(page) {
+        window.location.href = page;
+    }
+  </script>
+</body>
+</html>

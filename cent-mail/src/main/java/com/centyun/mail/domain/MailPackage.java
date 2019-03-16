@@ -4,10 +4,10 @@ import java.util.Date;
 
 public class MailPackage {
 
-	private Long id;
-	private Long tenantId;
-	private Long templateId;
-	private Long providerId;
+	private String id;
+	private String tenantId;
+	private String templateId;
+	private String providerId;
 	private String sender;
 	private String senderName;
 	private String replyAddress;
@@ -41,35 +41,35 @@ public class MailPackage {
 	private String creatorName;
 	private Date createTime;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
-	public Long getTenantId() {
+	public String getTenantId() {
 		return tenantId;
 	}
 
-	public void setTenantId(Long tenantId) {
+	public void setTenantId(String tenantId) {
 		this.tenantId = tenantId;
 	}
 
-	public Long getTemplateId() {
+	public String getTemplateId() {
 		return templateId;
 	}
 
-	public void setTemplateId(Long templateId) {
+	public void setTemplateId(String templateId) {
 		this.templateId = templateId;
 	}
 
-	public Long getProviderId() {
+	public String getProviderId() {
 		return providerId;
 	}
 
-	public void setProviderId(Long providerId) {
+	public void setProviderId(String providerId) {
 		this.providerId = providerId;
 	}
 

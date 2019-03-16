@@ -11,11 +11,11 @@ public interface ProductService {
 
     PageInfo<Product> getProducts(DataTableParam dataTableParam);
 
-    Product getProductById(Long id);
+    Product getProductById(String id);
 
     void saveProduct(Product product);
 
-    void updateStatus(List<Long> ids, Integer action);
+    void updateStatus(List<String> ids, Integer action);
 
     List<ProductVO> getAvailableProducts();
 }

@@ -130,5 +130,13 @@ public class AesCryptUtils {
         }
         return result;
     }
+    
+    public static void main(String[] args) {
+        String url = "https://docs.docker.com/engine/reference/commandline/docker/";
+        String encode = getInstance().encryptAes(url);
+        String decryptAes = getInstance().decryptAes(encode);
+        System.out.println(encode);
+        System.out.println(decryptAes);
+    }
 
 }

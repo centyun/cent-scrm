@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.centyun.base.mapper.FaceMapper">
+    <resultMap id="GroupResultMap" type="com.centyun.base.domain.FaceGroup">
+        <id column="id" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="creator" jdbcType="VARCHAR" property="creator"/>
+        <result column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="createTime"/>
+        <result column="creator_name" jdbcType="VARCHAR" property="creatorName"/>
+    </resultMap>
+    
+    <resultMap id="FaceUserResultMap" type="com.centyun.base.domain.FaceUser">
+        <id column="id" property="id"/>
+        <result column="group_id" jdbcType="VARCHAR" property="groupId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="creator" jdbcType="VARCHAR" property="creator"/>
+        <result column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="createTime"/>
+        <result column="creator_name" jdbcType="VARCHAR" property="creatorName"/>
+    </resultMap>
+   
+    <resultMap id="FacePictureResultMap" type="com.centyun.base.domain.FacePicture">
+        <id column="id" property="id"/>
+        <result column="face_user_id" jdbcType="VARCHAR" property="faceUserId"/>
+        <result column="picture" jdbcType="VARCHAR" property="picture"/>
+        <result column="creator" jdbcType="VARCHAR" property="creator"/>
+        <result column="upload_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="uploadTime"/>
+        <result column="creator_name" jdbcType="VARCHAR" property="creatorName"/>
+    </resultMap>
+       
+    <insert id="addFaceGroup" parameterType="com.centyun.base.domain.FaceGroup">
+        insert into bs_face_group (id, name, status, creator, create_time, creator_name)
+        values(#{id}, #{name}, 0, #{creator}, now(), #{creatorName})
+    </insert>
+
+    <select id="getFaceGroupByTenantId" resultMap="GroupResultMap">
+        select a.* from bs_face_group a where a.id = #{id}
+    </select>
+    
+    <update id="updateGroupStatus">
+        update bs_face_group set status=1 where id=#{id}
+    </update>
+
+    <select id="getFaceUserByUserName" resultMap="FaceUserResultMap">
+        select a.* from bs_face_user a where a.group_id = #{tenantId} and a.name = #{name}
+    </select>
+    
+    <insert id="addFaceUser" parameterType="com.centyun.base.domain.FaceUser">
+        insert into bs_face_user (id, group_id, name, creator, create_time, creator_name)
+        values(#{id}, #{groupId}, #{name}, #{creator}, now(), #{creatorName})
+    </insert>
+       
+    <insert id="addFacePicture" parameterType="com.centyun.base.domain.FacePicture">
+        insert into bs_face_picture (id, face_user_id, picture, creator, upload_time, creator_name)
+        values(#{id}, #{faceUserId}, #{picture}, #{creator}, now(), #{creatorName})
+    </insert>
+    
+</mapper>

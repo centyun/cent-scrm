@@ -5,37 +5,37 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class Site {
-    private Long id;
-    private Long tenantId; // 租户id
+    private String id;
+    private String tenantId; // 租户id
     private String name;
     private String domain; // 主域名
     private String otherDomain; // 其他域名
     private String template;
     private String mobileTemplate;
     private String language;
-    private int defaultSite; // 0 不是默认站点, 1 是默认站点
-    private Long creator;
+    private int status; // 0 停用, 1 启用
+    private String creator;
     private String creatorName;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")
     private Date createTime;
-    private Long editor;
+    private String editor;
     private String editorName;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")
     private Date editTime;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Long getTenantId() {
+    public String getTenantId() {
         return tenantId;
     }
 
-    public void setTenantId(Long tenantId) {
+    public void setTenantId(String tenantId) {
         this.tenantId = tenantId;
     }
 
@@ -87,19 +87,19 @@ public class Site {
         this.language = language;
     }
 
-    public int getDefaultSite() {
-        return defaultSite;
+    public int getStatus() {
+        return status;
     }
 
-    public void setDefaultSite(int defaultSite) {
-        this.defaultSite = defaultSite;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
-    public Long getCreator() {
+    public String getCreator() {
         return creator;
     }
 
-    public void setCreator(Long creator) {
+    public void setCreator(String creator) {
         this.creator = creator;
     }
 
@@ -119,11 +119,11 @@ public class Site {
         this.createTime = createTime;
     }
 
-    public Long getEditor() {
+    public String getEditor() {
         return editor;
     }
 
-    public void setEditor(Long editor) {
+    public void setEditor(String editor) {
         this.editor = editor;
     }
 

@@ -13,8 +13,8 @@ public interface MailMapper {
 	
 	void updateMail(Mail mail);
 	
-	Mail getMailById(Long id, Long packageId, Long tenantId);
+	Mail getMailById(String id, String packageId, String tenantId);
 
-	List<Mail> getMails(Long packageId);
+	List<Mail> getMails(String packageId);
 
 }

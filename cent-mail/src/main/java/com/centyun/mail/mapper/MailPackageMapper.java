@@ -11,8 +11,8 @@ public interface MailPackageMapper {
 	
 	void addMailPackage(MailPackage mailPackage);
 	
-	MailPackage getMailPackageById(Long id, Long tenantId);
+	MailPackage getMailPackageById(String id, String tenantId);
 	
-	List<MailPackage> getMailPackages(Long tenantId);
+	List<MailPackage> getMailPackages(String tenantId);
 
 }

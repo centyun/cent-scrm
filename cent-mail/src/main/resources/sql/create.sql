@@ -1,26 +1,5 @@
 
 /*============================================================
- Table: ml_module  模块
-============================================================*/
-create table ml_module
-(
-   id                   tinyint not null,
-   parent_id            tinyint,
-   name                 varchar(64),
-   english_name         varchar(64),
-   icon                 varchar(32),
-   code                 varchar(32),
-   url                  varchar(128),
-   status               tinyint,
-   order_no             tinyint,
-   create_time          datetime,
-   primary key (id)
-)
-ENGINE = InnoDB
-DEFAULT CHARSET = utf8;
-
-
-/*============================================================
  Table: ml_mail_package  邮包
 ============================================================*/
 create table ml_mail_package

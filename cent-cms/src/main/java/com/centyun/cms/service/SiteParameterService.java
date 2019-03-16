@@ -8,8 +8,8 @@ public interface SiteParameterService {
     
     void saveSiteParameter(SiteParameter siteParameter);
     
-    SiteParameter getSiteParameter(Long siteId, Long tenantId, String parameter);
+    SiteParameter getSiteParameter(String siteId, String tenantId, String parameter);
 
-    PageInfo<SiteParameter> getPageSiteParameters(DataTableParam dataTableParam, Long tenantId);
+    PageInfo<SiteParameter> getPageSiteParameters(DataTableParam dataTableParam, String tenantId);
 
 }

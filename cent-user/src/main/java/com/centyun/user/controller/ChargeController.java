@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -51,31 +52,31 @@ public class ChargeController extends BaseController {
     @Autowired
     private ProductService productService;
 
-    @RequestMapping(value = "/index.html")
-    public ModelAndView index(@RequestParam(required = false) Long tenantId, HttpServletRequest request) {
+    @RequestMapping({"", "/", "/index.html"})
+    public ModelAndView index(@RequestParam(required = false) String tenantId, HttpServletRequest request) {
         ModelAndView model = new ModelAndView();
         model.addObject("modules", getModules(request));
-        model.addObject("tenantId", tenantId == null || tenantId <= 0 ? null : tenantId);
+        model.addObject("tenantId", StringUtils.isEmpty(tenantId) ? null : tenantId);
         model.addObject("tenants", tenantService.getAllTenants());
         model.setViewName("charge/charge-index");
         return model;
     }
 
-    @RequestMapping(value = "/charges")
+    @RequestMapping(value = "/list")
     @ResponseBody
-    public Object getCharges(@ModelAttribute DataTableParam dataTableParam,
-            @RequestParam(required = false) Long tenantId) {
+    public Object listCharges(@ModelAttribute DataTableParam dataTableParam,
+            @RequestParam(required = false) String tenantId) {
         PageInfo<Charge> charges = chargeService.getPageCharges(dataTableParam,
-                tenantId == null || tenantId <= 0 ? null : tenantId);
+                StringUtils.isEmpty(tenantId) ? null : tenantId);
         return new DataTableResult<Charge>(charges.getList(), charges.getTotal(), dataTableParam.getDraw());
     }
 
     @RequestMapping(value = "/add.html")
-    public ModelAndView add(@RequestParam(required = false, value = "tenantId") Long tenantId, HttpServletRequest request) {
+    public ModelAndView add(@RequestParam(required = false, value = "tenantId") String tenantId, HttpServletRequest request) {
         ModelAndView model = new ModelAndView();
         model.addObject("modules", getModules(request));
         model.addObject("tenants", tenantService.getAllTenants());
-        if (tenantId != null && tenantId > 0) {
+        if (!StringUtils.isEmpty(tenantId)) {
             model.addObject("tenantId", tenantId);
         }
         model.addObject("products", productService.getAvailableProducts());
@@ -84,7 +85,7 @@ public class ChargeController extends BaseController {
     }
 
     @RequestMapping(value = "/view.html")
-    public ModelAndView view(@RequestParam("id") Long id, HttpServletRequest request) {
+    public ModelAndView view(@RequestParam("id") String id, HttpServletRequest request) {
         ModelAndView model = new ModelAndView();
         model.addObject("modules", getModules(request));
         Charge charge = chargeService.getChargeById(id);
@@ -121,7 +122,7 @@ public class ChargeController extends BaseController {
             try {
                 List<String> list = Arrays.asList(ids.split(AppConstant.COMMA));
                 // 2取消充值
-                chargeService.updateStatus(CommonUtils.strings2Longs(list), action);
+                chargeService.updateStatus(list, action);
             } catch (BadRequestException e) {
                 log.error(e.getMessage(), e);
                 ResultEntity result = new ResultEntity();

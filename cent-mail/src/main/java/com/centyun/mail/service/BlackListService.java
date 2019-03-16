@@ -10,8 +10,8 @@ public interface BlackListService {
 	
 	void deleteBlackList(BlackList blackList);
 	
-	BlackList getBlackListById(Long id, Long tenantId);
+	BlackList getBlackListById(String id, String tenantId);
 	
-	List<BlackList> getBlackLists(Long tenantId);
+	List<BlackList> getBlackLists(String tenantId);
 
 }

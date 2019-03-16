@@ -4,18 +4,18 @@
 
 <mapper namespace="com.centyun.cms.mapper.FriendLinkMapper">
 	<resultMap id="FriendLinkResultMap" type="com.centyun.cms.domain.FriendLink">
-		<id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="tenant_id" jdbcType="BIGINT" javaType="long" property="tenantId"/>
+		<id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="tenant_id" jdbcType="VARCHAR" javaType="string" property="tenantId"/>
 		<result column="group_name" jdbcType="VARCHAR" property="groupName"/>
         <result column="link" jdbcType="VARCHAR" property="link"/>
 		<result column="name" jdbcType="VARCHAR" property="name"/>
 		<result column="picture" jdbcType="VARCHAR" property="picture"/>
         <result column="open_target" jdbcType="INTEGER" property="openTarget"/>
         <result column="order_no" jdbcType="INTEGER" property="orderNo"/>
-        <result column="creator" jdbcType="BIGINT" javaType="long" property="creator"/>
+        <result column="creator" jdbcType="VARCHAR" javaType="string" property="creator"/>
         <result column="creator_name" jdbcType="VARCHAR" property="creatorName"/>
 		<result column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="createTime"/>
-        <result column="editor" jdbcType="BIGINT" javaType="long" property="editor"/>
+        <result column="editor" jdbcType="VARCHAR" javaType="string" property="editor"/>
         <result column="editor_name" jdbcType="VARCHAR" property="editorName"/>
         <result column="edit_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="editTime"/>
 	</resultMap>

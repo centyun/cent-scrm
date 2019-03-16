@@ -18,11 +18,11 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
+import com.centyun.core.domain.Administrator;
 import com.centyun.core.domain.Audit;
 import com.centyun.core.service.AuditService;
 import com.centyun.core.util.IpUtils;
-import com.centyun.user.domain.Manager;
-import com.centyun.user.service.ManagerService;
+import com.centyun.user.service.AdministratorService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component("userAuthenticationSuccessHandler")
@@ -35,7 +35,7 @@ public class UserAuthenticationSuccessHandler extends SavedRequestAwareAuthentic
     private MessageSource messageSource;
 
     @Autowired
-    private ManagerService managerService;
+    private AdministratorService administratorService;
 
     @Autowired
     private AuditService auditService;
@@ -47,16 +47,16 @@ public class UserAuthenticationSuccessHandler extends SavedRequestAwareAuthentic
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws ServletException, IOException {
         Object principal = authentication.getPrincipal();
-        if (principal instanceof Manager) {
-            Manager manager = (Manager) principal;
+        if (principal instanceof Administrator) {
+            Administrator administrator = (Administrator) principal;
             Locale locale = (Locale) request.getSession()
                     .getAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME);
             if (locale == null) {
                 locale = Locale.CHINA;
             }
-            if (!locale.toString().equals(manager.getLanguage())) {
-                manager.setLanguage(locale.toString());
-                managerService.updateLanguage(manager);
+            if (!locale.toString().equals(administrator.getLanguage())) {
+                administrator.setLanguage(locale.toString());
+                administratorService.updateLanguage(administrator);
             }
 
             // 记录登录成功的日志
@@ -66,12 +66,12 @@ public class UserAuthenticationSuccessHandler extends SavedRequestAwareAuthentic
             audit.setModule("system");
             audit.setContent(ip);
             audit.setIp(IpUtils.ipToLong(ip));
-            audit.setOperator(manager.getId());
+            audit.setOperator(administrator.getId());
             auditService.saveAudit(audit);
             
             // 不需要cookie
             /*
-            String token = AesCryptUtils.getInstance().encryptAes(manager.getLoginName());
+            String token = AesCryptUtils.getInstance().encryptAes(administrator.getLoginName());
             CookieUtils.setCurrentDomainCookie(request, response, AppConstant.TOKEN, token);
             */
         }

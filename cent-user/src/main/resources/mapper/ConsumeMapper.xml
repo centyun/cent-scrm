@@ -4,12 +4,12 @@
 
 <mapper namespace="com.centyun.user.mapper.ConsumeMapper">
     <resultMap id="ConsumeResultMap" type="com.centyun.user.domain.Consume">
-        <id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="tenant_id" jdbcType="BIGINT" property="tenantId"/>
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="tenant_id" jdbcType="VARCHAR" property="tenantId"/>
         <result column="tenant_name" jdbcType="VARCHAR" property="tenantName"/>
-        <result column="product_id" jdbcType="BIGINT" property="productId"/>
+        <result column="product_id" jdbcType="VARCHAR" property="productId"/>
         <result column="product_name" jdbcType="VARCHAR" property="productName"/>
-        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
         <result column="user_name" jdbcType="VARCHAR" property="userName"/>
         <result column="amount" jdbcType="INTEGER" property="amount"/>
         <result column="money" jdbcType="NUMERIC" javaType="double" property="money"/>

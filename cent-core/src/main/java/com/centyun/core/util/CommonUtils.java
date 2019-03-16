@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
  * @author yinww
  *
  */
-
 public class CommonUtils {
 
     /**
@@ -99,6 +98,17 @@ public class CommonUtils {
             result.add(Long.parseLong(id));
         }
         return result;
+    }
+
+    public static String list2String(List<String> values) {
+        StringBuilder sb = new StringBuilder();
+        for (String value : values) {
+            if(sb.length() > 0) {
+                sb.append(",");
+            }
+            sb.append(value);
+        }
+        return sb.toString();
     }
 
 }

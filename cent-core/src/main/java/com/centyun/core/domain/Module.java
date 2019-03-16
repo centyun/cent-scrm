@@ -9,11 +9,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * @author yinww
  *
  */
-
 public class Module {
 
-    private Long id;
-    private Long parentId;
+    private String id;
+    private String productId;
+    private String parentId;
     private String name;
     private String englishName;
     private String icon;
@@ -24,19 +24,27 @@ public class Module {
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Long getParentId() {
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public String getParentId() {
         return parentId;
     }
 
-    public void setParentId(Long parentId) {
+    public void setParentId(String parentId) {
         this.parentId = parentId;
     }
 

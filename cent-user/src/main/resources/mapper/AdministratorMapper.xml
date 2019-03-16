@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.centyun.user.mapper.AdministratorMapper">
+    <resultMap id="AdminMenuResultMap" type="com.centyun.user.domain.AdminMenu">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="english_name" jdbcType="VARCHAR" property="englishName"/>
+        <result column="icon" jdbcType="VARCHAR" property="icon"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="order_no" jdbcType="INTEGER" property="orderNo"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="createTime"/>
+    </resultMap>
+    
+    <resultMap id="AdministratorResultMap" type="com.centyun.core.domain.Administrator">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="login_name" jdbcType="VARCHAR" property="loginName"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="display_name" jdbcType="VARCHAR" property="displayName"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="language" jdbcType="VARCHAR" property="language"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="creator" jdbcType="VARCHAR" property="creator"/>
+        <result column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="createTime"/>
+        <result column="editor" jdbcType="VARCHAR" property="editor"/>
+        <result column="edit_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="editTime"/>
+        <result column="password_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="passwordTime"/>
+    </resultMap>
+    
+    <select id="getAdministrator" resultMap="AdministratorResultMap">
+        select * from us_administrator where login_name=#{loginName}
+    </select>
+    
+    <select id="getAdminMenus" resultMap="AdminMenuResultMap">
+        select * from us_admin_menu where status=1 order by order_no
+    </select>
+    
+    <update id="updateLanguage">
+        update us_administrator set language=#{language} where id=#{id}
+    </update>
+</mapper>

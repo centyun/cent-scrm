@@ -15,11 +15,11 @@ public interface TenantMapper {
 
     void updateTenant(Tenant tenant);
 
-    Tenant getTenantById(@Param("id") Long id);
+    Tenant getTenantById(@Param("id") String id);
 
     List<Tenant> getTenants(@Param("searchValue") String searchValue, @Param("orders") List<KeyValuePair> orders);
 
-    void updateStatus(@Param("ids") List<Long> ids, @Param("status") int status, @Param("editor") Long editor);
+    void updateStatus(@Param("ids") List<String> ids, @Param("status") int status, @Param("editor") String editor);
 
     List<KeyValuePair> getAllTenants();
 

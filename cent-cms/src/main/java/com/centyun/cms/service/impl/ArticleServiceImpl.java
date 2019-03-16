@@ -26,8 +26,8 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public void saveArticle(Article article) {
         if(article != null && article.getTenantId() != null) {
-            Long id = article.getId();
-            if (id == null || id <= 0) {
+            String id = article.getId();
+            if (StringUtils.isEmpty(id)) {
                 SnowFlakeIdWorker snowFlake = new SnowFlakeIdWorker(SieConstant.DATACENTER_ID, SieConstant.MACHINE_ID);
                 article.setId(snowFlake.nextId());
                 articleMapper.addArticle(article);
@@ -38,13 +38,13 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Article getArticle(Long tenantId) {
+    public Article getArticle(String tenantId) {
         return articleMapper.getArticle(tenantId);
     }
 
     @Override
-    public PageInfo<Article> getPageArticles(DataTableParam dataTableParam, Long tenantId) {
-        PageHelper.startPage(dataTableParam.getStart(), dataTableParam.getLength());
+    public PageInfo<Article> getPageArticles(DataTableParam dataTableParam, String tenantId) {
+        PageHelper.startPage(dataTableParam.getPageNum(), dataTableParam.getLength());
         String searchValue = dataTableParam.getSearchValue();
         List<KeyValuePair> orders = dataTableParam.getOrders();
         List<Article> sites = articleMapper.getPageArticles(tenantId, StringUtils.isEmpty(searchValue) ? null : searchValue,

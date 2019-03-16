@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //              .successHandler(userAuthenticationSuccessHandler)
 //              .failureHandler(userAuthenticationFailHander)
                 .permitAll().and().headers().frameOptions().sameOrigin().and().authorizeRequests()
-                .antMatchers("/user/getUserByToken", "/product/getAvailableProducts", "/user/update-language", "/captcha-image", "/change-language",
+                .antMatchers("/user/getUserByToken", "/product/getAvailableProducts", "/product/getProductsAndModules", "/user/update-language", "/captcha-image", "/change-language",
                         "/login/**")
                 .permitAll().anyRequest().access("@securityService.hasPermission(request, authentication)") // 必须经过认证以后才能访问
                 .and().csrf().disable();

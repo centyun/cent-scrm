@@ -33,12 +33,12 @@ public class TemplateServiceImpl implements TemplateService {
 	}
 
 	@Override
-	public Template getTemplateById(Long id, Long tenantId) {
+	public Template getTemplateById(String id, String tenantId) {
 		return templateMapper.getTemplateById(id, tenantId);
 	}
 
 	@Override
-	public List<Template> getTemplates(Long tenantId) {
+	public List<Template> getTemplates(String tenantId) {
 		return templateMapper.getTemplates(tenantId);
 	}
 

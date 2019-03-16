@@ -24,7 +24,7 @@ public class ConfigController extends WebBaseController {
 	@RequestMapping(value = "/index.html")
 	public ModelAndView index(HttpServletRequest request) {
 		ModelAndView model = new ModelAndView();
-		model.addObject("products", getAvailableProducts(request));
+		model.addObject("products", getProductsAndModules(request));
         model.setViewName("config/provider-index");
         return model;
 	}

@@ -31,12 +31,12 @@ public class ProviderConfigServiceImpl implements ProviderConfigService {
 	}
 
 	@Override
-	public ProviderConfig getProviderConfigById(Long id, Long tenantId) {
+	public ProviderConfig getProviderConfigById(String id, String tenantId) {
 		return providerConfigMapper.getProviderConfigById(id, tenantId);
 	}
 
 	@Override
-	public List<ProviderConfig> getProviderConfigs(Long tenantId) {
+	public List<ProviderConfig> getProviderConfigs(String tenantId) {
 		return providerConfigMapper.getProviderConfigs(tenantId);
 	}
 

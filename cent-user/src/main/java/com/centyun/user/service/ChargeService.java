@@ -8,11 +8,11 @@ import com.github.pagehelper.PageInfo;
 
 public interface ChargeService {
 
-    PageInfo<Charge> getPageCharges(DataTableParam dataTableParam, Long tenantId);
+    PageInfo<Charge> getPageCharges(DataTableParam dataTableParam, String tenantId);
 
-    Charge getChargeById(Long id);
+    Charge getChargeById(String id);
 
     void saveCharge(Charge charge) throws Exception;
 
-    void updateStatus(List<Long> ids, Integer action) throws Exception;
+    void updateStatus(List<String> ids, Integer action) throws Exception;
 }

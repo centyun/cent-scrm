@@ -15,8 +15,8 @@ public interface ProviderConfigMapper {
 	
 	void deleteProviderConfig(ProviderConfig providerConfig);
 	
-	ProviderConfig getProviderConfigById(Long id, Long tenantId);
+	ProviderConfig getProviderConfigById(String id, String tenantId);
 	
-	List<ProviderConfig> getProviderConfigs(Long tenantId);
+	List<ProviderConfig> getProviderConfigs(String tenantId);
 
 }

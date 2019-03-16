@@ -15,8 +15,8 @@ public interface TenantService {
 
     void saveTenant(Tenant tenant);
 
-    Tenant getTenantById(Long id);
+    Tenant getTenantById(String id);
 
-    void updateStatus(List<Long> ids, Integer action);
+    void updateStatus(List<String> ids, Integer action);
 
 }

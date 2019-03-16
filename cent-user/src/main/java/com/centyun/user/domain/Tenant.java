@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class Tenant {
 
-    private Long id;
+    private String id;
     private String name;
     private String code;
     private String mainUser; // 主账号登录名
@@ -27,10 +27,10 @@ public class Tenant {
     private Integer status; // 0已注册, 1已审核, 2已认证, 3已冻结, 4已注销
     private String note;
     private String accessKey;
-    private Long creator;
+    private String creator;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
-    private Long editor;
+    private String editor;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date editTime;
 
@@ -38,11 +38,11 @@ public class Tenant {
     private String editorName;
     private String mainUserPwd; // 主账号密码, 仅创建租户时会有值
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -150,11 +150,11 @@ public class Tenant {
         this.accessKey = accessKey;
     }
 
-    public Long getCreator() {
+    public String getCreator() {
         return creator;
     }
 
-    public void setCreator(Long creator) {
+    public void setCreator(String creator) {
         this.creator = creator;
     }
 
@@ -166,11 +166,11 @@ public class Tenant {
         this.createTime = createTime;
     }
 
-    public Long getEditor() {
+    public String getEditor() {
         return editor;
     }
 
-    public void setEditor(Long editor) {
+    public void setEditor(String editor) {
         this.editor = editor;
     }
 

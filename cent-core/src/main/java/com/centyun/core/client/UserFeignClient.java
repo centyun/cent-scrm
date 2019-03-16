@@ -22,8 +22,8 @@ public interface UserFeignClient {
     public User getUserByToken(@RequestParam("token") String token);
 
     @RequestMapping("/user/updateLanguage")
-    public void updateLanguage(@RequestParam("id") Long id, @RequestParam("language") String language);
+    public void updateLanguage(@RequestParam("id") String id, @RequestParam("language") String language);
     
-    @RequestMapping("/product/getAvailableProducts")
-    public List<ProductVO> getAvailableProducts();
+    @RequestMapping("/product/getProductsAndModules")
+    public List<ProductVO> getProductsAndModules();
 }

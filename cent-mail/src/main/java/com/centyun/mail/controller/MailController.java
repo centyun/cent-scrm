@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,10 +43,10 @@ public class MailController {
         List<Integer> shardings = RandomGenerator.getRandomIntList(0, 20, count);
         for (int i = 0; i < count; i++) {
             Mail mail = new Mail();
-            Long id = mail.getId();
-            if (id == null || id == 0l) {
-                long nextId = worker.nextId();
-                System.out.println("nextId===" + nextId);
+            String id = mail.getId();
+            if (StringUtils.isEmpty(id)) {
+                String nextId = worker.nextId();
+                log.debug("nextId===" + nextId);
                 mail.setId(nextId);
                 mail.setRecipient("hello" + i + "@hello.com");
                 mail.setSubject("测试主题");
@@ -63,7 +64,7 @@ public class MailController {
     @RequestMapping("/getMail")
     @ResponseBody
     public Object getMails() {
-        List<Mail> mails = mailService.getMails(1l);
+        List<Mail> mails = mailService.getMails("1");
         return mails;
     }
 }

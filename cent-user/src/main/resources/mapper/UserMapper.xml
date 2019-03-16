@@ -4,8 +4,8 @@
 
 <mapper namespace="com.centyun.user.mapper.UserMapper">
 	<resultMap id="UserResultMap" type="com.centyun.core.domain.User">
-		<id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="tenant_id" jdbcType="BIGINT" property="tenantId"/>
+		<id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="tenant_id" jdbcType="VARCHAR" property="tenantId"/>
 		<result column="login_name" jdbcType="VARCHAR" property="loginName"/>
 		<result column="type" jdbcType="INTEGER" property="type"/>
 		<result column="password" jdbcType="VARCHAR" property="password"/>
@@ -19,9 +19,9 @@
 		<result column="status" jdbcType="INTEGER" property="status"/>
 		<result column="grade" jdbcType="INTEGER" property="grade"/>
         <result column="language" jdbcType="VARCHAR" property="language"/>
-		<result column="creator" jdbcType="BIGINT" property="creator"/>
+		<result column="creator" jdbcType="VARCHAR" property="creator"/>
 		<result column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="createTime"/>
-		<result column="editor" jdbcType="BIGINT" property="editor"/>
+		<result column="editor" jdbcType="VARCHAR" property="editor"/>
 		<result column="edit_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="editTime"/>
 		<result column="tenant_name" jdbcType="VARCHAR" property="tenantName"/>
         <result column="creator_name" jdbcType="VARCHAR" property="creatorName"/>
@@ -30,7 +30,7 @@
 
 	<select id="getPageUsers" resultMap="UserResultMap">
 		select a.*, t.name tenant_name, m1.display_name creator_name, m2.display_name editor_name from us_user a left join us_tenant t on a.tenant_id=t.id
-        left join us_manager m1 on a.creator=m1.id left join us_manager m2 on a.editor=m1.id
+        left join us_administrator m1 on a.creator=m1.id left join us_administrator m2 on a.editor=m2.id
 		<trim prefix="WHERE" prefixOverrides="AND |OR ">
 		    <if test="searchValue != null">
 		        ( a.login_name like concat('%', #{searchValue}, '%')
@@ -49,7 +49,7 @@
 
 	<select id="getUserById" resultMap="UserResultMap">
 		select a.*, t.name tenant_name, m1.display_name creator_name, m2.display_name editor_name from us_user a left join us_tenant t on a.tenant_id=t.id
-        left join us_manager m1 on a.creator=m1.id left join us_manager m2 on a.editor=m1.id
+        left join us_administrator m1 on a.creator=m1.id left join us_administrator m2 on a.editor=m2.id
         where a.id=#{id}
 	</select>
 

@@ -15,9 +15,9 @@ public interface FriendLinkMapper {
     
     void updateFriendLink(FriendLink friendLink);
     
-    FriendLink getFriendLink(@Param("tenantId") Long tenantId);
+    FriendLink getFriendLink(@Param("tenantId") String tenantId);
 
-    List<FriendLink> getPageFriendLinks(@Param("tenantId") Long tenantId, @Param("searchValue") String searchValue,
+    List<FriendLink> getPageFriendLinks(@Param("tenantId") String tenantId, @Param("searchValue") String searchValue,
             @Param("orders") List<KeyValuePair> orders);
 
 }

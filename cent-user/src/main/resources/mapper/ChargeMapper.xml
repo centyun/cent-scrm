@@ -4,7 +4,7 @@
 
 <mapper namespace="com.centyun.user.mapper.ChargeMapper">
 	<resultMap id="ChargeResultMap" type="com.centyun.user.domain.Charge">
-		<id column="id" jdbcType="BIGINT" property="id"/>
+		<id column="id" jdbcType="VARCHAR" property="id"/>
 		<result column="tenant_id" jdbcType="VARCHAR" property="tenantId"/>
 		<result column="tenant_name" jdbcType="VARCHAR" property="tenantName"/>
 		<result column="product_id" jdbcType="VARCHAR" property="productId"/>
@@ -14,20 +14,20 @@
 		<result column="expired_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="expiredTime"/>
 		<result column="note" jdbcType="VARCHAR" property="note"/>
 		<result column="status" jdbcType="INTEGER" property="status"/>
-		<result column="charge_manager" jdbcType="VARCHAR" property="chargeManager"/>
+		<result column="charge_administrator" jdbcType="VARCHAR" property="chargeAdministrator"/>
 		<result column="charge_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="chargeTime"/>
 		<result column="editor" jdbcType="VARCHAR" property="editor"/>
 		<result column="edit_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="editTime"/>
         <result column="tenant_name" jdbcType="VARCHAR" property="tenantName"/>
         <result column="product_name" jdbcType="VARCHAR" property="productName"/>
-        <result column="charge_manager_name" jdbcType="VARCHAR" property="chargeManagerName"/>
+        <result column="charge_administrator_name" jdbcType="VARCHAR" property="chargeAdministratorName"/>
         <result column="editor_name" jdbcType="VARCHAR" property="editorName"/>
 	</resultMap>
 	
 	<select id="getPageCharges" resultMap="ChargeResultMap">
-		select a.*, t.name tenant_name, p.name product_name, m1.display_name charge_manager_name, m2.display_name editor_name from us_charge a
+		select a.*, t.name tenant_name, p.name product_name, m1.display_name charge_administrator_name, m2.display_name editor_name from us_charge a
 		left join us_tenant t on a.tenant_id=t.id left join us_product p on a.product_id=p.id
-        left join us_manager m1 on a.charge_manager=m1.id left join us_manager m2 on a.editor=m1.id
+        left join us_administrator m1 on a.charge_administrator=m1.id left join us_administrator m2 on a.editor=m2.id
 		<trim prefix="WHERE" prefixOverrides="AND |OR ">
 		    <if test="searchValue != null">
 		        ( t.name like concat('%', #{searchValue}, '%')
@@ -44,15 +44,15 @@
 	</select>
 	
 	<select id="getChargeById" resultMap="ChargeResultMap">
-        select a.*, t.name tenant_name, p.name product_name, m1.display_name charge_manager_name, m2.display_name editor_name from us_charge a
+        select a.*, t.name tenant_name, p.name product_name, m1.display_name charge_administrator_name, m2.display_name editor_name from us_charge a
         left join us_tenant t on a.tenant_id=t.id left join us_product p on a.product_id=p.id
-        left join us_manager m1 on a.charge_manager=m1.id left join us_manager m2 on a.editor=m1.id
+        left join us_administrator m1 on a.charge_administrator=m1.id left join us_administrator m2 on a.editor=m2.id
 		where a.id=#{id}
 	</select>
 	
 	<insert id="addCharge">
-	    insert into us_charge (id, tenant_id, product_id, money, quota, expired_time, note, status, charge_manager, charge_time)
-	    values(#{id}, #{tenantId}, #{productId}, #{money}, #{quota}, #{expiredTime}, #{note}, 1, #{chargeManager}, now())
+	    insert into us_charge (id, tenant_id, product_id, money, quota, expired_time, note, status, charge_administrator, charge_time)
+	    values(#{id}, #{tenantId}, #{productId}, #{money}, #{quota}, #{expiredTime}, #{note}, 1, #{chargeAdministrator}, now())
 	</insert>
 	
 	<update id="updateStatus">

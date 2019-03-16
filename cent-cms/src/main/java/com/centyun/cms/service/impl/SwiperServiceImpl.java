@@ -26,8 +26,8 @@ public class SwiperServiceImpl implements SwiperService {
     @Override
     public void saveSwiper(Swiper swiper) {
         if(swiper != null && swiper.getTenantId() != null) {
-            Long id = swiper.getId();
-            if (id == null || id <= 0) {
+            String id = swiper.getId();
+            if (StringUtils.isEmpty(id)) {
                 SnowFlakeIdWorker snowFlake = new SnowFlakeIdWorker(SieConstant.DATACENTER_ID, SieConstant.MACHINE_ID);
                 swiper.setId(snowFlake.nextId());
                 swiperMapper.addSwiper(swiper);
@@ -38,13 +38,13 @@ public class SwiperServiceImpl implements SwiperService {
     }
 
     @Override
-    public Swiper getSwiper(Long tenantId, Long siteId) {
+    public Swiper getSwiper(String tenantId, String siteId) {
         return swiperMapper.getSwiper(tenantId);
     }
 
     @Override
-    public PageInfo<Swiper> getPageSwipers(DataTableParam dataTableParam, Long tenantId) {
-        PageHelper.startPage(dataTableParam.getStart(), dataTableParam.getLength());
+    public PageInfo<Swiper> getPageSwipers(DataTableParam dataTableParam, String tenantId) {
+        PageHelper.startPage(dataTableParam.getPageNum(), dataTableParam.getLength());
         String searchValue = dataTableParam.getSearchValue();
         List<KeyValuePair> orders = dataTableParam.getOrders();
         List<Swiper> swiperrs = swiperMapper.getPageSwipers(tenantId, StringUtils.isEmpty(searchValue) ? null : searchValue,

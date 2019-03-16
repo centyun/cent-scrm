@@ -8,7 +8,7 @@ public interface NavigationService {
     
     void saveNavigation(Navigation navigation);
     
-    Navigation getNavigation(Long tenantId, Long siteId, Long navId);
+    Navigation getNavigation(String tenantId, String siteId, String navId);
 
-    PageInfo<Navigation> getPageNavigations(DataTableParam dataTableParam, Long tenantId);
+    PageInfo<Navigation> getPageNavigations(DataTableParam dataTableParam, String tenantId);
 }

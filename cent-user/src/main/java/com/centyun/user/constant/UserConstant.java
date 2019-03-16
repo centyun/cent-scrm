@@ -6,6 +6,9 @@ public interface UserConstant {
     String TENANT_EXISTED = "tenant.existed";
     String USER_EXISTED = "user.existed";
     String PRODUCT_EXISTED = "product.existed";
+    String COUNTRY_REGION_EXISTED = "countryRegion.existed";
+    String PROVINCE_EXISTED = "province.existed";
+    String CITY_EXISTED = "city.existed";
     
     long DATACENTER_ID = 0; // 雪花算法的数据中心id
     long MACHINE_ID = 0; // 雪花算法的机器id

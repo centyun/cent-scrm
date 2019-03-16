@@ -26,8 +26,8 @@ public class FriendLinkServiceImpl implements FriendLinkService {
     @Override
     public void saveFriendLink(FriendLink friendLink) {
         if(friendLink != null && friendLink.getTenantId() != null) {
-            Long id = friendLink.getId();
-            if (id == null || id <= 0) {
+            String id = friendLink.getId();
+            if (StringUtils.isEmpty(id)) {
                 SnowFlakeIdWorker snowFlake = new SnowFlakeIdWorker(SieConstant.DATACENTER_ID, SieConstant.MACHINE_ID);
                 friendLink.setId(snowFlake.nextId());
                 friendLinkMapper.addFriendLink(friendLink);
@@ -38,13 +38,13 @@ public class FriendLinkServiceImpl implements FriendLinkService {
     }
 
     @Override
-    public FriendLink getFriendLink(Long tenantId) {
+    public FriendLink getFriendLink(String tenantId) {
         return friendLinkMapper.getFriendLink(tenantId);
     }
 
     @Override
-    public PageInfo<FriendLink> getPageFriendLinks(DataTableParam dataTableParam, Long tenantId) {
-        PageHelper.startPage(dataTableParam.getStart(), dataTableParam.getLength());
+    public PageInfo<FriendLink> getPageFriendLinks(DataTableParam dataTableParam, String tenantId) {
+        PageHelper.startPage(dataTableParam.getPageNum(), dataTableParam.getLength());
         String searchValue = dataTableParam.getSearchValue();
         List<KeyValuePair> orders = dataTableParam.getOrders();
         List<FriendLink> friendLinks = friendLinkMapper.getPageFriendLinks(tenantId, StringUtils.isEmpty(searchValue) ? null : searchValue,

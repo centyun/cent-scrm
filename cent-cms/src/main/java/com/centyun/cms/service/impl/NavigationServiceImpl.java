@@ -22,12 +22,12 @@ public class NavigationServiceImpl implements NavigationService {
     }
 
     @Override
-    public Navigation getNavigation(Long tenantId, Long siteId, Long navId) {
+    public Navigation getNavigation(String tenantId, String siteId, String navId) {
         return navigationMapper.getNavigation(tenantId, siteId, navId);
     }
 
     @Override
-    public PageInfo<Navigation> getPageNavigations(DataTableParam dataTableParam, Long tenantId) {
+    public PageInfo<Navigation> getPageNavigations(DataTableParam dataTableParam, String tenantId) {
         // TODO Auto-generated method stub
         return null;
     }

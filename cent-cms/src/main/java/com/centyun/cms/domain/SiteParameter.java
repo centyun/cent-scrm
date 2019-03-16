@@ -1,25 +1,37 @@
 package com.centyun.cms.domain;
 
-public class SiteParameter {
-    private Long siteId;
-    private Long tenantId;
-    private String name;
-    private String parameter;
-    private String value;
+import java.util.Date;
 
-    public Long getSiteId() {
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+public class SiteParameter {
+    private String siteId;
+    private String tenantId;
+    private String name;
+    private String value;
+    private String note;
+    private String creator;
+    private String creatorName;
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")
+    private Date createTime;
+    private String editor;
+    private String editorName;
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")
+    private Date editTime;
+
+    public String getSiteId() {
         return siteId;
     }
 
-    public void setSiteId(Long siteId) {
+    public void setSiteId(String siteId) {
         this.siteId = siteId;
     }
 
-    public Long getTenantId() {
+    public String getTenantId() {
         return tenantId;
     }
 
-    public void setTenantId(Long tenantId) {
+    public void setTenantId(String tenantId) {
         this.tenantId = tenantId;
     }
 
@@ -31,20 +43,68 @@ public class SiteParameter {
         this.name = name;
     }
 
-    public String getParameter() {
-        return parameter;
-    }
-
-    public void setParameter(String parameter) {
-        this.parameter = parameter;
-    }
-
     public String getValue() {
         return value;
     }
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getEditor() {
+        return editor;
+    }
+
+    public void setEditor(String editor) {
+        this.editor = editor;
+    }
+
+    public String getEditorName() {
+        return editorName;
+    }
+
+    public void setEditorName(String editorName) {
+        this.editorName = editorName;
+    }
+
+    public Date getEditTime() {
+        return editTime;
+    }
+
+    public void setEditTime(Date editTime) {
+        this.editTime = editTime;
     }
 
 }

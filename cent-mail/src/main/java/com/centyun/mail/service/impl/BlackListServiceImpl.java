@@ -26,12 +26,12 @@ public class BlackListServiceImpl implements BlackListService {
 	}
 
 	@Override
-	public BlackList getBlackListById(Long id, Long tenantId) {
+	public BlackList getBlackListById(String id, String tenantId) {
 		return blackListMapper.getBlackListById(id, tenantId);
 	}
 
 	@Override
-	public List<BlackList> getBlackLists(Long tenantId) {
+	public List<BlackList> getBlackLists(String tenantId) {
 		return blackListMapper.getBlackLists(tenantId);
 	}
 

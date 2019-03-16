@@ -6,21 +6,21 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class Navigation {
 
-    private Long id;
-    private Long tenantId; // 租户id
-    private Long siteId; // 站点id
+    private String id;
+    private String tenantId; // 租户id
+    private String siteId; // 站点id
     private String name;
     private int type;
     private int style;
     private String link;
     private int openTarget;
-    private Long pcParentId;
+    private String pcParentId;
     private int pcDisplay;
     private int pcLevel;
     private int pcOrderNo;
     private String pcCoverImage;
     private String description;
-    private Long mobileParentId;
+    private String mobileParentId;
     private int mobileDisplay;
     private int mobileLevel;
     private int mobileOrderNo;
@@ -32,36 +32,36 @@ public class Navigation {
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")
     private Date publishTime;
     private int visitNum;
-    private Long creator;
+    private String creator;
     private String creatorName;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")
     private Date createTime;
-    private Long editor;
+    private String editor;
     private String editorName;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")
     private Date editTime;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Long getTenantId() {
+    public String getTenantId() {
         return tenantId;
     }
 
-    public void setTenantId(Long tenantId) {
+    public void setTenantId(String tenantId) {
         this.tenantId = tenantId;
     }
 
-    public Long getSiteId() {
+    public String getSiteId() {
         return siteId;
     }
 
-    public void setSiteId(Long siteId) {
+    public void setSiteId(String siteId) {
         this.siteId = siteId;
     }
 
@@ -105,11 +105,11 @@ public class Navigation {
         this.openTarget = openTarget;
     }
 
-    public Long getPcParentId() {
+    public String getPcParentId() {
         return pcParentId;
     }
 
-    public void setPcParentId(Long pcParentId) {
+    public void setPcParentId(String pcParentId) {
         this.pcParentId = pcParentId;
     }
 
@@ -153,11 +153,11 @@ public class Navigation {
         this.description = description;
     }
 
-    public Long getMobileParentId() {
+    public String getMobileParentId() {
         return mobileParentId;
     }
 
-    public void setMobileParentId(Long mobileParentId) {
+    public void setMobileParentId(String mobileParentId) {
         this.mobileParentId = mobileParentId;
     }
 
@@ -241,11 +241,11 @@ public class Navigation {
         this.visitNum = visitNum;
     }
 
-    public Long getCreator() {
+    public String getCreator() {
         return creator;
     }
 
-    public void setCreator(Long creator) {
+    public void setCreator(String creator) {
         this.creator = creator;
     }
 
@@ -265,11 +265,11 @@ public class Navigation {
         this.createTime = createTime;
     }
 
-    public Long getEditor() {
+    public String getEditor() {
         return editor;
     }
 
-    public void setEditor(Long editor) {
+    public void setEditor(String editor) {
         this.editor = editor;
     }
 

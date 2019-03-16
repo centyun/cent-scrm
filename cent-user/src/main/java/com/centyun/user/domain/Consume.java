@@ -12,10 +12,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class Consume {
 
-    private Long id;
-    private Long tenantId;
-    private Long productId;
-    private Long userId;
+    private String id;
+    private String tenantId;
+    private String productId;
+    private String userId;
     private Integer amount;
     private Double money;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
@@ -27,35 +27,35 @@ public class Consume {
     private String userName;
     private String ipStr;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Long getTenantId() {
+    public String getTenantId() {
         return tenantId;
     }
 
-    public void setTenantId(Long tenantId) {
+    public void setTenantId(String tenantId) {
         this.tenantId = tenantId;
     }
 
-    public Long getProductId() {
+    public String getProductId() {
         return productId;
     }
 
-    public void setProductId(Long productId) {
+    public void setProductId(String productId) {
         this.productId = productId;
     }
 
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

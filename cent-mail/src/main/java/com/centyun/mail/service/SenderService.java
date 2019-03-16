@@ -12,8 +12,8 @@ public interface SenderService {
 	
 	void deleteSender(Sender sender);
 	
-	Sender getSenderById(Long id, Long tenantId);
+	Sender getSenderById(String id, String tenantId);
 	
-	List<Sender> getSenders(Long tenantId);
+	List<Sender> getSenders(String tenantId);
 
 }

@@ -6,10 +6,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class Article {
 
-    private Long id;
-    private Long tenantId; // 租户id
-    private Long siteId; // 站点id
-    private Long navId; // 导航id
+    private String id;
+    private String tenantId; // 租户id
+    private String siteId; // 站点id
+    private String navId; // 导航id
     private String title;
     private int pcDisplay;
     private int mobileDisplay;
@@ -26,44 +26,44 @@ public class Article {
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")
     private Date publishTime;
     private int visitNum;
-    private Long creator;
+    private String creator;
     private String creatorName;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")
     private Date createTime;
-    private Long editor;
+    private String editor;
     private String editorName;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")
     private Date editTime;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Long getTenantId() {
+    public String getTenantId() {
         return tenantId;
     }
 
-    public void setTenantId(Long tenantId) {
+    public void setTenantId(String tenantId) {
         this.tenantId = tenantId;
     }
 
-    public Long getSiteId() {
+    public String getSiteId() {
         return siteId;
     }
 
-    public void setSiteId(Long siteId) {
+    public void setSiteId(String siteId) {
         this.siteId = siteId;
     }
 
-    public Long getNavId() {
+    public String getNavId() {
         return navId;
     }
 
-    public void setNavId(Long navId) {
+    public void setNavId(String navId) {
         this.navId = navId;
     }
 
@@ -187,11 +187,11 @@ public class Article {
         this.visitNum = visitNum;
     }
 
-    public Long getCreator() {
+    public String getCreator() {
         return creator;
     }
 
-    public void setCreator(Long creator) {
+    public void setCreator(String creator) {
         this.creator = creator;
     }
 
@@ -211,11 +211,11 @@ public class Article {
         this.createTime = createTime;
     }
 
-    public Long getEditor() {
+    public String getEditor() {
         return editor;
     }
 
-    public void setEditor(Long editor) {
+    public void setEditor(String editor) {
         this.editor = editor;
     }
 

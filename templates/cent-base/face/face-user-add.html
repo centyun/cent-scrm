@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title th:text="#{Platform.Title}">CentYun</title>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" th:href="@{/lib/bootstrap/css/bootstrap.min.css}">
+  <link rel="stylesheet" th:href="@{/lib/font-awesome/css/font-awesome.min.css}">
+  <link rel="stylesheet" th:href="@{/lib/Ionicons/css/ionicons.min.css}">
+  <link rel="stylesheet" th:href="@{/lib/adminlte/css/adminlte.min.css}">
+  <link rel="stylesheet" th:href="@{/lib/adminlte/css/skins/skin-blue.min.css}">
+  <link rel="stylesheet" th:href="@{/css/base.css}">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Google Font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+  <header th:replace="footer :: main-header"></header>
+  
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside th:replace="footer :: main-sidebar"></aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Main content -->
+    <section class="content container-fluid">
+    
+          <!-- Horizontal Form -->
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title" th:text="#{face.user.create}">创建人脸库用户</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form class="form-horizontal">
+              <div class="box-body">
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label for="name" class="col-sm-3 control-label"><span th:text="#{face.user}">User</span> <span class="required">*</span></label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" name="user" id="user" th:placeholder="#{face.user}">
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="logo" class="col-sm-3 control-label" th:text="#{face.picture}">User Picture</label>
+                  <div class="col-sm-9">
+                    <label>请上传用户正面、无遮挡照片, 仅支持PNG、JPG、JPEG、BMP格式</label><br/>
+                    <input type="file" name="file" id="file" accept="image/*" onchange="uploadFace();">
+                    <input type="hidden" name="face" id="face">
+                    <div id="img" class="upload"></div>
+                  </div>
+                </div>
+              </div>
+          <!-- /.row -->
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <div class="col-sm-offset-3 col-sm-9" id="videoDiv" style="display:none;">
+                    <video id="video" width="320" height="240" playsinline webkit-playsinline preload autoplay loop muted></video>
+                    <button type="button" class="btn" th:text="#{face.take.photo}" onclick="takePhoto();">拍照</button>
+                  </div>
+                </div>
+                <div class="form-group col-md-6" id="canvasDiv" style="display:none;">
+                  <canvas id="canvas"></canvas>
+                </div>
+              </div>
+          <!-- /.row -->
+              <div class="row">
+                  <div class="form-group col-md-12">
+                      <div class="col-sm-offset-3 col-sm-9" id="errMsg" style="color: red;"></div>
+                  </div>
+              </div>
+          <!-- /.row -->
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <div class="col-sm-offset-3 col-sm-9">
+                    <button type="button" class="btn btn-primary" th:text="#{face.open.camera}" id="showVideo">开启摄像头</button>
+                    <button type="button" id="save" class="btn btn-primary tablebtn" th:text="#{common.save}" onclick="saveFaceUser()">保存</button>
+                    <button type="button" class="btn btn-default tablebtn" th:text="#{common.return}" onclick="gotopage('/face');">返回</button>
+                  </div>
+                </div>
+              </div>
+          <!-- /.row -->
+              </div>
+              <!-- /.box-body -->
+            </form>
+          </div>
+          <!-- /.box -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Main Footer -->
+  <div th:replace="footer :: copy"></div>
+</div>
+<!-- ./wrapper -->
+
+<script th:src="@{/lib/jquery.min.js}"></script>
+<script th:src="@{/lib/face/tracking-min.js}"></script>
+<script th:src="@{/lib/face/face-min.js}"></script>
+<script th:src="@{/lib/js.cookie.min.js}"></script>
+<script th:src="@{/js/lang.js}"></script>
+<script th:src="@{/lib/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/lib/adminlte/js/adminlte.min.js}"></script>
+<script th:src="@{/lib/ajaxfileupload.js}"></script>
+
+<script>
+function gotopage(page) {
+    window.location.href = page;
+}
+    
+    const constraints = window.constraints = {audio: false, video: true};
+    function handleSuccess(stream) {
+        const video = document.querySelector('video');
+        const videoTracks = stream.getVideoTracks();
+        console.log('Got stream with constraints:', constraints);
+        console.log(`Using video device: ${videoTracks[0].label}`);
+        window.stream = stream; // make variable available to browser console
+        video.srcObject = stream;
+    }
+    function handleError(error) {
+        if (error.name === 'ConstraintNotSatisfiedError') {
+            let v = constraints.video;
+            errorMsg(`The resolution ${v.width.exact}x${v.height.exact} px is not supported by your device.`);
+        } else if (error.name === 'PermissionDeniedError') {
+            errorMsg('Permissions have not been granted to use your camera and ' +
+              'microphone, you need to allow the page access to your devices in ' +
+              'order for the demo to work.');
+        }
+        errorMsg(`getUserMedia error: ${error.name}`, error);
+    }
+    
+    function errorMsg(msg, error) {
+        const errorElement = document.querySelector('#errMsg');
+        errorElement.innerHTML += `<p>${msg}</p>`;
+        if (typeof error !== 'undefined') {
+            console.error(error);
+        }
+    }
+    
+    async function init(e) {
+        $("#videoDiv, #canvasDiv").show();
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia(constraints);
+            handleSuccess(stream);
+            e.target.disabled = true;
+        } catch (e) {
+            handleError(e);
+        }
+    }
+    
+    document.querySelector('#showVideo').addEventListener('click', e => init(e));
+    
+    var takeImage = false;
+    function takePhoto() {
+        video = document.querySelector('video');
+        canvas = document.querySelector('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+        takeImage = true;
+    }
+    
+    function uploadFace() {
+        $.ajaxFileUpload({
+            url : "/upload-file",
+            type : 'post',
+            secureuri : false,
+            fileElementId : 'file',
+            dataType : 'text',
+            success : function(data) {
+                data = data.replace(/<.*?>/ig, "")
+                data = $.parseJSON(data);
+                if (data.status == 200) {
+                    $("#face").val(data.data);
+                    $("#img").html("<img src='"+data.data+"'> <a href='#' onclick='deleteUploadImage()'>" + getI18n('delete') + "</a>");
+                }else{
+                    $("#img").html("");
+                }
+            },
+            error : function(error) {
+                console.log(error);
+                alert("上传Fail");
+            }
+        });
+    }
+    
+    function deleteUploadImage(){
+        $("#face").val("");
+        $("#img").html("");
+    }
+
+    function checkForm() {
+        var user = $('#user').val();
+        if (null == user || '' == user) {
+            $('#errMsg').html(getI18n('userCantEmpty'));
+            $('#user').focus();
+            return false;
+        }
+        /** 使用分布式id作为百度人脸库的userid，用户名存储到user_info中, 所以这里没有必须是字母数字下划线的限制
+        var reg = /^[a-zA-Z]([_a-zA-Z0-9]{4,99})$/;
+        if(!reg.test(user)){
+            $('#errMsg').html("用户必须是5~100位的字母、数字或下划线");
+            $('#user').focus();
+        }
+        */
+
+        var face = $('#face').val();
+        var c = document.getElementById("canvas");
+        var img = c.toDataURL("image/png");
+        // 必须上传照片或拍照，不能既不上传照片又不拍照
+        if ((null == face || '' == face) && (null == img || '' == img)) {
+            $('#errMsg').html(getI18n('faceCantEmpty'));
+            return false;
+        }
+        return true;
+    }
+    
+    function saveFaceUser() {
+        if (checkForm()) {
+            var arr = {};
+            arr.name = $('#user').val();
+            arr.face = $('#face').val();
+
+            if(takeImage) {
+                var c = document.getElementById("canvas");
+                var img = c.toDataURL("image/png");
+                img = img.replace(/^data:image\/(png|jpg);base64,/, "");
+                arr.base64Image = img;
+            } else {
+                arr.base64Image = "";
+            }
+            $.ajax({
+                url : '/face/save-face',
+                type : 'post',
+                dataType : 'json',
+                data : arr,
+                success : function(data) {
+                    console.log(data.status);
+                    if (data.status == 200) {
+                        window.location.href = "/face";
+                    } else if (data.status == 400) {
+                        $('#errMsg').html(data.data);
+                    } else if (data.status == 406) {
+                        var errors = data.data;
+                        var error = "";
+                        for (var i = 0; i < errors.length; i++) {
+                            if(i > 0) {
+                                error += "<br/>";
+                            }
+                            error += errors[i];
+                        }
+                        $('#errMsg').html(error);
+                    } else {
+                        console.log(data.data);
+                        $('#errMsg').html(data.data);
+                    }
+                },
+                error : function(data) {
+                    console.log(data);
+                    $('#errMsg').text(getI18n('saveError'));
+                }
+            });
+        }
+    }
+</script>
+</body>
+</html>

@@ -3,6 +3,8 @@ package com.centyun.core.security;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -12,6 +14,8 @@ import com.centyun.core.exception.CaptchaException;
 import com.centyun.core.util.encode.EncryptUtils;
 
 public class CaptchaAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+    
+    private Logger log = LoggerFactory.getLogger(CaptchaAuthenticationFilter.class);
 
     public static final String SPRING_SECURITY_CAPTCHA_KEY = "j_captcha";
     public static final String SESSION_CAPTCHA_KEY = "captcha_key";
@@ -24,7 +28,7 @@ public class CaptchaAuthenticationFilter extends UsernamePasswordAuthenticationF
             throws AuthenticationException {
         String autoLoginKey = getRequestValue(request, SESSION_KEY);
         if (autoLoginKey != null && autoLoginKey.length() > 0) { // 如果是自动登录
-            System.out.println("auto login in CaptchaAuthenticationFilter");
+            log.debug("auto login in CaptchaAuthenticationFilter");
             try {
                 String autoLoginEncodeKey = getSessionValue(request, SESSION_KEY_ENCODE);
                 if (EncryptUtils.valid(autoLoginKey, autoLoginEncodeKey)) {
@@ -38,7 +42,7 @@ public class CaptchaAuthenticationFilter extends UsernamePasswordAuthenticationF
                 request.getSession().setAttribute(SESSION_KEY_ENCODE, null); // 校验完后清空session值
             }
         } else {
-            System.out.println("captcha login in CaptchaAuthenticationFilter");
+            log.debug("captcha login in CaptchaAuthenticationFilter");
             String captcha = getSessionValue(request, SESSION_CAPTCHA_KEY);
             String inputCode = getRequestValue(request, SPRING_SECURITY_CAPTCHA_KEY);
             if (!inputCode.equalsIgnoreCase(captcha)) {

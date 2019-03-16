@@ -26,12 +26,12 @@ public class MailServiceImpl implements MailService {
 	}
 
 	@Override
-	public Mail getMailById(Long id, Long packageId, Long tenantId) {
+	public Mail getMailById(String id, String packageId, String tenantId) {
 		return mailMapper.getMailById(id, packageId, tenantId);
 	}
 
 	@Override
-	public List<Mail> getMails(Long packageId) {
+	public List<Mail> getMails(String packageId) {
 		return mailMapper.getMails(packageId);
 	}
 

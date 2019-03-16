@@ -23,9 +23,9 @@ public class SiteParameterServiceImpl implements SiteParameterService {
 
     @Override
     public void saveSiteParameter(SiteParameter siteParameter) {
-        if(siteParameter != null && siteParameter.getTenantId() != null) {
-            SiteParameter config = siteParameterMapper.getSiteParameter(siteParameter.getSiteId(), siteParameter.getTenantId(), siteParameter.getParameter());
-            if (config == null) {
+        if(siteParameter != null && !StringUtils.isEmpty(siteParameter.getTenantId())) {
+            SiteParameter parameter = siteParameterMapper.getSiteParameter(siteParameter.getSiteId(), siteParameter.getTenantId(), siteParameter.getName());
+            if (parameter == null) {
                 siteParameterMapper.addSiteParameter(siteParameter);
             } else {
                 siteParameterMapper.updateSiteParameter(siteParameter);
@@ -34,13 +34,13 @@ public class SiteParameterServiceImpl implements SiteParameterService {
     }
 
     @Override
-    public SiteParameter getSiteParameter(Long siteId, Long tenantId, String parameter) {
+    public SiteParameter getSiteParameter(String siteId, String tenantId, String parameter) {
         return siteParameterMapper.getSiteParameter(siteId, tenantId, parameter);
     }
 
     @Override
-    public PageInfo<SiteParameter> getPageSiteParameters(DataTableParam dataTableParam, Long tenantId) {
-        PageHelper.startPage(dataTableParam.getStart(), dataTableParam.getLength());
+    public PageInfo<SiteParameter> getPageSiteParameters(DataTableParam dataTableParam, String tenantId) {
+        PageHelper.startPage(dataTableParam.getPageNum(), dataTableParam.getLength());
         String searchValue = dataTableParam.getSearchValue();
         List<KeyValuePair> orders = dataTableParam.getOrders();
         List<SiteParameter> siteParameters = siteParameterMapper.getPageSiteParameters(tenantId, StringUtils.isEmpty(searchValue) ? null : searchValue,

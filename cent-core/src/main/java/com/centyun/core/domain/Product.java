@@ -9,9 +9,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * @author yinww
  *
  */
-
 public class Product {
-    private Long id;
+    private String id;
     private String name;
     private String englishName;
     private String code;
@@ -22,22 +21,22 @@ public class Product {
     private Date releaseTime;
     private String productManager; // 产品负责人
     private String note;
-    private Integer status; // 0 无效, 1 正常
-    private Long creator;
+    private Integer status; // 0 未发布, 1 正常, 2下线停用, 3将停用
+    private String creator;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
-    private Long editor;
+    private String editor;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date editTime;
 
     private String creatorName;
     private String editorName;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -121,11 +120,11 @@ public class Product {
         this.status = status;
     }
 
-    public Long getCreator() {
+    public String getCreator() {
         return creator;
     }
 
-    public void setCreator(Long creator) {
+    public void setCreator(String creator) {
         this.creator = creator;
     }
 
@@ -137,11 +136,11 @@ public class Product {
         this.createTime = createTime;
     }
 
-    public Long getEditor() {
+    public String getEditor() {
         return editor;
     }
 
-    public void setEditor(Long editor) {
+    public void setEditor(String editor) {
         this.editor = editor;
     }
 

@@ -10,6 +10,5 @@ drop table if exists ml_mail_8;
 drop table if exists ml_mail_9;
 
 
-drop table if exists ml_module;
 drop table if exists ml_mail_package;
 drop table if exists ml_mail;

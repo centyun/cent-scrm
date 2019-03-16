@@ -15,8 +15,8 @@ public interface SiteParameterMapper {
     
     void updateSiteParameter(SiteParameter siteParameter);
     
-    SiteParameter getSiteParameter(@Param("siteId") Long siteId, @Param("tenantId") Long tenantId, @Param("parameter") String parameter);
+    SiteParameter getSiteParameter(@Param("siteId") String siteId, @Param("tenantId") String tenantId, @Param("name") String name);
 
-    List<SiteParameter> getPageSiteParameters(@Param("tenantId") Long tenantId, @Param("searchValue") String searchValue,
+    List<SiteParameter> getPageSiteParameters(@Param("tenantId") String tenantId, @Param("searchValue") String searchValue,
             @Param("orders") List<KeyValuePair> orders);
 }

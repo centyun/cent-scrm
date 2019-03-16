@@ -15,9 +15,9 @@ public interface NavigationMapper {
     
     void updateNavigation(Navigation navigation);
     
-    Navigation getNavigation(@Param("tenantId") Long tenantId, @Param("siteId") Long siteId, @Param("navId") Long navId);
+    Navigation getNavigation(@Param("tenantId") String tenantId, @Param("siteId") String siteId, @Param("navId") String navId);
 
-    List<Navigation> getPageNavigations(@Param("tenantId") Long tenantId, @Param("searchValue") String searchValue,
+    List<Navigation> getPageNavigations(@Param("tenantId") String tenantId, @Param("searchValue") String searchValue,
             @Param("orders") List<KeyValuePair> orders);
 
 }

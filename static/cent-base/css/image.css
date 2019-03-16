@@ -1,0 +1,9 @@
+.markdown img {
+  display: block;
+  max-width: 100%;
+  /* height: auto;*/
+  cursor: -webkit-zoom-in;
+  cursor: -moz-zoom-in;
+  cursor: zoom-in;
+}
+

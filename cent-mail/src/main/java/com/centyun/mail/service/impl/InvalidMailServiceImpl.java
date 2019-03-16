@@ -21,12 +21,12 @@ public class InvalidMailServiceImpl implements InvalidMailService {
 	}
 
 	@Override
-	public InvalidMail getInvalidMailById(Long id, Long tenantId) {
+	public InvalidMail getInvalidMailById(String id, String tenantId) {
 		return invalidMailMapper.getInvalidMailById(id, tenantId);
 	}
 
 	@Override
-	public List<InvalidMail> getInvalidMails(Long tenantId) {
+	public List<InvalidMail> getInvalidMails(String tenantId) {
 		return invalidMailMapper.getInvalidMails(tenantId);
 	}
 

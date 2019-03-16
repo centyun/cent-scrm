@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.centyun.user.mapper.IpAddressMapper">
+    <resultMap id="IpAddressResultMap" type="com.centyun.user.domain.IpAddress">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="ipv4" jdbcType="VARCHAR" property="ipv4"/>
+        <result column="isp" jdbcType="VARCHAR" property="isp"/>
+        <result column="isp_en" jdbcType="VARCHAR" property="ispEn"/>
+        <result column="lat" property="lat"/>
+        <result column="lon" property="lon"/>
+        <result column="timezone" jdbcType="VARCHAR" property="timezone"/>
+        <result column="country_region_id" jdbcType="VARCHAR" property="countryRegionId"/>
+        <result column="province_id" jdbcType="VARCHAR" property="provinceId"/>
+        <result column="city_id" jdbcType="VARCHAR" property="cityId"/>
+        <result column="country_region_name" jdbcType="VARCHAR" property="countryRegionName"/>
+        <result column="province_name" jdbcType="VARCHAR" property="provinceName"/>
+        <result column="city_name" jdbcType="VARCHAR" property="cityName"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="createTime"/>
+    </resultMap>
+    
+    <select id="listPageIpAddresses" resultMap="IpAddressResultMap">
+        select a.* from us_ip_address a
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="searchValue != null">
+                ( a.ipv4 like concat('%', #{searchValue}, '%')
+                or a.isp like concat('%', #{searchValue}, '%')
+                or a.timezone like concat('%', #{searchValue}, '%')
+                or a.country_region_name like concat('%', #{searchValue}, '%')
+                or a.province_name like concat('%', #{searchValue}, '%')
+                or a.city_name like concat('%', #{searchValue}, '%') )
+            </if>
+            <if test="provinceId != null">and a.province_id=#{provinceId}</if>
+        </trim>
+        <if test="orders != null">
+            order by
+            <foreach collection="orders" item="order" separator=",">CONVERT(${order.key} USING gbk) ${order.value}</foreach>
+        </if>
+    </select>
+
+    <select id="getIpAddressById" resultMap="IpAddressResultMap">
+        select a.* from us_ip_address a where a.id = #{id}
+    </select>
+
+    <insert id="addIpAddress" parameterType="com.centyun.user.domain.IpAddress">
+        insert into us_ip_address (id, ipv4, isp, isp_en, lat, lon, timezone, country_region_id, province_id, city_id, country_region_name, province_name, city_name, create_time)
+        values(#{id}, #{ipv4}, #{isp}, #{isp_en}, #{lat}, #{lon}, #{timezone}, #{country_region_id}, #{province_id}, #{city_id}, #{countryRegionName}, #{provinceName}, #{cityName}, now())
+    </insert>
+
+    <select id="listIpAddressesByIds" resultMap="IpAddressResultMap">
+        select a.* from us_ip_address a where a.id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">#{id}</foreach>
+    </select>
+
+    <select id="checkIpAddress" resultType="int">
+        select count(*) from us_ip_address where ipv4 = #{ipv4}
+    </select>
+
+    <select id="listIpAddressesByStatus" resultMap="IpAddressResultMap">
+        select a.* from us_ip_address a where status != #{status} and status != 3 order by create_time limit #{count}
+    </select>
+
+    <update id="updateIpAddress">
+        update us_ip_address
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="isp != null">isp=#{isp},</if>
+            <if test="ispEn != null">isp_en=#{ispEn},</if>
+            <if test="lat != null">lat=#{lat},</if>
+            <if test="lon != null">lon=#{lon},</if>
+            <if test="timezone != null">timezone=#{timezone},</if>
+            <if test="countryRegionName != null">country_region_name=#{countryRegionName},</if>
+            <if test="provinceName != null">province_name=#{provinceName},</if>
+            <if test="cityName != null">city_name=#{cityName},</if>
+            <if test="countryRegionId != null">country_region_id=#{countryRegionId},</if>
+            <if test="provinceId != null">province_id=#{provinceId},</if>
+            <if test="cityId != null">city_id=#{cityId},</if>
+            <if test="status != null">status=status+#{status},</if>
+        </trim>
+        where id=#{id}
+    </update>
+</mapper>

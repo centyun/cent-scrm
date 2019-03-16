@@ -15,9 +15,9 @@ public interface SwiperMapper {
     
     void updateSwiper(Swiper swiper);
     
-    Swiper getSwiper(@Param("tenantId") Long tenantId);
+    Swiper getSwiper(@Param("tenantId") String tenantId);
 
-    List<Swiper> getPageSwipers(@Param("tenantId") Long tenantId, @Param("searchValue") String searchValue,
+    List<Swiper> getPageSwipers(@Param("tenantId") String tenantId, @Param("searchValue") String searchValue,
             @Param("orders") List<KeyValuePair> orders);
 
 }

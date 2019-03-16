@@ -9,25 +9,24 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * @author yinww
  *
  */
-
 public class Audit {
 
-    private Long id;
+    private String id;
     private String action;
     private String module;
     private String content;
     private Long ip;
-    private Long operator;
+    private String operator;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date operateTime;
     
     private String ipStr;  // 数据库中只保存Long的ip
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -55,11 +54,11 @@ public class Audit {
         this.content = content;
     }
 
-    public Long getOperator() {
+    public String getOperator() {
         return operator;
     }
 
-    public void setOperator(Long operator) {
+    public void setOperator(String operator) {
         this.operator = operator;
     }
 

@@ -54,7 +54,7 @@ public class SnowFlakeIdWorker {
      *
      * @return
      */
-    public synchronized long nextId() {
+    public synchronized String nextId() {
         long currStmp = getNewstmp();
         if (currStmp < lastStmp) {
             throw new RuntimeException("Clock moved backwards.  Refusing to generate id");
@@ -74,10 +74,11 @@ public class SnowFlakeIdWorker {
 
         lastStmp = currStmp;
 
-        return (currStmp - START_STMP) << TIMESTMP_LEFT // 时间戳部分
+        long result = (currStmp - START_STMP) << TIMESTMP_LEFT // 时间戳部分
                 | datacenterId << DATACENTER_LEFT // 数据中心部分
                 | machineId << MACHINE_LEFT // 机器标识部分
                 | sequence; // 序列号部分
+        return Long.toString(result);
     }
 
     private long getNextMill() {

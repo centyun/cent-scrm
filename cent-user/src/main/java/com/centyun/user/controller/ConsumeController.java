@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,11 +32,11 @@ public class ConsumeController extends BaseController {
     @Autowired
     private TenantService tenantService;
 
-    @RequestMapping(value = "/index.html")
-    public ModelAndView index(@RequestParam(required = false) Long tenantId, HttpServletRequest request) {
+    @RequestMapping({"", "/", "/index.html"})
+    public ModelAndView index(@RequestParam(required = false) String tenantId, HttpServletRequest request) {
         ModelAndView model = new ModelAndView();
         model.addObject("modules", getModules(request));
-        model.addObject("tenantId", tenantId == null || tenantId <= 0 ? null : tenantId);
+        model.addObject("tenantId", StringUtils.isEmpty(tenantId) ? null : tenantId);
         model.addObject("tenants", tenantService.getAllTenants());
         model.setViewName("consume/consume-index");
         return model;
@@ -44,14 +45,14 @@ public class ConsumeController extends BaseController {
     @RequestMapping(value = "/consumes")
     @ResponseBody
     public Object getConsumes(@ModelAttribute DataTableParam dataTableParam,
-            @RequestParam(required = false) Long tenantId) {
+            @RequestParam(required = false) String tenantId) {
         PageInfo<Consume> consumes = consumeService.getPageConsumes(dataTableParam,
-                tenantId == null || tenantId <= 0 ? null : tenantId);
+                StringUtils.isEmpty(tenantId) ? null : tenantId);
         return new DataTableResult<Consume>(consumes.getList(), consumes.getTotal(), dataTableParam.getDraw());
     }
 
     @RequestMapping(value = "/view.html")
-    public ModelAndView view(@RequestParam("id") Long id, HttpServletRequest request) {
+    public ModelAndView view(@RequestParam("id") String id, HttpServletRequest request) {
         ModelAndView model = new ModelAndView();
         model.addObject("modules", getModules(request));
         try {

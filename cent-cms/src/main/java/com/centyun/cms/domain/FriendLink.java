@@ -5,36 +5,36 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class FriendLink {
-    private Long id;
-    private Long tenantId;
+    private String id;
+    private String tenantId;
     private String groupName;
     private String link;
     private String name;
     private String picture;
     private int openTarget; // 0 在当前页打开, 1在新页签打开
     private int orderNo;
-    private Long creator;
+    private String creator;
     private String creatorName;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")
     private Date createTime;
-    private Long editor;
+    private String editor;
     private String editorName;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")
     private Date editTime;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Long getTenantId() {
+    public String getTenantId() {
         return tenantId;
     }
 
-    public void setTenantId(Long tenantId) {
+    public void setTenantId(String tenantId) {
         this.tenantId = tenantId;
     }
 
@@ -86,11 +86,11 @@ public class FriendLink {
         this.orderNo = orderNo;
     }
 
-    public Long getCreator() {
+    public String getCreator() {
         return creator;
     }
 
-    public void setCreator(Long creator) {
+    public void setCreator(String creator) {
         this.creator = creator;
     }
 
@@ -110,11 +110,11 @@ public class FriendLink {
         this.createTime = createTime;
     }
 
-    public Long getEditor() {
+    public String getEditor() {
         return editor;
     }
 
-    public void setEditor(Long editor) {
+    public void setEditor(String editor) {
         this.editor = editor;
     }
 

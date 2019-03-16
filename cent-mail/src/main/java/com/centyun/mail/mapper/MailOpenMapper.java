@@ -11,8 +11,8 @@ public interface MailOpenMapper {
 	
 	void addMailOpen(MailOpen mailOpen);
 	
-	MailOpen getMailOpenById(Long id, Long tenantId);
+	MailOpen getMailOpenById(String id, String tenantId);
 	
-	List<MailOpen> getMailOpens(Long tenantId);
+	List<MailOpen> getMailOpens(String tenantId);
 
 }

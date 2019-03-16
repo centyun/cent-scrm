@@ -4,7 +4,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -25,6 +28,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.centyun.core.constant.AppConstant;
+import com.centyun.core.domain.Module;
+import com.centyun.core.domain.ModuleVO;
 import com.centyun.core.domain.Product;
 import com.centyun.core.domain.ProductVO;
 import com.centyun.core.domain.ResultEntity;
@@ -32,6 +37,7 @@ import com.centyun.core.exception.BadRequestException;
 import com.centyun.core.table.DataTableParam;
 import com.centyun.core.table.DataTableResult;
 import com.centyun.core.util.CommonUtils;
+import com.centyun.user.service.ModuleService;
 import com.centyun.user.service.ProductService;
 import com.github.pagehelper.PageInfo;
 
@@ -44,7 +50,10 @@ public class ProductController extends BaseController {
     @Autowired
     private ProductService productService;
 
-    @RequestMapping(value = "/index.html")
+    @Autowired
+    private ModuleService moduleService;
+
+    @RequestMapping({"", "/", "/index.html"})
     public ModelAndView index(HttpServletRequest request) {
         ModelAndView model = new ModelAndView();
         model.addObject("modules", getModules(request));
@@ -68,7 +77,7 @@ public class ProductController extends BaseController {
     }
 
     @RequestMapping(value = "/edit.html")
-    public ModelAndView edit(@RequestParam("id") Long id, HttpServletRequest request) {
+    public ModelAndView edit(@RequestParam("id") String id, HttpServletRequest request) {
         ModelAndView model = new ModelAndView();
         model.addObject("modules", getModules(request));
         Product product = productService.getProductById(id);
@@ -78,7 +87,7 @@ public class ProductController extends BaseController {
     }
 
     @RequestMapping(value = "/view.html")
-    public ModelAndView view(@RequestParam("id") Long id, HttpServletRequest request) {
+    public ModelAndView view(@RequestParam("id") String id, HttpServletRequest request) {
         ModelAndView model = new ModelAndView();
         model.addObject("modules", getModules(request));
         Product product = productService.getProductById(id);
@@ -114,7 +123,7 @@ public class ProductController extends BaseController {
         if (!CommonUtils.isEmpty(ids) && action != null) {
             try {
                 List<String> list = Arrays.asList(ids.split(AppConstant.COMMA));
-                productService.updateStatus(CommonUtils.strings2Longs(list), action);
+                productService.updateStatus(list, action);
             } catch (BadRequestException e) {
                 log.error(e.getMessage(), e);
                 ResultEntity result = new ResultEntity();
@@ -136,6 +145,30 @@ public class ProductController extends BaseController {
     @ResponseBody
     public Object getAvailableProducts() {
         List<ProductVO> products = productService.getAvailableProducts();
+        return products;
+    }
+
+    @RequestMapping(value = "/getProductsAndModules")
+    @ResponseBody
+    public Object getProductsAndModules() {
+        List<ProductVO> products = productService.getAvailableProducts();
+        // 整理成Map
+        Map<String, ProductVO> productMap = new HashMap<>();
+        for (ProductVO productVO : products) {
+            productMap.put(productVO.getId(), productVO);
+        }
+        
+        List<Module> modules = moduleService.getModules();
+        // 将模块整理到products中
+        for (Module module : modules) {
+            String productId = module.getProductId();
+            if(!StringUtils.isEmpty(productId)) {
+                ProductVO productVO = productMap.get(productId);
+                if(productVO != null) {
+                    productVO.addModule(new ModuleVO(module));
+                }
+            }
+        }
         return products;
     }
 

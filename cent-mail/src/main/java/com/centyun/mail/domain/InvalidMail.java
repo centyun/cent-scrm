@@ -3,42 +3,42 @@ package com.centyun.mail.domain;
 import java.util.Date;
 
 public class InvalidMail {
-	private Long id;
-	private Long tenantId;
-	private Long pacageId;
-	private Long recipient;
+	private String id;
+	private String tenantId;
+	private String pacageId;
+	private String recipient;
 	private String reason;
 	private Date occurTime;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
-	public Long getTenantId() {
+	public String getTenantId() {
 		return tenantId;
 	}
 
-	public void setTenantId(Long tenantId) {
+	public void setTenantId(String tenantId) {
 		this.tenantId = tenantId;
 	}
 
-	public Long getPacageId() {
+	public String getPacageId() {
 		return pacageId;
 	}
 
-	public void setPacageId(Long pacageId) {
+	public void setPacageId(String pacageId) {
 		this.pacageId = pacageId;
 	}
 
-	public Long getRecipient() {
+	public String getRecipient() {
 		return recipient;
 	}
 
-	public void setRecipient(Long recipient) {
+	public void setRecipient(String recipient) {
 		this.recipient = recipient;
 	}
 

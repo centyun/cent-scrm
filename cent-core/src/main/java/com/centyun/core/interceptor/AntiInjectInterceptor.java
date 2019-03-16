@@ -26,7 +26,6 @@ import com.centyun.core.config.AntiInjectConfig;
  * @author yinww
  *
  */
-
 public class AntiInjectInterceptor extends HandlerInterceptorAdapter {
 
     private static Logger log = LoggerFactory.getLogger(AntiInjectInterceptor.class);
@@ -105,6 +104,11 @@ public class AntiInjectInterceptor extends HandlerInterceptorAdapter {
             paramName = (String) params.nextElement();
             paramVale = request.getParameter(paramName);
             if (StringUtils.isEmpty(paramVale)) {
+                continue;
+            }
+            
+            // 忽略base64Image参数，其中值超过1000且不包括空格
+            if("base64Image".equals(paramName) && paramVale.length() > 1000 && !paramVale.contains(" ")) {
                 continue;
             }
 

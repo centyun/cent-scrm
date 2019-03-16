@@ -1,12 +1,9 @@
 package com.centyun.user.controller;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,25 +37,7 @@ public class TenantController extends BaseController {
     @Autowired
     private TenantService tenantService;
 
-    // setSession和getSession不处理实际的业务, 仅做session共享的测试
-    @RequestMapping(value = "/setsession", method = RequestMethod.POST)
-    @ResponseBody
-    public Object setSession(@RequestParam(required=false) Integer page, HttpSession session) {
-        session.setAttribute("page", page);
-        return session.getId();
-    }
-    
-    @RequestMapping(value = "/getsession", method = RequestMethod.POST)
-    @ResponseBody
-    public Object getSession(HttpSession session) {
-        Object page = session.getAttribute("page");
-        Map<String, Object> map = new HashMap<>();
-        map.put("sessionId", session.getId());
-        map.put("page", page);
-        return map;
-    }
-
-    @RequestMapping(value = "/index.html")
+    @RequestMapping({"", "/", "/index.html"})
     public ModelAndView index(HttpServletRequest request) {
         ModelAndView model = new ModelAndView();
         model.addObject("modules", getModules(request));
@@ -66,9 +45,9 @@ public class TenantController extends BaseController {
         return model;
     }
 
-    @RequestMapping(value = "/tenants")
+    @RequestMapping(value = "/list")
     @ResponseBody
-    public Object getTenants(@ModelAttribute DataTableParam dataTableParam) {
+    public Object listTenants(@ModelAttribute DataTableParam dataTableParam) {
         PageInfo<Tenant> tenants = tenantService.getTenants(dataTableParam);
         return new DataTableResult<Tenant>(tenants.getList(), tenants.getTotal(), dataTableParam.getDraw());
     }
@@ -82,7 +61,7 @@ public class TenantController extends BaseController {
     }
 
     @RequestMapping(value = "/edit.html")
-    public ModelAndView edit(@RequestParam("id") Long id, HttpServletRequest request) {
+    public ModelAndView edit(@RequestParam("id") String id, HttpServletRequest request) {
         ModelAndView model = new ModelAndView();
         model.addObject("modules", getModules(request));
         Tenant tenant = tenantService.getTenantById(id);
@@ -92,7 +71,7 @@ public class TenantController extends BaseController {
     }
 
     @RequestMapping(value = "/view.html")
-    public ModelAndView view(@RequestParam("id") Long id, HttpServletRequest request) {
+    public ModelAndView view(@RequestParam("id") String id, HttpServletRequest request) {
         ModelAndView model = new ModelAndView();
         model.addObject("modules", getModules(request));
         Tenant tenant = tenantService.getTenantById(id);
@@ -128,7 +107,7 @@ public class TenantController extends BaseController {
         if(!CommonUtils.isEmpty(ids) && action != null) {
             try {
                 List<String> list = Arrays.asList(ids.split(AppConstant.COMMA));
-                tenantService.updateStatus(CommonUtils.strings2Longs(list), action);
+                tenantService.updateStatus(list, action);
             } catch (BadRequestException e) {
                 log.error(e.getMessage(), e);
                 ResultEntity result = new ResultEntity();

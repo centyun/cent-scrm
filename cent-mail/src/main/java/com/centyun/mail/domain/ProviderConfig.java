@@ -3,34 +3,34 @@ package com.centyun.mail.domain;
 import java.util.Date;
 
 public class ProviderConfig {
-	private Long id;
-	private Long tenantId;
+	private String id;
+	private String tenantId;
 	private int providerId;
 	private String providerName;
 	private String providerPasswd;
 	private String senderName;
 	private String senderAddress;
 	private String replyAddress;
-	private Long creator;
+	private String creator;
 	private String creatorName;
 	private Date createTime;
-	private Long editor;
+	private String editor;
 	private String editorName;
 	private Date editTime;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
-	public Long getTenantId() {
+	public String getTenantId() {
 		return tenantId;
 	}
 
-	public void setTenantId(Long tenantId) {
+	public void setTenantId(String tenantId) {
 		this.tenantId = tenantId;
 	}
 
@@ -82,11 +82,11 @@ public class ProviderConfig {
 		this.replyAddress = replyAddress;
 	}
 
-	public Long getCreator() {
+	public String getCreator() {
 		return creator;
 	}
 
-	public void setCreator(Long creator) {
+	public void setCreator(String creator) {
 		this.creator = creator;
 	}
 
@@ -106,11 +106,11 @@ public class ProviderConfig {
 		this.createTime = createTime;
 	}
 
-	public Long getEditor() {
+	public String getEditor() {
 		return editor;
 	}
 
-	public void setEditor(Long editor) {
+	public void setEditor(String editor) {
 		this.editor = editor;
 	}
 

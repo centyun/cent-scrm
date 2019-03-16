@@ -11,10 +11,10 @@ import com.centyun.user.domain.Consume;
 @Mapper
 public interface ConsumeMapper {
 
-    List<Consume> getPageConsumes(@Param("tenantId") Long tenantId, @Param("searchValue") String searchValue,
+    List<Consume> getPageConsumes(@Param("tenantId") String tenantId, @Param("searchValue") String searchValue,
             @Param("orders") List<KeyValuePair> orders);
 
-    Consume getConsumeById(@Param("id") Long id);
+    Consume getConsumeById(@Param("id") String id);
 
     void addConsume(Consume consume);
 

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.centyun.user.mapper.ProvinceMapper">
+    <resultMap id="ProvinceResultMap" type="com.centyun.user.domain.Province">
+        <id column="id" property="id"/>
+        <result column="country_region_id" property="countryRegionId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="english_name" jdbcType="VARCHAR" property="englishName"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
+        <result column="pinyin" jdbcType="VARCHAR" property="pinyin"/>
+        <result column="pinyin_short" jdbcType="VARCHAR" property="pinyinShort"/>
+        <result column="order_no" jdbcType="INTEGER" property="orderNo"/>
+        <result column="creator" jdbcType="VARCHAR" property="creator"/>
+        <result column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="createTime"/>
+        <result column="editor" jdbcType="VARCHAR" property="editor"/>
+        <result column="edit_time" jdbcType="TIMESTAMP" javaType="java.util.Date" property="editTime"/>
+        <result column="country_region_name" property="countryRegionName"/>
+        <result column="creator_name" jdbcType="VARCHAR" property="creatorName"/>
+        <result column="editor_name" jdbcType="VARCHAR" property="editorName"/>
+    </resultMap>
+
+    <select id="listProvinces" resultMap="ProvinceResultMap">
+        select a.* from us_province a where a.country_region_id = #{countryRegionId} order by a.order_no
+    </select>
+    
+    <select id="listPageProvinces" resultMap="ProvinceResultMap">
+        select a.* from us_province a
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <if test="searchValue != null">
+                ( a.name like concat('%', #{searchValue}, '%')
+                or a.english_name like concat('%', #{searchValue}, '%')
+                or a.pinyin like concat('%', #{searchValue}, '%')
+                or a.pinyin_short like concat('%', #{searchValue}, '%') )
+            </if>
+            <if test="countryRegionId != null">and a.country_region_id=#{countryRegionId}</if>
+        </trim>
+        <if test="orders != null">
+            order by
+            <foreach collection="orders" item="order" separator=",">CONVERT(${order.key} USING gbk) ${order.value}</foreach>
+        </if>
+    </select>
+
+    <select id="getProvinceById" resultMap="ProvinceResultMap">
+        select a.*, c.name country_region_name, m1.display_name creator_name, m2.display_name editor_name from us_province a
+        left join us_country_region c on a.country_region_id=c.id
+        left join us_administrator m1 on a.creator=m1.id left join us_administrator m2 on a.editor=m2.id
+        where a.id = #{id}
+    </select>
+    
+    <insert id="addProvince">
+        insert into us_province (id, country_region_id, name, english_name, code, pinyin, pinyin_short, order_no, creator, create_time)
+        values(#{id}, #{countryRegionId}, #{name}, #{englishName}, #{code}, #{pinyin}, #{pinyinShort}, 9999, #{creator}, now())
+    </insert>
+
+    <update id="updateProvince">
+        update us_province set country_region_id=#{countryRegionId}, name=#{name}, english_name=#{englishName}, code=#{code}, pinyin=#{pinyin}, pinyin_short=#{pinyinShort}
+        , editor=#{editor}, edit_time=now()
+        where id=#{id}
+    </update>
+    
+    <select id="getProvinceByName" parameterType="com.centyun.user.domain.Province" resultType="int">
+        select count(*) from us_province where name = #{name}
+        <if test="id != null">
+            and <![CDATA[ id <> #{id} ]]>
+        </if>
+    </select>
+    
+    <select id="getProvinceByNameAlias" parameterType="string" resultMap="ProvinceResultMap">
+        select a.* from us_province a where a.name like concat(#{name}, '%')
+    </select>
+    
+</mapper>

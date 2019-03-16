@@ -5,7 +5,6 @@ package com.centyun.core.constant;
  * @author yinww
  *
  */
-
 public interface AppConstant {
     
     // constants of centyun sub-system
@@ -30,6 +29,8 @@ public interface AppConstant {
     
     String TOKEN = "cty_token";
     String LOGIN_USER = "cty_user";
+    String AUTH_FAIL = "common.auth_fail";
+    String ERROR = "error";
     
     int DEFAULT_PAGE_START = 1;
     int DEFAULT_PAGE_SIZE = 10;

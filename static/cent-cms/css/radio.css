@@ -1,0 +1,49 @@
+
+.line {
+    display: flex;
+    min-width: 900px
+}
+
+div.radios div.radio {
+    display: inline-block
+}
+
+div.radios div.radio a {
+    display: inline-block;
+    border-bottom: 3px solid #e4e4e4;
+    text-decoration: none;
+    color: #888;
+    line-height: 32px;
+    padding: 0 16px;
+    text-align: center;
+    font-weight: 700
+}
+
+div.radios div.radio a:hover {
+    -webkit-transition: border-color .15s;
+    -moz-transition: border-color .15s;
+    -ms-transition: border-color .15s;
+    -o-transition: border-color .15s;
+    transition: border-color .15s;
+    border-bottom-color: #222d32;
+    color: #222d32
+}
+
+div.radios div.radio.active a {
+    border-bottom-color: #3c8dbc;
+    color: #000
+}
+
+div.radios div.radio.active a:hover {
+    color: #222d32
+}
+
+@media ( max-width :900px) {
+    .line {
+        display: block;
+        max-width: none;
+        min-width: 0;
+        padding: 16px
+    }
+
+}

@@ -1,4 +1,4 @@
-create database ct_user;
+-- create database ct_user;
 use ct_user;
 
 /*==============================================================
@@ -6,7 +6,7 @@ use ct_user;
 ==============================================================*/
 create table us_tenant
 (
-   id                   bigint not null,
+   id                   varchar(20) not null,
    name                 varchar(128) not null,
    code                 varchar(64),
    main_user            varchar(32),
@@ -20,9 +20,9 @@ create table us_tenant
    status               tinyint comment '0已注册, 1已审核, 2已认证, 3已冻结, 4已注销',
    note                 varchar(256),
    access_key           varchar(64),
-   creator              bigint,
+   creator              varchar(20),
    create_time          datetime,
-   editor               bigint,
+   editor               varchar(20),
    edit_time            datetime,
    primary key (id)
 )
@@ -34,8 +34,8 @@ DEFAULT CHARSET = utf8;
 ==============================================================*/
 create table us_user
 (
-   id                   bigint not null,
-   tenant_id            bigint,
+   id                   varchar(20) not null,
+   tenant_id            varchar(20),
    login_name           varchar(32) not null,
    type                 tinyint comment '0子账号, 1主账号',
    password             varchar(108),
@@ -49,9 +49,9 @@ create table us_user
    status               tinyint comment '0已注册, 1已审核, 2已认证, 3已冻结, 4已注销',
    grade                tinyint comment '0初级, 1....',
    language             varchar(8),
-   creator              bigint,
+   creator              varchar(20),
    create_time          datetime,
-   editor               bigint,
+   editor               varchar(20),
    edit_time            datetime,
    password_time        datetime,
    primary key (id)
@@ -60,11 +60,11 @@ ENGINE = InnoDB
 DEFAULT CHARSET = utf8;
 
 /*==============================================================
-   Table: us_manager 管理员
+   Table: us_administrator 管理员
 ==============================================================*/
-create table us_manager
+create table us_administrator
 (
-   id                   bigint not null,
+   id                   varchar(20) not null,
    login_name           varchar(32) not null,
    password             varchar(108) not null,
    display_name         varchar(32) not null,
@@ -72,9 +72,9 @@ create table us_manager
    email                varchar(64),
    language             varchar(8),
    status               tinyint,
-   creator              bigint,
+   creator              varchar(20),
    create_time          datetime,
-   editor               bigint,
+   editor               varchar(20),
    edit_time            datetime,
    password_time        datetime,
    primary key (id)
@@ -83,12 +83,11 @@ ENGINE = InnoDB
 DEFAULT CHARSET = utf8;
 
 /*==============================================================
-   Table: us_module 模块
+   Table: us_admin_menu 管理菜单
 ==============================================================*/
-create table us_module
+create table us_admin_menu
 (
-   id                   bigint not null,
-   parent_id            bigint,
+   id                   varchar(20) not null,
    name                 varchar(64),
    english_name         varchar(128),
    icon                 varchar(32),
@@ -107,7 +106,7 @@ DEFAULT CHARSET = utf8;
 ==============================================================*/
 create table us_product
 (
-   id                   bigint not null,
+   id                   varchar(20) not null,
    name                 varchar(64) not null,
    english_name         varchar(128),
    code                 varchar(64),
@@ -117,10 +116,11 @@ create table us_product
    release_time         datetime,
    product_manager      varchar(64),
    note                 varchar(256),
-   status               tinyint comment '1正常，2下线停用，3升级后成了旧版，但仍然可以，4升级成后了旧版，不再可以',
-   creator              bigint,
+   order_no             smallint,
+   status               tinyint comment '0未发布，1正常，2下线停用，3将停用',
+   creator              varchar(20),
    create_time          datetime,
-   editor               bigint,
+   editor               varchar(20),
    edit_time            datetime,
    primary key (id)
 )
@@ -132,7 +132,7 @@ DEFAULT CHARSET = utf8;
 ==============================================================*/
 create table us_charge
 (
-   id                   bigint not null,
+   id                   varchar(20) not null,
    tenant_id            varchar(32) not null,
    product_id           varchar(32) not null,
    money                decimal(12,2),
@@ -142,9 +142,9 @@ create table us_charge
    note                 varchar(256),
    status               tinyint comment '1 充值成功 2 取消充值',
    sales                varchar(32),
-   charge_manager       bigint,
+   charge_administrator varchar(20),
    charge_time          datetime,
-   editor               bigint,
+   editor               varchar(20),
    edit_time            datetime,
    primary key (id)
 )
@@ -156,12 +156,12 @@ DEFAULT CHARSET = utf8;
 ==============================================================*/
 create table us_audit
 (
-   id                   bigint not null,
+   id                   varchar(20) not null,
    action               varchar(64),
    module               varchar(32),
    content              text,
    ip                   bigint,
-   operator             bigint,
+   operator             varchar(20),
    operate_time         datetime,
    primary key (id)
 )
@@ -173,10 +173,10 @@ DEFAULT CHARSET = utf8;
 ==============================================================*/
 create table us_consume
 (
-   id                   bigint not null,
-   tenant_id            bigint not null,
-   product_id           bigint not null,
-   user_id              bigint,
+   id                   varchar(20) not null,
+   tenant_id            varchar(20) not null,
+   product_id           varchar(20) not null,
+   user_id              varchar(20),
    amount               int,
    money                decimal(12,2),
    occur_time           datetime,
@@ -186,3 +186,131 @@ create table us_consume
 ENGINE = InnoDB
 DEFAULT CHARSET = utf8;
 
+/*==============================================================
+   Table: us_module 应用模块
+==============================================================*/
+create table us_module
+(
+   id                   varchar(20) not null,
+   product_id           varchar(20),
+   parent_id            varchar(20),
+   name                 varchar(64),
+   english_name         varchar(128),
+   icon                 varchar(32),
+   code                 varchar(32),
+   url                  varchar(128),
+   order_no             smallint,
+   status               tinyint,
+   create_time          datetime,
+   primary key (id)
+)
+ENGINE = InnoDB
+DEFAULT CHARSET = utf8;
+
+/*==============================================================
+   Table: us_continent 大洲
+==============================================================*/
+create table us_continent
+(
+   id                   varchar(32) not null,
+   name                 varchar(64),
+   english_name         varchar(64),
+   order_no             smallint,
+   primary key (id)
+)
+ENGINE = InnoDB
+DEFAULT CHARSET = utf8;
+
+/*==============================================================
+   Table: us_country_region 国家和地区
+==============================================================*/
+create table us_country_region
+(
+   id                   varchar(32) not null,
+   continent_id         varchar(32) not null,
+   name                 varchar(64) not null,
+   english_name         varchar(64),
+   code                 varchar(32),
+   area_code            varchar(32),
+   pinyin               varchar(64),
+   pinyin_short         varchar(32),
+   order_no             int,
+   creator              varchar(20),
+   create_time          datetime,
+   editor               varchar(20),
+   edit_time            datetime,
+   primary key (id)
+)
+ENGINE = InnoDB
+DEFAULT CHARSET = utf8;
+
+/*==============================================================
+   Table: us_province 省
+==============================================================*/
+create table us_province
+(
+   id                   varchar(32) not null,
+   country_region_id    varchar(32) not null,
+   name                 varchar(64) not null,
+   english_name         varchar(64),
+   code                 varchar(32),
+   area_code            varchar(32),
+   pinyin               varchar(64),
+   pinyin_short         varchar(32),
+   order_no             int,
+   creator              varchar(20),
+   create_time          datetime,
+   editor               varchar(20),
+   edit_time            datetime,
+   primary key (id)
+)
+ENGINE = InnoDB
+DEFAULT CHARSET = utf8;
+
+/*==============================================================
+   Table: us_city 市
+==============================================================*/
+create table us_city
+(
+   id                   varchar(32) not null,
+   province_id          varchar(32) not null,
+   name                 varchar(64) not null,
+   english_name         varchar(64),
+   code                 varchar(32),
+   area_code            varchar(32),
+   pinyin               varchar(64),
+   pinyin_short         varchar(32),
+   order_no             int,
+   creator              varchar(20),
+   create_time          datetime,
+   editor               varchar(20),
+   edit_time            datetime,
+   primary key (id)
+)
+ENGINE = InnoDB
+DEFAULT CHARSET = utf8;
+
+/*==============================================================
+   Table: us_ip_address IP地址
+==============================================================*/
+create table us_ip_address
+(
+   id                   bigint not null comment 'ipv4对应的长整数',
+   ipv4                 varchar(15),
+   isp                  varchar(32) comment '网络运营商',
+   isp_en               varchar(255),
+   lon                  decimal(8,4) comment '经度',
+   lat                  decimal(8,4) comment '纬度',
+   timezone             varchar(32),
+   country_region_id    varchar(32),
+   province_id          varchar(32),
+   city_id              varchar(32),
+   country_region_name  varchar(64),
+   province_name        varchar(64),
+   city_name            varchar(64),
+   status               tinyint default 0 comment '0 初始入库, 1 对比了淘宝ip库, 2 对比了ip-api库, 3 校验完了前面两个ip库',
+   create_time          datetime,
+   primary key (id)
+)
+ENGINE = InnoDB
+DEFAULT CHARSET = utf8;

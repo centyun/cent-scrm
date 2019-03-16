@@ -8,8 +8,8 @@ public interface SwiperService {
     
     void saveSwiper(Swiper swiper);
     
-    Swiper getSwiper(Long tenantId, Long siteId);
+    Swiper getSwiper(String tenantId, String siteId);
 
-    PageInfo<Swiper> getPageSwipers(DataTableParam dataTableParam, Long tenantId);
+    PageInfo<Swiper> getPageSwipers(DataTableParam dataTableParam, String tenantId);
 
 }

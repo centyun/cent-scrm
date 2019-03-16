@@ -24,8 +24,8 @@ public class ConsumeServiceImpl implements ConsumeService {
     private ConsumeMapper consumeMapper;
 
     @Override
-    public PageInfo<Consume> getPageConsumes(DataTableParam dataTableParam, Long tenantId) {
-        PageHelper.startPage(dataTableParam.getStart(), dataTableParam.getLength());
+    public PageInfo<Consume> getPageConsumes(DataTableParam dataTableParam, String tenantId) {
+        PageHelper.startPage(dataTableParam.getPageNum(), dataTableParam.getLength());
         String searchValue = dataTableParam.getSearchValue();
         List<KeyValuePair> orders = dataTableParam.getOrders();
         List<Consume> consumes = consumeMapper.getPageConsumes(tenantId, StringUtils.isEmpty(searchValue) ? null: searchValue, 
@@ -35,7 +35,7 @@ public class ConsumeServiceImpl implements ConsumeService {
     }
 
     @Override
-    public Consume getConsumeById(Long id) {
+    public Consume getConsumeById(String id) {
         return consumeMapper.getConsumeById(id);
     }
 

@@ -4,7 +4,7 @@
 
 <mapper namespace="com.centyun.user.mapper.AuditMapper">
 	<resultMap id="AuditResultMap" type="com.centyun.core.domain.Audit">
-		<id column="id" jdbcType="BIGINT" property="id"/>
+		<id column="id" jdbcType="VARCHAR" property="id"/>
 		<result column="action" jdbcType="VARCHAR" property="action"/>
 		<result column="module" jdbcType="VARCHAR" property="module"/>
 		<result column="content" jdbcType="VARCHAR" property="content"/>

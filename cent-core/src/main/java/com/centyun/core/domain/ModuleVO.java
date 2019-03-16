@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class ModuleVO {
 
-    private Long id;
-    private Long parentId;
+    private String id;
+    private String parentId;
     private String name;
     private String englishName;
     private String icon;
@@ -39,19 +39,19 @@ public class ModuleVO {
         this.createTime = module.getCreateTime();
     }
 
-    public final Long getId() {
+    public final String getId() {
         return id;
     }
 
-    public final void setId(Long id) {
+    public final void setId(String id) {
         this.id = id;
     }
 
-    public final Long getParentId() {
+    public final String getParentId() {
         return parentId;
     }
 
-    public final void setParentId(Long parentId) {
+    public final void setParentId(String parentId) {
         this.parentId = parentId;
     }
 
@@ -127,11 +127,11 @@ public class ModuleVO {
         this.children = children;
     }
 
-    public final void addChild(ModuleVO moduleVo) {
+    public final void addChild(ModuleVO adminMenuVo) {
         if (children == null) {
             children = new ArrayList<ModuleVO>();
         }
-        this.children.add(moduleVo);
+        this.children.add(adminMenuVo);
     }
 
     public boolean isActive() {

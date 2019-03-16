@@ -25,7 +25,7 @@ public class FeignConfig {
 
     public ObjectFactory<HttpMessageConverters> feignHttpMessageConverter() {
         final HttpMessageConverters httpMessageConverters = new HttpMessageConverters(
-                new PhpMappingJackson2HttpMessageConverter());
+                new CtyMappingJackson2HttpMessageConverter());
         return new ObjectFactory<HttpMessageConverters>() {
             @Override
             public HttpMessageConverters getObject() throws BeansException {
@@ -34,8 +34,8 @@ public class FeignConfig {
         };
     }
 
-    public class PhpMappingJackson2HttpMessageConverter extends MappingJackson2HttpMessageConverter {
-        PhpMappingJackson2HttpMessageConverter() {
+    class CtyMappingJackson2HttpMessageConverter extends MappingJackson2HttpMessageConverter {
+        CtyMappingJackson2HttpMessageConverter() {
             List<MediaType> mediaTypes = new ArrayList<>();
             mediaTypes.add(MediaType.valueOf(MediaType.TEXT_PLAIN + ";charset=UTF-8"));
             mediaTypes.add(MediaType.valueOf(MediaType.TEXT_HTML_VALUE + ";charset=UTF-8")); // 关键

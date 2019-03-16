@@ -15,12 +15,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * @author yinww
  *
  */
-
 public class User implements Serializable, UserDetails {
     private static final long serialVersionUID = 5670610677050603224L;
     
-    private Long id;
-    private Long tenantId;
+    private String id;
+    private String tenantId;
     private String loginName;
     private Integer type; // 0子账号, 1主账号
     private String password;
@@ -34,10 +33,10 @@ public class User implements Serializable, UserDetails {
     private Integer status; // 0已注册, 1已审核, 2已认证, 3已冻结, 4已注销
     private Integer grade; // 0初级, 1....
     private String language;
-    private Long creator;
+    private String creator;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
-    private Long editor;
+    private String editor;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date editTime;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
@@ -49,26 +48,26 @@ public class User implements Serializable, UserDetails {
     
     public User() {}
 
-    public User(Long id, Long tenantId, String loginName, Long creator) {
+    public User(String id, String tenantId, String loginName, String creator) {
         this.id = id;
         this.tenantId = tenantId;
         this.loginName = loginName;
         this.creator = creator;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Long getTenantId() {
+    public String getTenantId() {
         return tenantId;
     }
 
-    public void setTenantId(Long tenantId) {
+    public void setTenantId(String tenantId) {
         this.tenantId = tenantId;
     }
 
@@ -176,11 +175,11 @@ public class User implements Serializable, UserDetails {
         this.language = language;
     }
 
-    public Long getCreator() {
+    public String getCreator() {
         return creator;
     }
 
-    public void setCreator(Long creator) {
+    public void setCreator(String creator) {
         this.creator = creator;
     }
 
@@ -192,11 +191,11 @@ public class User implements Serializable, UserDetails {
         this.createTime = createTime;
     }
 
-    public Long getEditor() {
+    public String getEditor() {
         return editor;
     }
 
-    public void setEditor(Long editor) {
+    public void setEditor(String editor) {
         this.editor = editor;
     }
 

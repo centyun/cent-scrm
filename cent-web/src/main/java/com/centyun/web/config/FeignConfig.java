@@ -34,7 +34,7 @@ public class FeignConfig {
         };
     }
 
-    public class CtyMappingJackson2HttpMessageConverter extends MappingJackson2HttpMessageConverter {
+    class CtyMappingJackson2HttpMessageConverter extends MappingJackson2HttpMessageConverter {
         CtyMappingJackson2HttpMessageConverter() {
             List<MediaType> mediaTypes = new ArrayList<>();
             mediaTypes.add(MediaType.valueOf(MediaType.TEXT_PLAIN + ";charset=UTF-8"));

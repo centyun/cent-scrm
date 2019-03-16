@@ -8,8 +8,8 @@ public interface ArticleService {
     
     void saveArticle(Article article);
     
-    Article getArticle(Long tenantId);
+    Article getArticle(String tenantId);
 
-    PageInfo<Article> getPageArticles(DataTableParam dataTableParam, Long tenantId);
+    PageInfo<Article> getPageArticles(DataTableParam dataTableParam, String tenantId);
 
 }

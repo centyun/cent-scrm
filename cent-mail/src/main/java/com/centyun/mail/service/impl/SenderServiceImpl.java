@@ -31,12 +31,12 @@ public class SenderServiceImpl implements SenderService {
 	}
 
 	@Override
-	public Sender getSenderById(Long id, Long tenantId) {
+	public Sender getSenderById(String id, String tenantId) {
 		return senderMapper.getSenderById(id, tenantId);
 	}
 
 	@Override
-	public List<Sender> getSenders(Long tenantId) {
+	public List<Sender> getSenders(String tenantId) {
 		return senderMapper.getSenders(tenantId);
 	}
 

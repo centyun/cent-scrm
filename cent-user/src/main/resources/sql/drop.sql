@@ -1,8 +1,14 @@
 drop table if exists us_tenant;
 drop table if exists us_user;
-drop table if exists us_manager;
-drop table if exists us_module;
 drop table if exists us_product;
 drop table if exists us_charge;
 drop table if exists us_consume;
 drop table if exists us_audit;
+drop table if exists us_module;
+drop table if exists us_administrator;
+drop table if exists us_admin_menu;
+drop table if exists us_continent;
+drop table if exists us_country_region;
+drop table if exists us_province;
+drop table if exists us_city;
+drop table if exists us_ip_address;

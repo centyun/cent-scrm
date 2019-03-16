@@ -5,14 +5,14 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class Mail {
-    private Long id;
-    private Long tenantId;
-    private Long packageId;
+    private String id;
+    private String tenantId;
+    private String packageId;
     private int providerId;
     private int shardingColumn;
     private String replyAddress;
     private String recipient;
-    private Long templateId;
+    private String templateId;
     private String templateName;
     private String subject;
     private int mailType; // 0标准邮件, 1个性邮件
@@ -29,34 +29,34 @@ public class Mail {
     private Integer openCount;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date lastOpenTime;
-    private Long lastOpenIp;
+    private String lastOpenIp;
     private String submitFailReason;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Long getTenantId() {
+    public String getTenantId() {
         return tenantId;
     }
 
-    public void setTenantId(Long tenantId) {
+    public void setTenantId(String tenantId) {
         this.tenantId = tenantId;
     }
 
-    public Long getPackageId() {
+    public String getPackageId() {
         return packageId;
     }
 
-    public void setPackageId(Long packageId) {
+    public void setPackageId(String packageId) {
         this.packageId = packageId;
     }
 
@@ -92,11 +92,11 @@ public class Mail {
         this.recipient = recipient;
     }
 
-    public Long getTemplateId() {
+    public String getTemplateId() {
         return templateId;
     }
 
-    public void setTemplateId(Long templateId) {
+    public void setTemplateId(String templateId) {
         this.templateId = templateId;
     }
 
@@ -204,11 +204,11 @@ public class Mail {
         this.lastOpenTime = lastOpenTime;
     }
 
-    public Long getLastOpenIp() {
+    public String getLastOpenIp() {
         return lastOpenIp;
     }
 
-    public void setLastOpenIp(Long lastOpenIp) {
+    public void setLastOpenIp(String lastOpenIp) {
         this.lastOpenIp = lastOpenIp;
     }
 
